@@ -2,7 +2,9 @@ Package: fmi2
 Title: Finnish Meteorological Institute open data API R client
 Version: 0.0.0.9000
 Date: 2018-08-13
-Authors@R: person("Joona", "Lehtomaki", email = "jlehtoma@pm.me", role = c("aut", "cre"))
+Authors@R: c(
+  person("Joona", "Lehtomaki", email = "jlehtoma@pm.me", role = c("aut", "cre")),
+  person("Ilari", "Scheinin", role = "ctb"))
 Description: R client for the Finnish Meteorological Institute (FMI) open data API. This 
   package supersedes the obsolete fmi package. Client can be used to fetch geospatial over
   FMI's WFS (http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) and 
