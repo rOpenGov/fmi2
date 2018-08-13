@@ -13,18 +13,18 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 3.1)
 Imports:
-    dplyr,
-    magrittr,
-    rvest,
-    sf,
-    tibble,
-    tidyr,
-    xml2
+    dplyr (>= 0.7.6),
+    magrittr (>= 1.5),
+    rvest (>= 0.3.2),
+    sf (>= 0.6.3),
+    tibble (>= 1.4.2),
+    tidyr (>= 0.8.1),
+    xml2 (>= 1.2.0)
 Suggests: 
     covr (>= 3.1.0),
-    knitr,
-    rmarkdown,
-    testthat
+    knitr (>= 1.20),
+    rmarkdown (>= 1.10),
+    testthat (>= 2.0.0)
 VignetteBuilder: knitr
 ByteCompile: true
 Encoding: UTF-8
