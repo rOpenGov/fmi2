@@ -1,18 +1,22 @@
 Package: fmi2
+Title: Finnish Meteorological Institute open data API R client
 Version: 0.0.0.9000
-Title: What the Package Does (One Line, Title Case)
-Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-License: What license is it under?
+Date: 2018-08-13
+Authors@R: person("Joona", "Lehtomaki", email = "jlehtoma@pm.me", role = c("aut", "cre"))
+Description: R client for the Finnish Meteorological Institute (FMI) open data API. This 
+  package supersedes the obsolete fmi package. Client can be used to fetch geospatial over
+  FMI's WFS (http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) and 
+  converted into geospatial objects in R.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 3.1)
+Suggests: 
+    covr (>= 3.1.0),
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+ByteCompile: true
 Encoding: UTF-8
 LazyData: true
-ByteCompile: true
-Depends:
-    R (>= 3.1)
-Suggests:
-    covr (>= 3.1.0),
-    testthat,
-    knitr,
-    rmarkdown
 RoxygenNote: 6.1.0
-VignetteBuilder: knitr
