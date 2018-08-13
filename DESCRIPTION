@@ -10,6 +10,14 @@ Description: R client for the Finnish Meteorological Institute (FMI) open data A
 License: MIT + file LICENSE
 Depends: 
     R (>= 3.1)
+Imports:
+    dplyr,
+    magrittr,
+    rvest,
+    sf,
+    tibble,
+    tidyr,
+    xml2
 Suggests: 
     covr (>= 3.1.0),
     knitr,
