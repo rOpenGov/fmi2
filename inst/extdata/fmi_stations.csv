@@ -52,7 +52,7 @@
 "Helsinki Kaisaniemi",100971,304,2978,60.18,24.94,3,"Weather",1844
 "Helsinki Kaivopuisto",132310,345,2960,60.15,24.96,2,"Mareograph",1904
 "Helsinki Kallio 2",100662,NA,NA,60.19,24.95,21,"Air quality (urban)",1999
-"Helsinki Kumpula",101004,339,2998,60.2,24.96,24,"Air qualityWeather, Precipitation",2005
+"Helsinki Kumpula",101004,339,2998,60.2,24.96,24,"Air quality, PrecipitationWeather",2005
 "Helsinki Länsisatama 2",104067,NA,NA,60.15,24.92,20,"Air quality (urban)",2012
 "Helsinki lighthouse",101003,337,2989,59.95,24.93,0,"Weather",2003
 "Helsinki Mäkelänkatu",100762,NA,NA,60.2,24.95,20,"Air quality (urban)",2015
@@ -110,7 +110,7 @@
 "Joutsa Pärnämäki",101390,2525,NA,61.77,26.39,116,"Precipitation",1969
 "Joutsa Savenaho",101367,2501,2771,61.88,26.09,146,"Weather",1932
 "Juuka Niemelä",101609,3802,2791,63.23,29.23,115,"Weather",1914
-"Juupajoki Hyytiälä",101317,2303,2770,61.85,24.29,153,"Air qualityWeather, Precipitation",1956
+"Juupajoki Hyytiälä",101317,2303,2770,61.85,24.29,153,"Air quality, PrecipitationWeather",1956
 "Juva Partala",101418,2622,2736,61.89,27.89,110,"Weather",1992
 "Jyväskylä airport",101339,2401,2935,62.4,25.67,139,"Precipitation, Weather",1945
 "Jyväskylä airport AWOS",137208,NA,NA,62.4,25.68,138,"Weather",1999
@@ -277,7 +277,7 @@
 "Parainen Fagerholm",100924,19,2950,60.11,21.7,3,"Weather",1989
 "Parainen Parainen",100843,NA,NA,60.3,22.28,20,"Air quality (urban)",2013
 "Parainen Rumar",100926,21,2933,60.13,21.64,61,"Radar",1997
-"Parainen Utö",100908,2,2981,59.78,21.37,6,"Air qualityWeather, Precipitation",1881
+"Parainen Utö",100908,2,2981,59.78,21.37,6,"Air quality, PrecipitationWeather",1881
 "Parikkala Koitsanlahti",101254,1802,2734,61.44,29.46,74,"Weather",1991
 "Pelkosenniemi parish village",101947,7604,NA,67.1,27.51,155,"Precipitation",1968
 "Pelkosenniemi Pyhätunturi",101958,7708,2705,67.02,27.22,491,"Weather",1995
@@ -367,7 +367,7 @@
 "Siuntio Sjundby",105302,321,NA,60.14,24.26,26,"Precipitation",1995
 "Sodankylä Lokka",102000,8601,2719,67.82,27.75,240,"Weather",1958
 "Sodankylä Luosto",101939,7508,2840,67.14,26.9,532,"Radar",2000
-"Sodankylä Tähtelä",101932,7501,2836,67.37,26.63,179,"Air qualityWeather, Sounding",1891
+"Sodankylä Tähtelä",101932,7501,2836,67.37,26.63,179,"Air quality, WeatherSounding",1891
 "Sodankylä Vuotso",102001,8602,2816,68.08,27.19,248,"Weather",1958
 "Somero Salkola",101128,1227,2949,60.65,23.81,142,"Weather",2010
 "Sotkamo Kuolaniemi",101756,4714,2739,64.11,28.34,161,"Weather",1989
