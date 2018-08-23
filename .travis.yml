@@ -13,5 +13,7 @@ r:
 - release
 - devel
 
+r_github_packages: rOpenGov/fmi2
+
 after_success:
   - Rscript -e 'covr::codecov()'
