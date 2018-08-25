@@ -44,8 +44,7 @@ utils::globalVariables(c("Elevation"))
         # (important for the test that checks whether the included local copy
         # is still up-to-date with the online version).
         stations$Groups <- stations$Groups %>%
-          sub(pattern = "([a-z])([A-Z])", replacement = "\\1;\\2") %>%
-          strsplit(";") %>%
+          strsplit("(?<=[a-z])(?=[A-Z])", perl = TRUE) %>%
           lapply(sort) %>%
           lapply(paste, collapse = ", ") %>%
           unlist()
