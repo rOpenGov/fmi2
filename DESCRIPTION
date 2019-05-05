@@ -1,7 +1,7 @@
 Package: fmi2
 Title: Finnish Meteorological Institute open data API R client
 Version: 0.0.0.9000
-Date: 2018-08-13
+Date: 2019-08-13
 Authors@R: c(
   person("Joona", "Lehtomaki", email = "jlehtoma@pm.me", role = c("aut", "cre")),
   person("Ilari", "Scheinin", role = "ctb"))
