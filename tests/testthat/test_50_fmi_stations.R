@@ -1,6 +1,5 @@
 library(dplyr)
 library(fmi2)
-context("FMI station list")
 
 test_that("downloading works", {
   # First, time should download the data
