@@ -29,9 +29,9 @@ list_parameters <- function(query_id) {
 
   # Get the correct nodeset by selecing with the query ID
   param_nodes <- nodes %>%
-    xml2::xml_find_all(., xpath = paste0("//StoredQueryDescription[@id='",
+    xml2::xml_find_all(xpath = paste0("//StoredQueryDescription[@id='",
                                       query_id, "']")) %>%
-    xml2::xml_find_all(., xpath = ".//Parameter")
+    xml2::xml_find_all(xpath = ".//Parameter")
 
   # Helper function to process each child node
   process_node <- function(node) {
@@ -44,7 +44,7 @@ list_parameters <- function(query_id) {
     param_abstract <- node %>%
       xml2::xml_find_all("./Abstract") %>%
       xml2::xml_text() %>%
-      gsub("\\n ", "", .) %>%
+      gsub("\\n ", "", .data) %>%
       trimws()
 
     # Collate all the data and return
@@ -128,13 +128,13 @@ list_queries <- function(all = FALSE) {
 
   # See which stored queries have a corresponding function in fmi2
   query_data <- query_data %>%
-    dplyr::mutate(function_name = ifelse(query_id %in% names(fmi2_global$function_map),
-                                         unlist(fmi2_global$function_map[query_id]),
+    dplyr::mutate(function_name = ifelse(.data$query_id %in% names(fmi2_global$function_map),
+                                         unlist(fmi2_global$function_map[.data$query_id]),
                                          NA))
 
   if (!all) {
     query_data <- query_data %>%
-      dplyr::filter(!is.na(function_name))
+      dplyr::filter(!is.na(.data$function_name))
   }
 
   return(query_data)
