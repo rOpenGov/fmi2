@@ -19,9 +19,6 @@ httptest::with_mock_api({
   })
 
   test_that("stored queries parameter data is parsed correctly", {
-    # This should raise an error
-    expect_error(list_parameters("fmi::observations::weather::monthly::foobar"),
-                 regexp = "^Invalid query ID")
 
     # This should work
     id <- "fmi::observations::weather::daily::timevaluepair"
@@ -34,5 +31,10 @@ httptest::with_mock_api({
       dplyr::pull(no_parameters)
     expect_equal(nrow(param_data), param_no)
   })
+
+  #test_that("vipunen_api object prints", {
+  #  expect_output(print(vipunen_api(api_url)))
+  #})
+
 
 })
