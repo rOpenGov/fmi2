@@ -95,8 +95,8 @@ utils::globalVariables(c("Elevation"))
 #' Ilari Scheinin
 #'
 #' @importFrom magrittr %>%
-#' @import rvest
-#' @import xml2
+#' @importFrom rvest html_table
+#' @importFrom xml2 read_html
 #'
 #' @export
 #'
