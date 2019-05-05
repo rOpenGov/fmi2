@@ -4,9 +4,13 @@
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/rOpenGov/fmi2?branch=master&svg=true)](https://ci.appveyor.com/project/rOpenGov/fmi2)
 [![codecov](https://codecov.io/gh/rOpenGov/fmi2/branch/master/graph/badge.svg)](https://codecov.io/gh/rOpenGov/fmi2)
 
-R client package for [the Finnish Meteorological Institute (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data-manual). 
+R client package for [the Finnish Meteorological Institute (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data-manual). `fmi2` provides access
+to a subset of the FMI [discovery](http://en.ilmatieteenlaitos.fi/open-data-manual-data-catalog) 
+and [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
+services, please have a look at XXX what is currently supported. More data sets
+and queries may be wrapped in the future.
 
-The data from the FMI is released under [the Creative Commons Attribution 4.0 
+All data from the FMI is released under [the Creative Commons Attribution 4.0 
 International license](https://creativecommons.org/licenses/by/4.0/). 
 
 ## Installation
