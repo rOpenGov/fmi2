@@ -108,7 +108,7 @@
 "Jomala Jomalaby",100917,11,2741,60.18,19.99,11,"Weather",1971
 "Jomala Mariehamn airport",100907,1,2970,60.12,19.9,2,"Weather",1950
 "Joutsa Pärnämäki",101390,2525,NA,61.77,26.39,116,"Precipitation",1969
-"Joutsa Savenaho",101367,2501,2771,61.88,26.09,146,"Weather",1932
+"Joutsa Savenaho",101367,2501,2771,61.88,26.09,146,"Weather",1946
 "Juuka Niemelä",101609,3802,2791,63.23,29.23,115,"Weather",1914
 "Juupajoki Hyytiälä",101317,2303,2770,61.85,24.29,154,"Air quality, Precipitation, Weather",1956
 "Juva Partala",101418,2622,2736,61.89,27.89,110,"Weather",1992
@@ -322,6 +322,7 @@
 "Puumala parish",150168,2708,2718,61.52,28.18,98,"Weather",2012
 "Pyhäjärvi Hiidenniemi",101706,4413,NA,63.61,25.47,140,"Precipitation",1992
 "Pyhäjärvi Ojakylä",101705,4412,2738,63.74,25.71,152,"Weather",1990
+"Pyhtää lentokenttä",107029,NA,NA,60.49,26.59,22,"Weather",2019
 "Raahe keskusta",103147,NA,NA,64.68,24.48,3,"Air quality (urban)",2005
 "Raahe Lapaluoto",100540,NA,NA,64.67,24.41,0,"Mareograph",1922
 "Raahe Lapaluoto",103145,NA,NA,64.67,24.42,11,"Air quality (urban)",1982
@@ -407,7 +408,7 @@
 "Turku Ruissalo Saaronniemi",134225,NA,NA,60.43,22.1,0,"Mareograph",1922
 "Turku Ruissalo Saarontie",100845,NA,NA,60.43,22.1,6,"Air quality (urban)",1999
 "Utajärvi Korkiakangas",101872,6513,2870,64.77,26.32,118,"Radar",1997
-"Utajärvi Särkijärvi",101809,5604,NA,64.93,27.19,132,"Precipitation",1916
+"Utajärvi Särkijärvi",101809,5604,NA,64.93,27.19,130,"Precipitation",1916
 "Utsjoki Kevo",102035,9603,2805,69.76,27.01,107,"Air quality, Weather",1962
 "Utsjoki Kevo Kevojärvi",126737,9618,2890,69.76,27.01,76,"Weather",2010
 "Utsjoki Nuorgam",102036,9604,2825,70.08,27.9,22,"Weather",1929
@@ -440,6 +441,7 @@
 "Vieremä Kaarakkala",101726,4602,2834,63.84,27.22,206,"Precipitation, Weather",1937
 "Vihti Hiiskula",101135,1307,NA,60.52,24.52,100,"Precipitation",1924
 "Vihti Maasoja",100976,309,2758,60.42,24.4,40,"Weather",1939
+"Vihti Nummela",107028,NA,NA,60.33,24.31,58,"Air quality (urban)",2018
 "Viitasaari Haapaniemi",101537,3401,2915,63.08,25.86,130,"Weather",1969
 "Viitasaari Kärnä",101545,3409,NA,63.17,25.94,115,"Precipitation",1960
 "Vimpeli Lakeaharju",101518,3217,2925,63.1,23.82,198,"Radar",2005
