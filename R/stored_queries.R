@@ -12,6 +12,7 @@
 #'
 #' @import dplyr httpcache tibble xml2
 #' @importFrom httr http_error
+#' @importFrom purrr map
 #'
 #' @return tibble containing the following columns:
 #' \describe{
