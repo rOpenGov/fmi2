@@ -1,3 +1,64 @@
+#' List and describe all valid parameters for a given stored query.
+#'
+#' For valid stored query IDs, see \code{\link[fmi2]{list_queries}}.
+#'
+#' @param query_id character string query ID.
+#'
+#' @importFrom purrr map
+#' @import xml2
+#'
+#' @return a tibble describing the valid parameters.
+#' @export
+#'
+#' @seealso \code{\link[fmi2]{list_queries}}.
+#'
+#' @examples
+#'   \dontrun{
+#'     list_parameters("fmi::observations::weather::daily::timevaluepair")
+#'   }
+list_parameters <- function(query_id) {
+
+  nodes <- .get_stored_queries()
+
+  # Check that the query ID provided is valid
+  valid_ids <- unlist(purrr::map(nodes, xml2::xml_attr, attr = "id"))
+
+  if (!query_id %in% valid_ids) {
+    stop("Invalid query ID: ", query_id)
+  }
+
+  # Get the correct nodeset by selecing with the query ID
+  param_nodes <- nodes %>%
+    xml2::xml_find_all(., xpath = paste0("//StoredQueryDescription[@id='",
+                                      query_id, "']")) %>%
+    xml2::xml_find_all(., xpath = ".//Parameter")
+
+  # Helper function to process each child node
+  process_node <- function(node) {
+    param_name <- xml2::xml_attr(node, attr = "name")
+    param_type <- xml2::xml_attr(node, attr = "type")
+    # Parameter title and abstract in plain language
+    param_title <- node %>%
+      xml2::xml_find_all("./Title") %>%
+      xml2::xml_text()
+    param_abstract <- node %>%
+      xml2::xml_find_all("./Abstract") %>%
+      xml2::xml_text() %>%
+      gsub("\\n ", "", .) %>%
+      trimws()
+
+    # Collate all the data and return
+    node_data <- tibble::tibble(
+      param_name, param_type, param_title, param_abstract
+    )
+    return(node_data)
+  }
+  # Iterate over all child nodes (stored queries) and process them
+  parameter_data <- purrr::map(param_nodes, process_node) %>%
+    dplyr::bind_rows()
+  return(parameter_data)
+}
+
 #' List stored queries available over the FMI API.
 #'
 #' Stored queries are identifiers for data sets. The current version on the Open
@@ -36,29 +97,8 @@
 #' }
 #'
 list_queries <- function(all = FALSE) {
-  # Set the user agent
-  ua <- httr::user_agent("https://github.com/rOpenGov/fmi2")
 
-  # Get the response and check the response.
-  # see fmi2-global.R for the definition of the URL.
-  resp <- httpcache::GET(fmi2_global$saved_queries_url, ua)
-
-  if (httr::http_error(resp)) {
-    stop(
-      sprintf(
-        "FMI API request failed [%s]",
-        httr::status_code(resp)
-      ),
-      call. = FALSE
-    )
-  }
-
-  # Parse the response XML content
-  content <- xml2::read_xml(resp$content)
-  # Strip the namespace as it will be only trouble
-  xml2::xml_ns_strip(content)
-  # Get all the child nodes
-  nodes <- xml2::xml_children(content)
+  nodes <- .get_stored_queries()
 
   # Helper function to process each child node
   process_node <- function(node) {
@@ -98,4 +138,42 @@ list_queries <- function(all = FALSE) {
   }
 
   return(query_data)
+}
+
+#' Get storied queries data from the API
+#'
+#' This function is intended to be used by other functions.
+#'
+#' @import xml2
+#'
+#' @return xml node set of parsed response.
+#'
+#' @note for internal use.
+#'
+.get_stored_queries <- function() {
+  # Set the user agent
+  ua <- httr::user_agent("https://github.com/rOpenGov/fmi2")
+
+  # Get the response and check the response.
+  # see fmi2-global.R for the definition of the URL.
+  resp <- httpcache::GET(fmi2_global$saved_queries_url, ua)
+
+  if (httr::http_error(resp)) {
+    stop(
+      sprintf(
+        "FMI API request failed [%s]",
+        httr::status_code(resp)
+      ),
+      call. = FALSE
+    )
+  }
+
+  # Parse the response XML content
+  content <- xml2::read_xml(resp$content)
+  # Strip the namespace as it will be only trouble
+  xml2::xml_ns_strip(content)
+  # Get all the child nodes
+  nodes <- xml2::xml_children(content)
+
+  return(nodes)
 }
