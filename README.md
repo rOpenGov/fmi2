@@ -5,9 +5,8 @@
 [![codecov](https://codecov.io/gh/rOpenGov/fmi2/branch/master/graph/badge.svg)](https://codecov.io/gh/rOpenGov/fmi2)
 
 R client package for [the Finnish Meteorological Institute (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data-manual). `fmi2` provides access
-to a subset of the FMI [discovery](http://en.ilmatieteenlaitos.fi/open-data-manual-data-catalog) 
-and [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
-services, please have a look at XXX what is currently supported. More data sets
+to a subset of the FMI [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
+service, please have a look at XXX what is currently supported. More data sets
 and queries may be wrapped in the future.
 
 All data from the FMI is released under [the Creative Commons Attribution 4.0 
