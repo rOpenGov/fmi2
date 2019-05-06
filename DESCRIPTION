@@ -37,5 +37,6 @@ RoxygenNote: 6.1.1
 Collate: 
     'fmi2-global.R'
     'aaa.R'
+    'api.R'
     'stored_queries.R'
     'weather_stations.R'
