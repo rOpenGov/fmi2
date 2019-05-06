@@ -18,7 +18,8 @@
 #'   }
 list_parameters <- function(query_id) {
 
-  nodes <- .get_stored_queries()
+  api_obj <- fmi_api("DescribeStoredQueries")
+  nodes <- api_obj$nodes
 
   # Check that the query ID provided is valid
   valid_ids <- unlist(purrr::map(nodes, xml2::xml_attr, attr = "id"))
@@ -41,11 +42,12 @@ list_parameters <- function(query_id) {
     param_title <- node %>%
       xml2::xml_find_all("./Title") %>%
       xml2::xml_text()
+
     param_abstract <- node %>%
       xml2::xml_find_all("./Abstract") %>%
-      xml2::xml_text() %>%
-      gsub("\\n ", "", .data) %>%
-      trimws()
+      xml2::xml_text()
+    param_abstract <- gsub("[\r\n]", "", param_abstract)
+    param_abstract <- trimws(param_abstract)
 
     # Collate all the data and return
     node_data <- tibble::tibble(
@@ -98,7 +100,8 @@ list_parameters <- function(query_id) {
 #'
 list_queries <- function(all = FALSE) {
 
-  nodes <- .get_stored_queries()
+  api_obj <- fmi_api("DescribeStoredQueries")
+  nodes <- api_obj$nodes
 
   # Helper function to process each child node
   process_node <- function(node) {
@@ -138,42 +141,4 @@ list_queries <- function(all = FALSE) {
   }
 
   return(query_data)
-}
-
-#' Get storied queries data from the API
-#'
-#' This function is intended to be used by other functions.
-#'
-#' @import xml2
-#'
-#' @return xml node set of parsed response.
-#'
-#' @note for internal use.
-#'
-.get_stored_queries <- function() {
-  # Set the user agent
-  ua <- httr::user_agent("https://github.com/rOpenGov/fmi2")
-
-  # Get the response and check the response.
-  # see fmi2-global.R for the definition of the URL.
-  resp <- httpcache::GET(fmi2_global$saved_queries_url, ua)
-
-  if (httr::http_error(resp)) {
-    stop(
-      sprintf(
-        "FMI API request failed [%s]",
-        httr::status_code(resp)
-      ),
-      call. = FALSE
-    )
-  }
-
-  # Parse the response XML content
-  content <- xml2::read_xml(resp$content)
-  # Strip the namespace as it will be only trouble
-  xml2::xml_ns_strip(content)
-  # Get all the child nodes
-  nodes <- xml2::xml_children(content)
-
-  return(nodes)
 }
