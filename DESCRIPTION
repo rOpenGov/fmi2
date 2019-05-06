@@ -24,6 +24,7 @@ Imports:
     xml2 (>= 1.2.0)
 Suggests: 
     covr (>= 3.1.0),
+    httptest,
     knitr (>= 1.20),
     rmarkdown (>= 1.10),
     testthat (>= 2.0.0)
