@@ -2,12 +2,6 @@ library(dplyr)
 
 httptest::with_mock_api({
 
-  test_that("stored queries data is retrieved correcly", {
-    # Internal function, not exported
-    sq <- fmi2:::.get_stored_queries()
-    expect_is(sq, "xml_nodeset")
-  })
-
   test_that("stored queries data is parsed correctly", {
     sq <- list_queries()
     # The repsponse is XML that needs to be parsed into a tibble with three
