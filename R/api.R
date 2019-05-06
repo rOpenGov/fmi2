@@ -56,7 +56,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     }
   } else if (request == "getFeature") {
     # TODO: raise error if storedquery_id is missing
-    params <- append(queries, list(storedquery_id = storedquery_id, ...))
+    queries <- append(queries, list(storedquery_id = storedquery_id, ...))
   } else {
     stop("Invalid request type: ", request)
   }
@@ -71,7 +71,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     stop(
       sprintf(
         "FMI API request failed [%s]",
-        httr::status_code(resp)
+        httr::http_status(httr::status_code(resp))$message
       ),
       call. = FALSE
     )
