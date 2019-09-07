@@ -5,7 +5,7 @@ httptest::with_mock_api({
     # (rrday) as examples
 
     # Sould return a tibble with certain dimensions
-    desc <- describe_variable("TG_PT12H_min")
+    desc <- describe_variables("TG_PT12H_min")
     expect_is(desc, "tbl")
     expect_equal(nrow(desc), 1)
     expect_equal(ncol(desc), 6)
@@ -17,11 +17,11 @@ httptest::with_mock_api({
     expect_true(!all(is.na(dat)))
 
     # Should return 2 rows
-    desc <- describe_variable(c("TG_PT12H_min", "rrday"))
+    desc <- describe_variables(c("TG_PT12H_min", "rrday"))
     expect_equal(nrow(desc), 2)
 
     # Should cause an error
-    expect_error(desc <- describe_variable("foobar"))
+    expect_error(desc <- describe_variables("foobar"))
   })
 
   test_that("FMI API response is correctly transformed to a spatial object", {

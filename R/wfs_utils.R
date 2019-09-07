@@ -28,9 +28,9 @@
 #'
 #' @examples
 #'   \dontrun{
-#'      desc <- describe_variable(c("TG_PT12H_min", "rrday"))
+#'      desc <- describe_variables(c("TG_PT12H_min", "rrday"))
 #'   }
-describe_variable <- function(x) {
+describe_variables <- function(x) {
 
   # Concatenate the requested variables
   vars <- paste0(x, collapse = ",")
