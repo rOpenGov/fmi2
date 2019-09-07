@@ -15,7 +15,7 @@ httptest::with_mock_api({
   test_that("stored queries parameter data is parsed correctly", {
 
     # This should work
-    id <- "fmi::observations::weather::daily::timevaluepair"
+    id <- "fmi::observations::weather::daily::simple"
     param_data <- list_parameters(id)
     expect_is(param_data, "tbl_df")
 

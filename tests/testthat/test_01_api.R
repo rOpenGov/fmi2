@@ -6,7 +6,7 @@ httptest::with_mock_api({
     expect_is(fmi_api(request = "DescribeStoredQueries"), "fmi_api")
     # This should work
     expect_is(fmi_api(request = "getFeature",
-                      storedquery_id = "fmi::observations::weather::daily::timevaluepair",
+                      storedquery_id = "fmi::observations::weather::daily::simple",
                       starttime = "2019-01-01", endtime = "2019-01-04",
                       fmisid = 100946), "fmi_api")
   })
