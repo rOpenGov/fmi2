@@ -32,6 +32,9 @@
 #'   }
 describe_variables <- function(x) {
 
+  # Get only unique values
+  x <- unique(x)
+
   # Concatenate the requested variables
   vars <- paste0(x, collapse = ",")
 
