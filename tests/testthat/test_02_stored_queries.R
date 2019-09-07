@@ -26,9 +26,4 @@ httptest::with_mock_api({
     expect_equal(nrow(param_data), param_no)
   })
 
-  #test_that("vipunen_api object prints", {
-  #  expect_output(print(vipunen_api(api_url)))
-  #})
-
-
 })

@@ -27,10 +27,4 @@ httptest::with_mock_api({
                  regexp = "^storedquery_id ignored")
   })
 
-  #test_that("HTTP errors are dealt properly", {
-  #  # NOTE: "suoritteet" is a valid resource name, BUT the mocked response
-  #  # object is sourced from a manually edited file
-  #  expect_error(vipunen_api(paste0(api_url, "/suoritteet")),
-  #               "Vipunen API request failed")
-  #})
 })
