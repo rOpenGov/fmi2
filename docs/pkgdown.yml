@@ -1,0 +1,6 @@
+pandoc: 2.3.1
+pkgdown: 1.4.0
+pkgdown_sha: ~
+articles:
+  01-weather_observation_data: 01-weather_observation_data.html
+
