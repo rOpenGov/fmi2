@@ -27,6 +27,7 @@ Suggests:
     covr (>= 3.1.0),
     httptest,
     knitr (>= 1.20),
+    prettydoc,
     rmarkdown (>= 1.10),
     testthat (>= 2.0.0)
 VignetteBuilder: knitr
