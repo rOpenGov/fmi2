@@ -19,7 +19,7 @@
 list_parameters <- function(query_id) {
 
   api_obj <- fmi_api("DescribeStoredQueries")
-  nodes <- api_obj$nodes
+  nodes <- api_obj$content
 
   # Check that the query ID provided is valid
   valid_ids <- unlist(purrr::map(nodes, xml2::xml_attr, attr = "id"))
@@ -101,7 +101,7 @@ list_parameters <- function(query_id) {
 list_queries <- function(all = FALSE) {
 
   api_obj <- fmi_api("DescribeStoredQueries")
-  nodes <- api_obj$nodes
+  nodes <- api_obj$content
 
   # Helper function to process each child node
   process_node <- function(node) {
