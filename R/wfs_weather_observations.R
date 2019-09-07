@@ -44,10 +44,11 @@
 #' @seealso https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,
 #' @seealso \link[fmi2]{list_parameters}
 #'
-obs_weather_daily <- function(starttime, endtime, fmisid = NULL) {
+obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::daily::simple",
-                     starttime = starttime, endtime = endtime, fmisid = fmisid)
+                     starttime = starttime, endtime = endtime, fmisid = fmisid,
+                     place = place)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
     dplyr::select(time = Time, variable = ParameterName,
