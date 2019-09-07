@@ -2,7 +2,7 @@
 "Äänekoski Hiski",103151,NA,NA,62.6,25.74,110,"Air quality (urban)",2004
 "Äänekoski Kalaniemi",101541,3405,NA,62.88,25.86,107,"Precipitation",1956
 "Ähtäri Inha",101520,3301,2924,62.55,24.14,161,"Weather",1959
-"Alajärvi Möksy",101533,3314,2787,63.09,24.26,171,"Weather",1996
+"Alajärvi Möksy",101533,3314,2787,63.09,24.26,171,"Weather",1957
 "Alavus Sulkavankylä",101305,2213,NA,62.45,23.55,124,"Precipitation",1942
 "Asikkala Pulkkilanharju",101185,1434,2727,61.27,25.52,79,"Weather",1991
 "Bay of Bothnia wavebuoy",137228,NA,NA,64.68,23.24,0,"Buoy",2012
@@ -22,7 +22,7 @@
 "Föglö Degerby",134252,NA,NA,60.03,20.38,0,"Mareograph",1923
 "Gulf of Finland wavebuoy",134221,NA,NA,59.96,25.24,0,"Buoy",1990
 "Haapavesi Mustikkamäki",101695,4402,2797,64.14,25.42,112,"Precipitation, Weather",1951
-"Hailuoto Keskikylä",101776,5301,2874,65.02,24.73,7,"Weather",1950
+"Hailuoto Keskikylä",101776,5301,2874,65.02,24.73,6,"Weather",1950
 "Hailuoto Kujalannurkka",104109,NA,NA,65,24.69,4,"Air quality",1995
 "Hailuoto Marjaniemi",101784,5310,2873,65.04,24.56,7,"Air quality, Weather",1881
 "Halsua Purola",101528,3309,2725,63.45,24.44,153,"Precipitation, Weather",1958
@@ -32,11 +32,12 @@
 "Hämeenlinna Lammi Pappila",101154,1403,2767,61.05,25.04,125,"Precipitation, Weather",1963
 "Hämeenlinna Niittykatu",103109,NA,NA,61,24.46,85,"Air quality (urban)",2011
 "Hämeenlinna Pirttikoski",101143,1315,NA,61.01,23.92,128,"Precipitation",1939
+"Hamina Meltti/siirrettävä",107030,NA,NA,60.57,27.19,4,"Air quality (urban)",2018
 "Hamina Pitäjänsaari",134254,NA,NA,60.56,27.18,0,"Mareograph",1928
 "Hammarland Märket",100919,14,2993,60.3,19.13,3,"Weather",1977
 "Hanko Längden",654900,NA,NA,59.76,23.22,0,"Buoy",2013
 "Hanko Pikku Kolalahti",134253,NA,NA,59.82,22.98,0,"Mareograph",1887
-"Hanko Russarö",100932,101,2982,59.77,22.95,8,"Weather",1881
+"Hanko Russarö",100932,101,2982,59.77,22.95,7,"Weather",1881
 "Hanko Tulliniemi",100946,115,2746,59.81,22.91,10,"Weather",1990
 "Hanko Tvärminne",100953,202,2750,59.84,23.25,3,"Weather",1962
 "Harjavalta Kaleva",103142,NA,NA,61.31,22.14,43,"Air quality (urban)",1978
@@ -91,8 +92,8 @@
 "Inari Saariselkä tourist centre",102005,8606,2722,68.42,27.41,302,"Weather",1976
 "Inari Seitalaassa",129963,9617,2888,69.05,27.76,120,"Weather",2011
 "Inari Väylä",102042,9611,2827,69.07,27.49,123,"Weather",1990
-"Inkoo Bågaskär",100969,302,2984,59.93,24.01,12,"Weather",1955
-"Isojoki Kärjenkoski",101258,2004,NA,62.13,21.67,54,"Precipitation",1942
+"Inkoo Bågaskär",100969,302,2984,59.93,24.01,13,"Weather",1954
+"Isojoki Kärjenkoski",101258,2004,NA,62.13,21.7,58,"Precipitation",1942
 "Jalasjärvi Hirvijärv",101285,2117,NA,62.47,22.91,100,"Precipitation",1920
 "Jämsä Halli airport",101315,2301,2945,61.86,24.8,143,"Weather",1964
 "Jämsä Halli Lentoasemantie",101338,2324,2946,61.86,24.81,144,"Weather",2008
@@ -106,7 +107,7 @@
 "Joensuu Pyhäselkä",101610,3803,NA,62.52,29.81,79,"Precipitation",1908
 "Jokioinen Ilmala",101104,1201,2963,60.81,23.5,104,"Sounding, Weather",1957
 "Jomala Jomalaby",100917,11,2741,60.18,19.99,11,"Weather",1971
-"Jomala Mariehamn airport",100907,1,2970,60.12,19.9,2,"Weather",1950
+"Jomala Mariehamn airport",100907,1,2970,60.12,19.89,1,"Weather",1950
 "Joutsa Pärnämäki",101390,2525,NA,61.77,26.39,116,"Precipitation",1969
 "Joutsa Savenaho",101367,2501,2771,61.88,26.09,146,"Weather",1946
 "Juuka Niemelä",101609,3802,2791,63.23,29.23,115,"Weather",1914
@@ -125,8 +126,8 @@
 "Kajaani Keskusta",778656,NA,NA,64.22,27.73,150,"Air quality (urban)",2008
 "Kajaani Paltaniemi",101742,4618,NA,64.29,27.64,128,"Precipitation",2000
 "Kajaani Petäisenniska",126736,4620,2883,64.22,27.75,160,"Weather",2010
-"Kalajoki Maakalla",103808,NA,NA,64.3,23.54,0,"Buoy",2015
-"Kalajoki Metsäkylä",101685,4310,NA,64.27,24.21,40,"Precipitation",1961
+"Kalajoki Maakalla",103808,NA,NA,64.3,23.55,0,"Buoy",2015
+"Kalajoki Mehtäkylä",101685,4310,NA,64.27,24.21,40,"Precipitation",1961
 "Kalajoki Pitkäsenkylä",101683,4308,NA,64.23,24.02,18,"Precipitation",1958
 "Kalajoki Ulkokalla",101673,4212,2907,64.33,23.45,3,"Weather",1977
 "Kangasniemi parish",101385,2520,NA,61.98,26.64,105,"Precipitation",1909
@@ -201,7 +202,7 @@
 "Kuopio Sorsasalo",103094,NA,NA,62.96,27.7,90,"Air quality (urban)",1991
 "Kuopio Tasavallankatu",103095,NA,NA,62.88,27.66,107,"Air quality (urban)",2009
 "Kuopio Vehmasmäki",101581,3612,2837,62.74,27.54,190,"Mast",1990
-"Kurikka Pyörni",101478,3017,NA,62.73,21.96,73,"Precipitation",1981
+"Kurikka Pyörni",101478,3017,NA,62.73,21.96,72,"Precipitation",1981
 "Kustavi Isokari",101059,1016,2964,60.72,21.03,5,"Weather",1974
 "Kuusamo airport",101886,6801,2869,65.99,29.23,264,"Weather",1909
 "Kuusamo Juuma",101899,6814,2749,66.32,29.4,298,"Air quality, Weather",1989
@@ -209,15 +210,15 @@
 "Kuusamo Ruka Talvijärvi",806428,6817,2760,66.17,29.14,305,"Weather",2013
 "Kuusamo Rukatunturi",101897,6812,2868,66.17,29.15,500,"Weather",1990
 "Kuusamo Teeriranta",101898,6813,NA,65.52,29.52,225,"Precipitation",1998
+"Lahti Holma",104092,NA,NA,61.01,25.68,95,"Air quality (urban)",2010
 "Lahti Kisapuisto",103130,NA,NA,60.99,25.65,89,"Air quality (urban)",1981
-"Lahti Laune",101152,1401,2965,60.96,25.63,78,"Weather",1961
 "Lahti Laune Pohjoinen Liipolankatu",103131,NA,NA,60.97,25.65,85,"Air quality (urban)",2000
 "Lahti Saimaankatu",103132,NA,NA,60.99,25.67,20,"Air quality (urban)",2013
 "Lahti Satulakatu",103133,NA,NA,60.98,25.59,20,"Air quality (urban)",2011
 "Lahti Sopenkorpi",104796,1441,NA,60.97,25.62,100,"Weather",2016
 "Lahti Vesku 11",103134,NA,NA,60.98,25.66,99,"Air quality (urban)",1990
 "Lahti Yrittäjänkatu",104094,NA,NA,60.99,25.73,108,"Air quality (urban)",2015
-"Laitila Haukka",101050,1007,NA,60.83,21.76,21,"Precipitation",1942
+"Laitila Haukka",101050,1007,NA,60.83,21.76,19,"Precipitation",1942
 "Lapinlahti Lamminkäyrä",101577,3608,NA,63.38,27.37,87,"Precipitation",1968
 "Lappeenranta airport",101237,1701,2958,61.04,28.15,105,"Weather",1950
 "Lappeenranta Hiekkapakka",101252,1716,2919,61.2,28.47,77,"Weather",2009
@@ -230,7 +231,7 @@
 "Lappeenranta Pulp",103120,NA,NA,61.13,28.45,105,"Air quality (urban)",1996
 "Lappeenranta Pulpin K-lähikauppa",104306,NA,NA,61.12,28.45,105,"Air quality (urban)",1990
 "Lappeenranta Tirilä Pekkasenkatu",103123,NA,NA,61.06,28.25,91,"Air quality (urban)",1989
-"Lemland Nyhamn",100909,3,2980,59.96,19.95,8,"Weather",1958
+"Lemland Nyhamn",100909,3,2980,59.96,19.95,9,"Weather",1958
 "Lieksa Hietajärvi",101650,3918,NA,63.17,30.71,173,"Air quality",1987
 "Lieksa Koli",101616,3809,NA,63.11,29.76,165,"Precipitation",1969
 "Lieksa Lampela",101636,3904,2796,63.32,30.05,98,"Weather",1946
@@ -244,14 +245,14 @@
 "Luhanka Tammijärvi",101348,2410,NA,61.84,25.86,80,"Precipitation",1967
 "Lumparland Långnäs harbour",151048,12,2724,60.12,20.3,10,"Weather",2012
 "Luoto Vikarholmen",103153,NA,NA,63.7,22.76,2,"Air quality (urban)",2001
+"Maalahti Storskäret",107033,NA,NA,63.11,20.82,0,"Buoy",2019
 "Maalahti Strömmingsbådan",101481,3020,2781,62.98,20.74,2,"Weather",1997
-"Maarianhamina Lotsberget",100929,24,2969,60.09,19.94,57,"Weather",2007
 "Mäntsälä Hirvihaara",103794,1440,2774,60.63,25.19,83,"Weather",2015
 "Mäntsälä Hirvihaara Kuntomajantie",101166,1415,NA,60.62,25.22,78,"Precipitation",1908
 "Mariehamn Österleden",105404,NA,NA,60.1,19.94,2,"Air quality (urban)",2018
 "Mariehamn West Harbour",151029,26,2997,60.09,19.93,2,"Weather",2012
 "Merikarvia Tuorila",101257,2003,NA,61.85,21.65,39,"Precipitation",1958
-"Mikkeli airport",101398,2602,2947,61.69,27.2,99,"Weather",1959
+"Mikkeli airport",101398,2602,2947,61.69,27.2,99,"Weather",1951
 "Mikkeli airport AWOS",855522,NA,NA,61.69,27.21,101,"Weather",1959
 "Mikkeli Pitkähiekka",101410,2614,NA,62.01,27.19,109,"Precipitation",1956
 "Mikkeli Porrassalmenkatu",103149,NA,NA,61.69,27.27,89,"Air quality (urban)",2003
@@ -313,7 +314,7 @@
 "Porvoo Nyby",103140,NA,NA,60.32,25.5,20,"Air quality (urban)",2011
 "Porvoo Svartbäck",103141,NA,NA,60.29,25.51,15,"Air quality (urban)",2013
 "Posio Raistakka",101881,6703,NA,65.98,28.17,260,"Precipitation",1968
-"Pöytyä Yläne",101093,1130,NA,60.87,22.39,53,"Precipitation",1975
+"Pöytyä Yläne",101093,1130,NA,60.87,22.39,57,"Precipitation",1975
 "Pudasjärvi airfield",101805,5507,2866,65.4,26.96,120,"Weather",1999
 "Pudasjärvi Jaurakkajärvi",101812,5607,NA,65.16,27.65,135,"Precipitation",1968
 "Pudasjärvi Sarakylä",101877,6604,NA,65.79,27.33,162,"Precipitation",1968
@@ -322,7 +323,7 @@
 "Puumala parish",150168,2708,2718,61.52,28.18,98,"Weather",2012
 "Pyhäjärvi Hiidenniemi",101706,4413,NA,63.61,25.47,140,"Precipitation",1992
 "Pyhäjärvi Ojakylä",101705,4412,2738,63.74,25.71,152,"Weather",1990
-"Pyhtää lentokenttä",107029,NA,NA,60.49,26.59,22,"Weather",2019
+"Pyhtää airfield",107029,513,NA,60.49,26.59,21,"Weather",2019
 "Raahe keskusta",103147,NA,NA,64.68,24.48,3,"Air quality (urban)",2005
 "Raahe Lapaluoto",100540,NA,NA,64.67,24.41,0,"Mareograph",1922
 "Raahe Lapaluoto",103145,NA,NA,64.67,24.42,11,"Air quality (urban)",1982
@@ -395,8 +396,8 @@
 "Tampere Pirkankatu",103099,NA,NA,61.5,23.74,120,"Air quality (urban)",2003
 "Tampere Siilinkari",101311,2219,2943,61.52,23.75,96,"Weather",1989
 "Tampere Tampella",151049,2223,2744,61.5,23.76,91,"Weather",2012
-"Teuva Kauppilankylä",101262,2008,NA,62.49,21.76,60,"Precipitation",1960
-"Tohmajärvi Kemie",101459,2902,2832,62.24,30.35,90,"Weather",1926
+"Teuva Kauppilankylä",101262,2008,NA,62.49,21.76,NA,"Precipitation",1960
+"Tohmajärvi Kemie",101459,2902,2832,62.24,30.35,90,"Weather",1925
 "Toholampi Laitala",101689,4314,2737,63.82,24.16,84,"Weather",1988
 "Toholampi Oravala",101679,4304,NA,63.77,24.28,85,"Precipitation",1926
 "Tornio Pudas",104201,NA,NA,65.84,24.17,11,"Air quality (urban)",1989
@@ -412,10 +413,10 @@
 "Utsjoki Kevo",102035,9603,2805,69.76,27.01,107,"Air quality, Weather",1962
 "Utsjoki Kevo Kevojärvi",126737,9618,2890,69.76,27.01,76,"Weather",2010
 "Utsjoki Nuorgam",102036,9604,2825,70.08,27.9,22,"Weather",1929
-"Uusikaupunki Itätulli",101049,1006,NA,60.8,21.42,5,"Precipitation",1908
+"Uusikaupunki Itätulli",101049,1006,NA,60.8,21.42,7,"Precipitation",1908
 "Uusikaupunki Vekara",106631,NA,NA,60.87,21.05,0,"Buoy",2017
 "Vaala Pelso",101800,5502,2714,64.5,26.42,114,"Weather",1944
-"Vaasa airport",101462,3001,2911,63.06,21.75,6,"Weather",1946
+"Vaasa airport",101462,3001,2911,63.06,21.75,4,"Weather",1946
 "Vaasa keskusta Vaasanpuistikko",103104,NA,NA,63.1,21.62,15,"Air quality (urban)",2001
 "Vaasa Klemettilä",101485,3024,2957,63.1,21.64,7,"Weather",2010
 "Vaasa Vaskiluoto",134223,NA,NA,63.08,21.57,0,"Mareograph",1922
@@ -432,6 +433,7 @@
 "Vantaa Tikkurila Neilikkatie",100763,NA,NA,60.29,25.04,21,"Air quality (urban)",1996
 "Vantaa Tikkurila Talvikkitie",106951,NA,NA,60.3,25.03,17,"Air quality (urban)",2019
 "Varkaus kaupungintalo",104188,NA,NA,62.31,27.89,78,"Air quality (urban)",1991
+"Varkaus Kommila terveyskeskus",107063,NA,NA,62.33,27.89,88,"Air quality (urban)",2019
 "Varkaus Kosulanniemi",101421,2625,2850,62.32,27.91,83,"Weather",2007
 "Varkaus Kosulanniemi Rantalankatu",106417,NA,NA,62.32,27.91,85,"Air quality (urban)",2016
 "Varkaus Pääterveysasema",103101,NA,NA,62.33,27.89,88,"Air quality (urban)",1991
