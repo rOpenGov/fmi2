@@ -1,0 +1,100 @@
+---
+title: "Weather observation data"
+author: "Joona Lehtomäki"
+date: "`r Sys.Date()`"
+output: 
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+vignette: >
+  %\VignetteIndexEntry{Weather observation data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Setup
+
+`fmi2` is not yet in CRAN, so you'll need to install it directly from GitHub. 
+While you're at it, make sure you also install all the packages below as we'll
+be using them in this tutorial.
+
+```{r installs, eval=FALSE}
+install.packages(c("DT", "leaflet", "remotes", "tidyverse")
+
+remotes::install_github("ropengov/fmi2")
+remotes::install_github("ropensci/skimr")
+```
+
+```{r load-libraries}
+library(DT)
+library(fmi2)
+library(leaflet)
+library(skimr)
+```
+
+# Getting started
+
+You can retrieve weather stating observation data with various temporal 
+resolution using `fmi2`. We'll start with `obs_weather_daily()` which returns
+daily average observation data from a given location. First thing you need to 
+know is of course which location exactly you want to get the data from. The FMI
+API provides multiple different ways of defining the spatial query area:
+
++ **Bounding box** given by coordindates and defining an area
++ **Place name** for which to provide data.
++ **FMISID** numeric FMI observation station identifier
++ **GEOID** numeric geoid of the location
++ **WMO** code of the location
+
+We'll start off by using the **FMISID** identifies which is given to each [FMI
+observation stations](https://en.ilmatieteenlaitos.fi/observation-stations). The
+online table is also available in `fmi2` using the function `fmi_stations()`:
+
+```{r show-stations}
+station_data <- fmi2::fmi_stations() 
+
+station_data %>% 
+  DT::datatable()
+
+```
+
+We're going to pick "Hanko Tulliniemi" as an example here and use its FMISID
+(100946) to retrieve the data. As you can see from the table above, it also 
+provides the latlon (geographical) coordinates for the observation station.
+Before we get the actual data, let's visualize Hanko region.
+
+```{r plot-hanko-map}
+# Get data for Tulliniemi only
+tulliniemi_station <- station_data %>% 
+  dplyr::filter(FMISID == 100946)
+
+# Plot on a map using leaflet
+leaflet::leaflet(station_data) %>% 
+  leaflet::setView(lng = tulliniemi_station$Lon, 
+                   lat = tulliniemi_station$Lat, 
+                   zoom = 11) %>% 
+  leaflet::addTiles() %>%  
+  leaflet::addMarkers(~Lon, ~Lat, popup = ~Name, label = ~as.character(FMISID))
+```
+
+
+```{r getting-data}
+
+
+# Use Hanko Tulliniemi weather station
+hanko_id <- 100946
+
+obs_dat <- obs_weather_daily(starttime = "2019-01-01",
+                             endtime = "2019-06-01",
+                             fmisid = hanko_id)
+
+```
+
+
