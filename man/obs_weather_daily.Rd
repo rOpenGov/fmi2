@@ -2,7 +2,7 @@
 % Please edit documentation in R/wfs_weather_observations.R
 \name{obs_weather_daily}
 \alias{obs_weather_daily}
-\title{Get daily observations for a given locations.}
+\title{Daily weather observations from weather stations.}
 \usage{
 obs_weather_daily(starttime, endtime, fmisid = NULL)
 }
@@ -32,9 +32,24 @@ data.}
 \item{wmo}{numeric WMO code of the location for which to return data.}
 }
 \value{
-sf object
+sf object in a long (melted) form. Observation variables names are
+given in \code{variable} column. Following variables are returned:
+\describe{
+\item{rrday}{Precipitation amount}
+\item{snow}{Snow depth}
+\item{tday}{Average air temperature}
+\item{tmin}{Minimum air temperature}
+\item{tmax}{Maximum air temperature}
+\item{TG_PT12H_min}{Ground minimum temperature}
+}
 }
 \description{
+Default set contains daily precipitation rate, mean temperature, snow depth,
+and minimum and maximum temperature. By default, the data is returned from
+last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
+has to be given.
+}
+\details{
 The FMI WFS stored query used by this function is
 \code{fmi::observations::weather::daily::simple}. For more informations, see
 \href{https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services}{the FMI documentation page}.

@@ -9,6 +9,10 @@ httptest::with_mock_api({
                                  fmisid = hanko_id)
     expect_is(obs_dat, "sf")
     expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$geometry, "sfc")
   })
 
 })

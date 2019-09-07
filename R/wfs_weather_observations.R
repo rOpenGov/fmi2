@@ -1,4 +1,9 @@
-#' Get daily observations for a given locations.
+#' Daily weather observations from weather stations.
+#'
+#' Default set contains daily precipitation rate, mean temperature, snow depth,
+#' and minimum and maximum temperature. By default, the data is returned from
+#' last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
+#' has to be given.
 #'
 #' The FMI WFS stored query used by this function is
 #' `fmi::observations::weather::daily::simple`. For more informations, see
@@ -23,20 +28,34 @@
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::daily::simple")`.
 #'
-#' @return sf object
+#' @return sf object in a long (melted) form. Observation variables names are
+#' given in `variable` column. Following variables are returned:
+#'   \describe{
+#'     \item{rrday}{Precipitation amount}
+#'     \item{snow}{Snow depth}
+#'     \item{tday}{Average air temperature}
+#'     \item{tmin}{Minimum air temperature}
+#'     \item{tmax}{Maximum air temperature}
+#'     \item{TG_PT12H_min}{Ground minimum temperature}
+#'   }
 #'
 #' @export
 #'
 #' @seealso https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,
 #' @seealso \link[fmi2]{list_parameters}
 #'
-#' @examples
 obs_weather_daily <- function(starttime, endtime, fmisid = NULL) {
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::daily::simple",
                      starttime = starttime, endtime = endtime, fmisid = fmisid)
-  sf_obj <- to_sf(fmi_obj) %>%
+  sf_obj <- to_sf(fmi_obj)
+  sf_obj <- sf_obj %>%
     dplyr::select(time = Time, variable = ParameterName,
-                  value = ParameterValue)
+                  value = ParameterValue) %>%
+    dplyr::mutate(time = as.Date(time),
+                  variable = as.character(variable),
+                  # Factor needs to be coerced into character first
+                  value = as.numeric(as.character(value))) %>%
+    dplyr::mutate(value = ifelse(is.nan(value), NA, value))
   return(sf_obj)
 }
