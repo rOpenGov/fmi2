@@ -32,7 +32,7 @@ remotes::install_github("ropengov/fmi2")
 remotes::install_github("ropensci/skimr")
 ```
 
-```{r load-libraries}
+```{r load-libraries, message=FALSE, warning=FALSE}
 library(DT)
 library(fmi2)
 library(ggplot2)
@@ -184,4 +184,27 @@ all_data %>%
   xlab("\nDate") + theme_minimal()
 
 ```
+
+# Getting hourly weather observation data
+
+Instead of daily values, it is also possible to retrieve weather observation
+data with finer temporal resolution, such as hourly data, using the function
+`obs_weather_hourly()`. The data retrieved this has slightly different content
+as compared to the daily data:
+
+```{r hourly-data}
+# Get the hourly observations for the first day of 2019 in Hanko Tulliniemi
+tulliniemi_data <- fmi2::obs_weather_hourly(starttime = "2019-01-01",
+                                            endtime = "2019-01-02",
+                                            fmisid = 100946)
+```
+
+Again, let's first have a look at what we actually got:
+
+```{r descrive-variables-2}
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+
 
