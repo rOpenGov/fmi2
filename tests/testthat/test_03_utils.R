@@ -1,5 +1,23 @@
 httptest::with_mock_api({
 
+  test_that("FMI API variable descriptions work", {
+    # Use min ground temperature (TG_PT12H_min) and average precipitation
+    # (rrday) as examples
+
+    # Sould return a tibble with certain dimensions
+    desc <- describe_variable("TG_PT12H_min")
+    expect_is(desc, "tbl")
+    expect_equal(nrow(desc), 1)
+    expect_equal(ncol(desc), 6)
+
+    # Should return 2 rows
+    desc <- describe_variable(c("TG_PT12H_min", "rrday"))
+    expect_equal(nrow(desc), 2)
+
+    # Should cause an error
+    expect_error(desc <- describe_variable("foobar"))
+  })
+
   test_that("FMI API response is correctly transformed to a spatial object", {
     empty_obj <- NULL
     # Get a response object
