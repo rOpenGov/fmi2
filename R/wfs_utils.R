@@ -19,7 +19,7 @@
 #'
 #' @importFrom dplyr bind_rows
 #' @importFrom glue glue
-#' @importFrom httr GET
+#' @importFrom httpcache GET
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_attr xml_children xml_name
