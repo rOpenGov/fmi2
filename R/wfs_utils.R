@@ -47,7 +47,7 @@ describe_variable <- function(x) {
   xml2::xml_ns_strip(content)
 
   # Process a single node (variable)
-  process_node <- function(name, xml) {
+  process_node <- function(name, xml, multi = FALSE) {
 
     get_node_value <- function(nodes, root, leaf) {
       value <- xml2::xml_text(xml2::xml_find_first(nodes, paste0(root, leaf)))
@@ -62,8 +62,13 @@ describe_variable <- function(x) {
 
     variable <- name
 
-    # Get all the child nodes
-    root <- glue::glue('//component/ObservableProperty[@gml:id="{tolower(name)}"]')
+    # <component> node is only returned if there are multiple variables
+    root_node <- ""
+    if (multi) {
+      root_node <- "component/"
+    }
+
+    root <- glue::glue('//{root_node}ObservableProperty[@gml:id="{tolower(name)}"]')
     label <- get_node_value(xml, root, "//label")
     base_phenomenon <- get_node_value(xml, root, "//basePhenomenon")
     unit <- get_node_attr(xml, root, "//uom")
@@ -75,8 +80,10 @@ describe_variable <- function(x) {
                           stat_function = stat_function,
                           agg_period = agg_period))
   }
+
   # Construct the description data
-  desc_data <- purrr::map(x, process_node, xml = content) %>%
+  desc_data <- purrr::map(x, process_node, xml = content,
+                          multi = length(x) > 1) %>%
     dplyr::bind_rows()
 
   return(desc_data)

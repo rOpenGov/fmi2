@@ -9,6 +9,12 @@ httptest::with_mock_api({
     expect_is(desc, "tbl")
     expect_equal(nrow(desc), 1)
     expect_equal(ncol(desc), 6)
+    # Check that all variables (other than name) have values
+    dat <- desc %>%
+      dplyr::select(-variable) %>%
+      dplyr::slice(1) %>%
+      unlist(use.names = FALSE)
+    expect_true(!all(is.na(dat)))
 
     # Should return 2 rows
     desc <- describe_variable(c("TG_PT12H_min", "rrday"))
