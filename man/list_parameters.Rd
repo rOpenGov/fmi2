@@ -23,3 +23,6 @@ For valid stored query IDs, see \code{\link[fmi2]{list_queries}}.
 \seealso{
 \code{\link[fmi2]{list_queries}}.
 }
+\author{
+Joona Lehtomäki \href{mailto:joona.lehtomaki@iki.fi}{joona.lehtomaki@iki.fi}
+}

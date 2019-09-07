@@ -43,3 +43,6 @@ the cahce off completely, use \code{\link[httpcache:cacheOff]{httpcache::cacheOf
   fmi_api(request = "DescribeStoredQueries")
 
 }
+\author{
+Joona Lehtomäki \href{mailto:joona.lehtomaki@iki.fi}{joona.lehtomaki@iki.fi}
+}

@@ -40,3 +40,6 @@ request parameters.
 \seealso{
 https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services
 }
+\author{
+Joona Lehtomäki \href{mailto:joona.lehtomaki@iki.fi}{joona.lehtomaki@iki.fi}
+}
