@@ -26,7 +26,7 @@ While you're at it, make sure you also install all the packages below as we'll
 be using them in this tutorial.
 
 ```{r installs, eval=FALSE}
-install.packages(c("DT", "leaflet", "remotes", "tidyverse")
+install.packages(c("DT", "leaflet", "remotes", "sf", "tidyverse")
 
 remotes::install_github("ropengov/fmi2")
 remotes::install_github("ropensci/skimr")
@@ -36,16 +36,16 @@ remotes::install_github("ropensci/skimr")
 library(DT)
 library(fmi2)
 library(leaflet)
+library(sf)
 library(skimr)
 ```
 
 # Getting started
 
 You can retrieve weather stating observation data with various temporal 
-resolution using `fmi2`. We'll start with `obs_weather_daily()` which returns
-daily average observation data from a given location. First thing you need to 
-know is of course which location exactly you want to get the data from. The FMI
-API provides multiple different ways of defining the spatial query area:
+resolution using `fmi2`. First thing you need to know is of course which 
+location exactly you want to get the data from. The FMI API provides multiple 
+different ways of defining the spatial query area:
 
 + **Bounding box** given by coordindates and defining an area
 + **Place name** for which to provide data.
@@ -85,16 +85,68 @@ leaflet::leaflet(station_data) %>%
 ```
 
 
+## Getting daily weather observation data
+
+Now that we know how the address a specific observation station, we can proceed
+to getting the actual data. `fmi2` providers several functions to retrieving 
+data with different variables and temporal resolution. We'll start with 
+`obs_weather_daily()` which returns daily average observation data from a given 
+location. Let's get the daily weather observation data for the first 6 monhts
+of 2019:
+
 ```{r getting-data}
-
-
-# Use Hanko Tulliniemi weather station
-hanko_id <- 100946
-
-obs_dat <- obs_weather_daily(starttime = "2019-01-01",
-                             endtime = "2019-06-01",
-                             fmisid = hanko_id)
-
+# Use Hanko Tulliniemi weather station FMISID
+obs_data <- obs_weather_daily(starttime = "2019-01-01",
+                              endtime = "2019-06-30",
+                              fmisid = 100946)
 ```
+
+In total, the function returned `r nrow(obs_data)` observations. You can also
+note the following:
+
+```{r sf-class}
+class(obs_data)
+```
+
+which means that the data returned by `obs_weather_daily()` is a spatial `sf`
+object with the `geometry` column storing the geographical information of the
+weather station. We'll come back to this later. Now we are interested in what 
+*kind* of data did we actually get? Let's find out:
+
+```{r}
+unique(obs_data$variable)
+```
+
+So there are six variables with their corresponding values. `fmi2` provides a
+helper function `describe_variables()` that can be useful in finding out more
+about the variables:
+
+```{r describe-variables}
+var_descriptions <- fmi2::describe_variables(obs_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+`obs_weather_daily()` returns data  in so called  long (or melted) format 
+meaning that all variable (i.e. parameter) names are  contained in column 
+`variable` and corresponding values in `value` column. You can transform the 
+data into a wide format using `tidyr`:
+
+```{r spread-data}
+wide_data <- obs_data %>% 
+  tidyr::spread(variable, value) %>% 
+  # Let's convert the sf object into a regular tibble
+  sf::st_set_geometry(NULL)
+
+wide_data %>% 
+  DT::datatable()
+```
+
+Looks like there aren't too much data for `rrday`, `snow` or `TG_PT12H_min`. 
+Let's have a closer look at the data:
+
+```{r skim-data, results='asis'}
+kable(skimr::skim(wide_data))
+```
+
 
 
