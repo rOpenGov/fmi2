@@ -1,5 +1,5 @@
 ---
-title: "Weather observation data"
+title: "fmi2: introduction"
 author: "Joona Lehtomäki"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     theme: leonids
     highlight: github
 vignette: >
-  %\VignetteIndexEntry{Weather observation data}
+  %\VignetteIndexEntry{fmi2 introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,7 +26,7 @@ While you're at it, make sure you also install all the packages below as we'll
 be using them in this tutorial.
 
 ```{r installs, eval=FALSE}
-install.packages(c("DT", "leaflet", "remotes", "sf", "tidyverse")
+install.packages(c("DT", "ggplot2", "leaflet", "remotes", "sf", "tidyverse"))
 
 remotes::install_github("ropengov/fmi2")
 remotes::install_github("ropensci/skimr")
@@ -35,6 +35,7 @@ remotes::install_github("ropensci/skimr")
 ```{r load-libraries}
 library(DT)
 library(fmi2)
+library(ggplot2)
 library(leaflet)
 library(sf)
 library(skimr)
@@ -85,7 +86,7 @@ leaflet::leaflet(station_data) %>%
 ```
 
 
-## Getting daily weather observation data
+# Getting daily weather observation data
 
 Now that we know how the address a specific observation station, we can proceed
 to getting the actual data. `fmi2` providers several functions to retrieving 
@@ -96,16 +97,16 @@ of 2019:
 
 ```{r getting-data}
 # Use Hanko Tulliniemi weather station FMISID
-obs_data <- obs_weather_daily(starttime = "2019-01-01",
-                              endtime = "2019-06-30",
-                              fmisid = 100946)
+tulliniemi_data <- obs_weather_daily(starttime = "2019-01-01",
+                                     endtime = "2019-06-30",
+                                     fmisid = 100946)
 ```
 
-In total, the function returned `r nrow(obs_data)` observations. You can also
+In total, the function returned `r nrow(tulliniemi_data)` observations. You can also
 note the following:
 
 ```{r sf-class}
-class(obs_data)
+class(tulliniemi_data)
 ```
 
 which means that the data returned by `obs_weather_daily()` is a spatial `sf`
@@ -114,7 +115,7 @@ weather station. We'll come back to this later. Now we are interested in what
 *kind* of data did we actually get? Let's find out:
 
 ```{r}
-unique(obs_data$variable)
+unique(tulliniemi_data$variable)
 ```
 
 So there are six variables with their corresponding values. `fmi2` provides a
@@ -122,7 +123,7 @@ helper function `describe_variables()` that can be useful in finding out more
 about the variables:
 
 ```{r describe-variables}
-var_descriptions <- fmi2::describe_variables(obs_data$variable)
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
 var_descriptions %>% 
   DT::datatable()
 ```
@@ -132,7 +133,7 @@ meaning that all variable (i.e. parameter) names are  contained in column
 data into a wide format using `tidyr`:
 
 ```{r spread-data}
-wide_data <- obs_data %>% 
+wide_data <- tulliniemi_data %>% 
   tidyr::spread(variable, value) %>% 
   # Let's convert the sf object into a regular tibble
   sf::st_set_geometry(NULL)
@@ -148,5 +149,39 @@ Let's have a closer look at the data:
 kable(skimr::skim(wide_data))
 ```
 
+Seems like the above mentioned variables indeed don't have data between the
+defined days. Let's get the same data from a couple of other observation 
+stations around finland. Note that this time we're using place name instead of
+a FMISID.
 
+```{r multiple stations, warning=FALSE}
+oulu_data <- obs_weather_daily(starttime = "2019-01-01",
+                               endtime = "2019-06-30",
+                               place = "Oulu")
+nuorgam_data <- obs_weather_daily(starttime = "2019-01-01",
+                                  endtime = "2019-06-30",
+                                  place = "Nuorgam")
+# Add location name to each data set and combine them
+oulu_data$location <- "Oulu"
+nuorgam_data$location <- "Nuorgam"
+tulliniemi_data$location <- "Hanko"
+
+all_data <- rbind(tulliniemi_data, oulu_data, nuorgam_data)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Nuorgam", "Oulu", "Hanko"),
+                                  ordered = TRUE))
+```
+
+Let's plot the daily temperature data in different locations:
+
+```{r plot-data}
+all_data %>% 
+  dplyr::filter(variable == "tday" | variable == "tmax" | variable == "tmin") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Temperature (C)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
 
