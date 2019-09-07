@@ -12,6 +12,8 @@
 #'
 #' @note For internal use, not exported.
 #'
+#' @author Joona Lehtomäki <joona.lehtomaki@@iki.fi>
+#'
 #' @seealso \link[fmi2]{fmi_api}
 #'
 #' @examples

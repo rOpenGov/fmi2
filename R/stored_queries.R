@@ -12,6 +12,8 @@
 #'
 #' @seealso \code{\link[fmi2]{list_queries}}.
 #'
+#' @author Joona Lehtomäki <joona.lehtomaki@@iki.fi>
+#'
 #' @examples
 #'   \dontrun{
 #'     list_parameters("fmi::observations::weather::daily::timevaluepair")
@@ -88,6 +90,8 @@ list_parameters <- function(query_id) {
 #' @export
 #'
 #' @seealso https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services
+#'
+#' @author Joona Lehtomäki <joona.lehtomaki@@iki.fi>
 #'
 #' @examples
 #' \dontrun{

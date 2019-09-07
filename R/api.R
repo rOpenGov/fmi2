@@ -32,6 +32,8 @@
 #'
 #' @export
 #'
+#' @author Joona Lehtomäki <joona.lehtomaki@@iki.fi>
+#'
 #' @examples
 #'   # List stored queries
 #'   fmi_api(request = "DescribeStoredQueries")
