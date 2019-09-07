@@ -37,6 +37,11 @@
 #'   fmi_api(request = "DescribeStoredQueries")
 #'
 fmi_api <- function(request, storedquery_id = NULL, ...) {
+
+  if (!request %in% c("DescribeStoredQueries", "getFeature")) {
+    stop("Invalid request type: ", request)
+  }
+
   # Set the user agent
   ua <- httr::user_agent("https://github.com/rOpenGov/fmi2")
 
@@ -85,20 +90,20 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     class = "fmi_api"
   )
 
+  # Parse the response XML content
+  content <- xml2::read_xml(resp$content)
+  # Strip the namespace as it will be only trouble
+  xml2::xml_ns_strip(content)
+
   if (request == "DescribeStoredQueries") {
-    # Parse the response XML content
-    content <- xml2::read_xml(resp$content)
-    # Strip the namespace as it will be only trouble
-    xml2::xml_ns_strip(content)
     # Get all the child nodes
     nodes <- xml2::xml_children(content)
     # Attach the nodes to the API object
-    api_obj$nodes <- nodes
+    api_obj$content <- nodes
   # getFeature is used for getting actual data
   } else if (request == "getFeature") {
-    NULL
-  } else {
-    stop("Invalid request type: ", request)
+    # Attach the nodes to the API object
+    api_obj$content <- content
   }
 
   return(api_obj)
