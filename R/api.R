@@ -21,7 +21,7 @@
 #'
 #' @importFrom httr content http_error http_type modify_url status_code user_agent
 #' @importFrom httpcache GET
-#' @importFrom xml2 read_xml
+#' @importFrom xml2 read_xml xml_find_all xml_text
 #'
 #' @return fmi_api (S3) object with the following attributes:
 #'        \describe{
@@ -74,11 +74,26 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
   # Get the response and check the response.
   resp <- httpcache::GET(url, ua)
 
+  # Parse the response XML content
+  content <- xml2::read_xml(resp$content)
+  # Strip the namespace as it will be only trouble
+  xml2::xml_ns_strip(content)
+
   if (httr::http_error(resp)) {
+    status_code <- httr::status_code(resp)
+    # If status code is 400, there might be more information available
+    exception_texts <- ""
+    if (status_code == 400) {
+      exception_texts <- xml2::xml_text(xml2::xml_find_all(content, "//ExceptionText"))
+      # Remove URI since full URL is going to be displayed
+      exception_texts <- exception_texts[!grepl("^(URI)", exception_texts)]
+      exception_texts <- c(exception_texts, paste("URL: ", url))
+    }
     stop(
       sprintf(
-        "FMI API request failed [%s]",
-        httr::http_status(httr::status_code(resp))$message
+        "FMI API request failed [%s]\n %s",
+        httr::http_status(status_code)$message,
+        paste0(exception_texts, collapse = "\n ")
       ),
       call. = FALSE
     )
@@ -91,11 +106,6 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     ),
     class = "fmi_api"
   )
-
-  # Parse the response XML content
-  content <- xml2::read_xml(resp$content)
-  # Strip the namespace as it will be only trouble
-  xml2::xml_ns_strip(content)
 
   if (request == "DescribeStoredQueries") {
     # Get all the child nodes
