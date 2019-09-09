@@ -17,6 +17,7 @@ Imports:
     glue,
     httr,
     httpcache,
+    lubridate,
     magrittr (>= 1.5),
     purrr,
     rvest (>= 0.3.2),
