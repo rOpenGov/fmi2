@@ -90,6 +90,7 @@ obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
 #' @param wmo numeric WMO code of the location for which to return data.
 #'
 #' @import dplyr
+#' @importFrom lubridate parse_data_time
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::hourly::simple")`.
@@ -118,7 +119,7 @@ obs_weather_hourly <- function(starttime, endtime, fmisid = NULL) {
   sf_obj <- sf_obj %>%
     dplyr::select(time = Time, variable = ParameterName,
                   value = ParameterValue) %>%
-    dplyr::mutate(time = as.Date(time),
+    dplyr::mutate(time = lubridate::parse_date_time(time, "Ymd HMS"),
                   variable = as.character(variable),
                   # Factor needs to be coerced into character first
                   value = as.numeric(as.character(value))) %>%
