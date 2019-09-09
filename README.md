@@ -7,8 +7,19 @@
 
 R client package for [the Finnish Meteorological Institute (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data-manual). `fmi2` provides access
 to a subset of the FMI [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
-service, please have a look at XXX what is currently supported. More data sets
-and queries may be wrapped in the future.
+service. Currently, the following FMI stored queries are avaible in `fmi2`:
+
+| fmi2-function         | FMI API stored query                                 |
+|-----------------------|------------------------------------------------------|
+| `obs_weather_daily()` | fmi::observations::weather::daily::simple            |
+| `obs_weather_hourly()`| fmi::observations::weather::hourly::simple           |
+
+More data sets and queries may be wrapped in the future. If you have a 
+particular need in mind, you're free to:
+
+1. Fork the repository, modify the code and leave a pull request.
+2. Leave an [issue](https://github.com/rOpenGov/fmi2/issues) with a description
+on the improvements.
 
 All data from the FMI is released under [the Creative Commons Attribution 4.0 
 International license](https://creativecommons.org/licenses/by/4.0/). 
