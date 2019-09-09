@@ -101,6 +101,7 @@ describe_variables <- function(x) {
 #'
 #' @return sf object
 #'
+#' @importFrom methods is
 #' @importFrom sf st_read
 #' @importFrom xml2 write_xml
 #'
@@ -120,7 +121,7 @@ describe_variables <- function(x) {
 #'   }
 #'
 to_sf <- function(api_obj) {
-  if (!is(api_obj, "fmi_api")) {
+  if (!methods::is(api_obj, "fmi_api")) {
     stop("Object provided must be of class fmi_api, not ", class(api_obj))
   }
   # Get response content
