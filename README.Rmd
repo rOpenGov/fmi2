@@ -53,12 +53,9 @@ More data sets and queries may be wrapped in the future.
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+For usage examples, see the package [function reference](https://ropengov.github.io/fmi2/reference/index.html) and the following vignettes:
 
-```{r example}
-library(fmi2)
-## basic example code
-```
+- [Getting weather observation data](https://ropengov.github.io/fmi2/articles/weather_observation_data.html)
 
 ## Contributing
 
