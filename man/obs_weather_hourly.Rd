@@ -9,27 +9,11 @@ obs_weather_hourly(starttime, endtime, fmisid = NULL)
 \arguments{
 \item{starttime}{character begin of the time interval in ISO-format.}
 
-\item{endtime}{character end of time interval in ISO-format.}
+\item{endtime}{character end of time interval in ISO-format.
+data.}
 
 \item{fmisid}{numeric FMI observation station identifier
 (see \link[fmi2]{fmi_stations}.}
-
-\item{timestep}{numeric the time step of data in minutes.}
-
-\item{parameters}{character vector of parameters to return (see below).}
-
-\item{crs}{character coordinate projection to use in results.}
-
-\item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
-data.}
-
-\item{place}{character location name for which to provide data.}
-
-\item{maxlocations}{numeric maximum amount of locations.}
-
-\item{geoid}{numeric geoid of the location for which to return data.}
-
-\item{wmo}{numeric WMO code of the location for which to return data.}
 }
 \value{
 sf object in a long (melted) form. Observation variables names are
