@@ -26,10 +26,14 @@ Imports:
     xml2 (>= 1.2.0)
 Suggests: 
     covr (>= 3.1.0),
+    DT,
+    ggplot2,
     httptest,
     knitr (>= 1.20),
+    leaflet,
     prettydoc,
     rmarkdown (>= 1.10),
+    skimr,
     testthat (>= 2.0.0)
 VignetteBuilder: knitr
 ByteCompile: true
