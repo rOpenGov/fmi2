@@ -19,7 +19,7 @@ data API](https://en.ilmatieteenlaitos.fi/open-data-manual). `fmi2`
 provides access to a subset of the FMI
 [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data)
 service. FMI maintains and is reponsible for the data available through
-their API, but has not official connections to `fmi2`.
+their API, but has no official connections to `fmi2`.
 
 All data from the FMI is released under [the Creative Commons
 Attribution 4.0 International
