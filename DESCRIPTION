@@ -46,6 +46,7 @@ Collate:
     'aaa.R'
     'api.R'
     'stored_queries.R'
+    'utils-pipe.R'
     'weather_stations.R'
     'wfs_utils.R'
     'wfs_weather_observations.R'
