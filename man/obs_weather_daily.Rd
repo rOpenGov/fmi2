@@ -4,7 +4,7 @@
 \alias{obs_weather_daily}
 \title{Daily weather observations from weather stations.}
 \usage{
-obs_weather_daily(starttime, endtime, fmisid = NULL)
+obs_weather_daily(starttime, endtime, fmisid = NULL, place = NULL)
 }
 \arguments{
 \item{starttime}{character begin of the time interval in ISO-format.}
@@ -14,6 +14,8 @@ obs_weather_daily(starttime, endtime, fmisid = NULL)
 \item{fmisid}{numeric FMI observation station identifier
 (see \link[fmi2]{fmi_stations}.}
 
+\item{place}{character location name for which to provide data.}
+
 \item{timestep}{numeric the time step of data in minutes.}
 
 \item{parameters}{character vector of parameters to return (see below).}
@@ -22,8 +24,6 @@ obs_weather_daily(starttime, endtime, fmisid = NULL)
 
 \item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
 data.}
-
-\item{place}{character location name for which to provide data.}
 
 \item{maxlocations}{numeric maximum amount of locations.}
 

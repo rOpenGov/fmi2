@@ -26,7 +26,7 @@ variables. Use this function to see the specifications of a given variable.
 }
 \examples{
   \dontrun{
-     desc <- describe_variable(c("TG_PT12H_min", "rrday"))
+     desc <- describe_variables(c("TG_PT12H_min", "rrday"))
   }
 }
 \author{
