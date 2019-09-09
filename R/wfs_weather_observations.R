@@ -90,7 +90,7 @@ obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
 #' @param wmo numeric WMO code of the location for which to return data.
 #'
 #' @import dplyr
-#' @importFrom lubridate parse_data_time
+#' @importFrom lubridate parse_date_time
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::hourly::simple")`.
