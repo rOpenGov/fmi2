@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">fmi2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -77,33 +77,63 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="fmi2" class="section level1">
+<div id="fmi2---r-client-for-the-finnish-meteorological-institutes-fmi-api" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#fmi2" class="anchor"></a>fmi2</h1></div>
+<a href="#fmi2---r-client-for-the-finnish-meteorological-institutes-fmi-api" class="anchor"></a>fmi2 - R client for the Finnish Meteorological Institute’s (FMI) API</h1></div>
+<!-- badges: start -->
 
-<p>R client package for <a href="https://en.ilmatieteenlaitos.fi/open-data-manual">the Finnish Meteorological Institute (FMI) open data API</a>. <code>fmi2</code> provides access to a subset of the FMI <a href="http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data">download</a> service, please have a look at XXX what is currently supported. More data sets and queries may be wrapped in the future.</p>
+<p>R client package for <a href="https://en.ilmatieteenlaitos.fi/open-data-manual">the Finnish Meteorological Institute (FMI) open data API</a>. <code>fmi2</code> provides access to a subset of the FMI <a href="http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data">download</a> service. FMI maintains and is reponsible for the data available through their API, but has not official connections to <code>fmi2</code>.</p>
 <p>All data from the FMI is released under <a href="https://creativecommons.org/licenses/by/4.0/">the Creative Commons Attribution 4.0 International license</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>fmi2</code> is not yet on CRAN, but you can install it from GitHub with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"ropengov/fmi2"</span>)</a></code></pre></div>
+<p><code>fmi2</code> is not yet on CRAN, but you can install the development version from <a href="https://github.com/rOpenGov/fmi2">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"rOpenGov/fmi2"</span>)</a></code></pre></div>
+</div>
+<div id="details" class="section level2">
+<h2 class="hasAnchor">
+<a href="#details" class="anchor"></a>Details</h2>
+<p>Currently, the following FMI stored queries are avaible in <code>fmi2</code>:</p>
+<table class="table">
+<thead><tr class="header">
+<th>fmi2-function</th>
+<th>FMI API stored query</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://ropengov.github.io/fmi2/reference/obs_weather_daily.html"><code><a href="reference/obs_weather_daily.html">obs_weather_daily()</a></code></a></td>
+<td>fmi::observations::weather::daily::simple</td>
+</tr>
+<tr class="even">
+<td><a href="https://ropengov.github.io/fmi2/reference/obs_weather_hourly.html"><code><a href="reference/obs_weather_hourly.html">obs_weather_hourly()</a></code></a></td>
+<td>fmi::observations::weather::hourly::simple</td>
+</tr>
+</tbody>
+</table>
+<p>More data sets and queries may be wrapped in the future.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## basic example code</span></a></code></pre></div>
-<p>For a list of currently available data sets and queries, see XXX.</p>
-</div>
-<div id="contributors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributors" class="anchor"></a>Contributors</h2>
+<p>For usage examples, see the package <a href="https://ropengov.github.io/fmi2/reference/index.html">function reference</a> and the following vignettes:</p>
 <ul>
-<li>Joona Lehtomäki <a href="mailto:joona.lehtomaki@iki.fi" class="email">joona.lehtomaki@iki.fi</a>, package maintainer</li>
-<li>Ilari Scheinin</li>
+<li><a href="https://ropengov.github.io/fmi2/articles/weather_observation_data.html">Getting weather observation data</a></li>
 </ul>
+</div>
+<div id="contributing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contributing" class="anchor"></a>Contributing</h2>
+<p>If you have a particular need in mind, you’re free to:</p>
+<ol>
+<li>Fork the repository, modify the code and leave a pull request.</li>
+<li>Leave an <a href="https://github.com/rOpenGov/fmi2/issues">issue</a> with a description on the improvements.</li>
+</ol>
+</div>
+<div id="why-fmi2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-fmi2" class="anchor"></a>Why fmi2?</h2>
+<p>If this is <code>fmi2</code>, where’s the first <code>fmi</code>!? Good question, <code>fmi</code> can be found <a href="https://github.com/rOpenGov/fmi">here</a> and is no longer developed or maintained. <code>fmi</code> was developed back in the day when accessing data from a WFS in R was much more difficult. Hence, the package is much more complicated than <code>fmi2</code> and too laborious to maintain.</p>
 </div>
 </div>
   </div>
@@ -128,6 +158,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
 <li><a href="https://travis-ci.org/rOpenGov/fmi2"><img src="https://travis-ci.org/rOpenGov/fmi2.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://ci.appveyor.com/project/rOpenGov/fmi2"><img src="https://ci.appveyor.com/api/projects/status/github/rOpenGov/fmi2?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
 <li><a href="https://codecov.io/gh/rOpenGov/fmi2"><img src="https://codecov.io/gh/rOpenGov/fmi2/branch/master/graph/badge.svg" alt="codecov"></a></li>
