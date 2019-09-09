@@ -24,6 +24,7 @@
 #' @param wmo numeric WMO code of the location for which to return data.
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::daily::simple")`.
@@ -51,13 +52,13 @@ obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
                      place = place)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
-    dplyr::select(time = Time, variable = ParameterName,
-                  value = ParameterValue) %>%
-    dplyr::mutate(time = as.Date(time),
-                  variable = as.character(variable),
+    dplyr::select(time = .data$Time, variable = .data$ParameterName,
+                  value = .data$ParameterValue) %>%
+    dplyr::mutate(time = as.Date(.data$time),
+                  variable = as.character(.data$variable),
                   # Factor needs to be coerced into character first
-                  value = as.numeric(as.character(value))) %>%
-    dplyr::mutate(value = ifelse(is.nan(value), NA, value))
+                  value = as.numeric(as.character(.data$value))) %>%
+    dplyr::mutate(value = ifelse(is.nan(.data$value), NA, .data$value))
   return(sf_obj)
 }
 
@@ -117,12 +118,12 @@ obs_weather_hourly <- function(starttime, endtime, fmisid = NULL) {
                      starttime = starttime, endtime = endtime, fmisid = fmisid)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
-    dplyr::select(time = Time, variable = ParameterName,
-                  value = ParameterValue) %>%
-    dplyr::mutate(time = lubridate::parse_date_time(time, "Ymd HMS"),
-                  variable = as.character(variable),
+    dplyr::select(time = .data$Time, variable = .data$ParameterName,
+                  value = .data$ParameterValue) %>%
+    dplyr::mutate(time = lubridate::parse_date_time(.data$time, "Ymd HMS"),
+                  variable = as.character(.data$variable),
                   # Factor needs to be coerced into character first
-                  value = as.numeric(as.character(value))) %>%
-    dplyr::mutate(value = ifelse(is.nan(value), NA, value))
+                  value = as.numeric(as.character(.data$value))) %>%
+    dplyr::mutate(value = ifelse(is.nan(.data$value), NA, .data$value))
   return(sf_obj)
 }
