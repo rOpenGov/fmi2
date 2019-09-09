@@ -95,7 +95,7 @@ has to be given." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-weather_observation_data.html">fmi2: introduction</a>
+      <a href="../articles/weather_observation_data.html">fmi2: introduction</a>
     </li>
   </ul>
 </li>
@@ -130,7 +130,7 @@ last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
 has to be given.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>obs_weather_daily</span>(<span class='no'>starttime</span>, <span class='no'>endtime</span>, <span class='kw'>fmisid</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>obs_weather_daily</span>(<span class='no'>starttime</span>, <span class='no'>endtime</span>, <span class='kw'>fmisid</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>place</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +149,10 @@ has to be given.</p>
 (see <a href='fmi_stations.html'>fmi_stations</a>.</p></td>
     </tr>
     <tr>
+      <th>place</th>
+      <td><p>character location name for which to provide data.</p></td>
+    </tr>
+    <tr>
       <th>timestep</th>
       <td><p>numeric the time step of data in minutes.</p></td>
     </tr>
@@ -164,10 +168,6 @@ has to be given.</p>
       <th>bbox</th>
       <td><p>numeric vector (EXAMPLE) bounding box of area for which to return
 data.</p></td>
-    </tr>
-    <tr>
-      <th>place</th>
-      <td><p>character location name for which to provide data.</p></td>
     </tr>
     <tr>
       <th>maxlocations</th>
