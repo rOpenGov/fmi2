@@ -1,7 +1,3 @@
-# fmi2 0.0.0.9000
+## CHANGES IN VERSION 0.1.0 (2019-09-09)
 
-* Added a `NEWS.md` file to track changes to the package.
-* Added package development files.
-* Migrate `fmi_stations()` and associated tests from `fmi` package.
-
-
++ `fmi2` is here! 
