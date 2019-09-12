@@ -1,6 +1,8 @@
 library(dplyr)
 library(fmi2)
 
+
+
 test_that("downloading works", {
   # First, time should download the data
   expect_message(stations <- fmi_stations(), "Station list downloaded")
