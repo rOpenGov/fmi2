@@ -19,6 +19,9 @@ httptest::with_mock_api({
     param_data <- list_parameters(id)
     expect_is(param_data, "tbl_df")
 
+    # This should fail
+    expect_error(param_data <- list_parameters("fmi::observations::weather::foo::bar"))
+
     # Check the number of parameters
     param_no <- list_queries(all = TRUE) %>%
       dplyr::filter(query_id == id) %>%
