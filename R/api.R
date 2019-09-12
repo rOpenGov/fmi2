@@ -64,8 +64,6 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
   } else if (request == "getFeature") {
     # TODO: raise error if storedquery_id is missing
     queries <- append(queries, list(storedquery_id = storedquery_id, ...))
-  } else {
-    stop("Invalid request type: ", request)
   }
 
   # Construct the query URL
