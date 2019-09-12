@@ -64,13 +64,6 @@ utils::globalVariables(c("Elevation"))
       }
       stations <- .fmi_stations_local()
     }
-    if (!is.null(groups)) {
-      indexes <- lapply(groups, grep, x = stations$Groups) %>%
-        unlist() %>%
-        sort() %>%
-        unique()
-      stations <- stations[indexes, ]
-    }
     return(stations)
   }
 }
@@ -84,7 +77,6 @@ utils::globalVariables(c("Elevation"))
 #' \code{fmi_weather_stations()} is a deprecated alias for
 #' \code{fmi_stations(groups="Weather stations")}.
 #'
-#' @param groups a character vector of observation station groups to subset for
 #' @param quiet whether to suppress printing of diagnostic messages
 #'
 #' @return a \code{data.frame} of active observation stations
