@@ -1,14 +1,5 @@
 # function fmi_station()
 
-# Reading the local version included within the package is separated into its
-# own function, since it's also used for tests.
-.fmi_stations_local <- function() {
-  message("Station list downloaded")
-  system.file("extdata", "fmi_stations.csv", package = "fmi2") %>%
-    utils::read.csv(as.is = TRUE) %>%
-    tibble::as_tibble()
-}
-
 # Declare globalVariables to prevent check from complaining about
 # NSE
 utils::globalVariables(c("Elevation"))
@@ -41,8 +32,6 @@ utils::globalVariables(c("Elevation"))
         # seem to start with an uppercase letter, use that to separate them.
         # It seems that the order in which they are returned can vary, so
         # sort them in alphabetical order to get consistent results
-        # (important for the test that checks whether the included local copy
-        # is still up-to-date with the online version).
         stations$Groups <- stations$Groups %>%
           strsplit("(?<=[a-z])(?=[A-Z])", perl = TRUE) %>%
           lapply(sort) %>%
@@ -57,12 +46,6 @@ utils::globalVariables(c("Elevation"))
           message("Error downloading from ", station_url)
         }
       })
-    }
-    if (is.null(stations)) {
-      if (!quiet) {
-        message("Using local copy instead.")
-      }
-      stations <- .fmi_stations_local()
     }
     return(stations)
   }
