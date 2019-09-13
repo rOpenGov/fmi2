@@ -9,17 +9,17 @@ utils::globalVariables(c("Elevation"))
 
   cached_stations <- NULL
 
-  function(groups = NULL, quiet = FALSE) {
+  tryCatch({
+    function(url = "http://en.ilmatieteenlaitos.fi/observation-stations",
+             quiet = FALSE) {
 
-    stations <- NULL
+      stations <- NULL
 
-    if (!is.null(cached_stations)) {
-      stations <- cached_stations
-      message("Using cached stations")
-    } else {
-      tryCatch({
-        station_url <- "http://en.ilmatieteenlaitos.fi/observation-stations"
-        stations <- xml2::read_html(station_url) %>%
+      if (!is.null(cached_stations)) {
+        stations <- cached_stations
+        message("Using cached stations")
+      } else {
+        stations <- xml2::read_html(url) %>%
           rvest::html_table() %>%
           `[[`(1L) %>%
           tibble::as_tibble() %>%
@@ -39,16 +39,15 @@ utils::globalVariables(c("Elevation"))
           unlist()
         cached_stations <<- stations
         if (!quiet) {
-          message("Station list downloaded from ", station_url)
+          message("Station list downloaded from ", url)
         }
-      }, error = function(e) {
-        if (!quiet) {
-          message("Error downloading from ", station_url)
-        }
-      })
+
+      }
+      return(stations)
     }
-    return(stations)
-  }
+  }, error = function(e) {
+    stop(e)
+  })
 }
 #' Get a list of active FMI observation stations.
 #'
@@ -60,7 +59,8 @@ utils::globalVariables(c("Elevation"))
 #' \code{fmi_weather_stations()} is a deprecated alias for
 #' \code{fmi_stations(groups="Weather stations")}.
 #'
-#' @param quiet whether to suppress printing of diagnostic messages
+#' @param url character URL where to look for the weather stations table
+#' @param quiet logical whether to suppress printing of diagnostic messages
 #'
 #' @return a \code{data.frame} of active observation stations
 #'
