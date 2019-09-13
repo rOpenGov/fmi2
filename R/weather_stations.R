@@ -1,9 +1,5 @@
 # function fmi_station()
 
-# Declare globalVariables to prevent check from complaining about
-# NSE
-utils::globalVariables(c("Elevation"))
-
 # Use a closure for function fmi_station() in order to cache the results.
 .fmi_stations_closure <- function() {
 
@@ -24,7 +20,7 @@ utils::globalVariables(c("Elevation"))
           `[[`(1L) %>%
           tibble::as_tibble() %>%
           dplyr::mutate(
-            Elevation = Elevation %>% sub(pattern = "\n.*$", replacement = "") %>%
+            Elevation = .data$Elevation %>% sub(pattern = "\n.*$", replacement = "") %>%
           as.integer())
 
         # Groups can contain multiple values, but html_table() and
@@ -70,6 +66,7 @@ utils::globalVariables(c("Elevation"))
 #' Ilari Scheinin
 #'
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #' @importFrom rvest html_table
 #' @importFrom xml2 read_html
 #'
