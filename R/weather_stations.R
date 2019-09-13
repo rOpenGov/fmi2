@@ -14,7 +14,13 @@
           stations <- cached_stations
           message("Using cached stations")
         } else {
-          stations <- xml2::read_html(url) %>%
+          # Check that the URL exists
+          resp <- httpcache::GET(url)
+          if (httr::http_error(resp)) {
+            stop("URL not good: ", url, .call = FALSE)
+          }
+
+          stations <- xml2::read_html(resp$content) %>%
             rvest::html_table() %>%
             `[[`(1L) %>%
             tibble::as_tibble() %>%
