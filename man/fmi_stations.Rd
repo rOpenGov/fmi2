@@ -5,12 +5,14 @@
 \alias{fmi_weather_stations}
 \title{Get a list of active FMI observation stations.}
 \usage{
-fmi_stations(groups = NULL, quiet = FALSE)
+
+  fmi_stations(url = "http://en.ilmatieteenlaitos.fi/observation-stations",
+  quiet = FALSE)
 }
 \arguments{
-\item{groups}{a character vector of observation station groups to subset for}
+\item{url}{character URL where to look for the weather stations table}
 
-\item{quiet}{whether to suppress printing of diagnostic messages}
+\item{quiet}{logical whether to suppress printing of diagnostic messages}
 }
 \value{
 a \code{data.frame} of active observation stations
