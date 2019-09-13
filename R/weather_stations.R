@@ -5,45 +5,43 @@
 
   cached_stations <- NULL
 
-  tryCatch({
     function(url = "http://en.ilmatieteenlaitos.fi/observation-stations",
              quiet = FALSE) {
 
       stations <- NULL
+      tryCatch({
+        if (!is.null(cached_stations)) {
+          stations <- cached_stations
+          message("Using cached stations")
+        } else {
+          stations <- xml2::read_html(url) %>%
+            rvest::html_table() %>%
+            `[[`(1L) %>%
+            tibble::as_tibble() %>%
+            dplyr::mutate(
+              Elevation = .data$Elevation %>% sub(pattern = "\n.*$", replacement = "") %>%
+            as.integer())
 
-      if (!is.null(cached_stations)) {
-        stations <- cached_stations
-        message("Using cached stations")
-      } else {
-        stations <- xml2::read_html(url) %>%
-          rvest::html_table() %>%
-          `[[`(1L) %>%
-          tibble::as_tibble() %>%
-          dplyr::mutate(
-            Elevation = .data$Elevation %>% sub(pattern = "\n.*$", replacement = "") %>%
-          as.integer())
-
-        # Groups can contain multiple values, but html_table() and
-        # readHTMLable() both lose the separating '<br />'. Since group names
-        # seem to start with an uppercase letter, use that to separate them.
-        # It seems that the order in which they are returned can vary, so
-        # sort them in alphabetical order to get consistent results
-        stations$Groups <- stations$Groups %>%
-          strsplit("(?<=[a-z])(?=[A-Z])", perl = TRUE) %>%
-          lapply(sort) %>%
-          lapply(paste, collapse = ", ") %>%
-          unlist()
-        cached_stations <<- stations
-        if (!quiet) {
-          message("Station list downloaded from ", url)
+          # Groups can contain multiple values, but html_table() and
+          # readHTMLable() both lose the separating '<br />'. Since group names
+          # seem to start with an uppercase letter, use that to separate them.
+          # It seems that the order in which they are returned can vary, so
+          # sort them in alphabetical order to get consistent results
+          stations$Groups <- stations$Groups %>%
+            strsplit("(?<=[a-z])(?=[A-Z])", perl = TRUE) %>%
+            lapply(sort) %>%
+            lapply(paste, collapse = ", ") %>%
+            unlist()
+          cached_stations <<- stations
+          if (!quiet) {
+            message("Station list downloaded from ", url)
+          }
         }
-
-      }
-      return(stations)
-    }
-  }, error = function(e) {
-    stop(e)
-  })
+        return(stations)
+    }, error = function(e) {
+      stop(e)
+    })
+  }
 }
 #' Get a list of active FMI observation stations.
 #'
