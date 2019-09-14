@@ -9,8 +9,10 @@
 #' `fmi::observations::weather::daily::simple`. For more informations, see
 #' [the FMI documentation page](https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services).
 #'
-#' @param starttime character begin of the time interval in ISO-format.
-#' @param endtime character end of time interval in ISO-format.
+#' @param starttime character or Date start of the time interval in ISO-format.
+#'                  character will be coerced into a Date object.
+#' @param endtime character or Date end of the time interval in ISO-format.
+#'                character will be coerced into a Date object.
 # @param timestep numeric the time step of data in minutes.
 # @param parameters character vector of parameters to return (see below).
 # @param crs character coordinate projection to use in results.
@@ -25,6 +27,7 @@
 #'
 #' @import dplyr
 #' @importFrom rlang .data
+#' @importFrom checkmate assert
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::daily::simple")`.
@@ -46,6 +49,10 @@
 #' @seealso \link[fmi2]{list_parameters}
 #'
 obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
+
+  # Check arguments
+
+
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::daily::simple",
                      starttime = starttime, endtime = endtime, fmisid = fmisid,
