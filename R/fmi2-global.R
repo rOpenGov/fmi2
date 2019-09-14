@@ -10,5 +10,6 @@ fmi2_global$base_url <- "http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0"
 # Following list keeps track on which fmi2 function wraps which stored query on
 # the FMI API.
 fmi2_global$function_map <- list(
-  "fmi::observations::weather::daily::timevaluepair" = "daily_weather"
+  "fmi::observations::weather::daily::simple" = "obs_weather_daily",
+  "fmi::observations::weather::hourly::simple" = "obs_weather_hourly"
 )
