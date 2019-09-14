@@ -42,10 +42,10 @@ remotes::install_github("rOpenGov/fmi2")
 Currently, the following FMI stored queries are avaible in
 `fmi2`:
 
-| fmi2-function                                                                               | FMI API stored query                       |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| [`obs_weather_daily()`](https://ropengov.github.io/fmi2/reference/obs_weather_daily.html)   | fmi::observations::weather::daily::simple  |
-| [`obs_weather_hourly()`](https://ropengov.github.io/fmi2/reference/obs_weather_hourly.html) | fmi::observations::weather::hourly::simple |
+| Stored query                               | Description                 | No. parameters | fmi2 function name   |
+| :----------------------------------------- | :-------------------------- | -------------: | :------------------- |
+| fmi::observations::weather::daily::simple  | Daily Weather Observations  |             11 | obs\_weather\_daily  |
+| fmi::observations::weather::hourly::simple | Hourly Weather Observations |             12 | obs\_weather\_hourly |
 
 More data sets and queries may be wrapped in the future.
 

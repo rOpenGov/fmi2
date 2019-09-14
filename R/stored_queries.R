@@ -133,11 +133,17 @@ list_queries <- function(all = FALSE) {
   query_data <- purrr::map(nodes, process_node) %>%
     dplyr::bind_rows()
 
+  find_function_name <- function(stored_query) {
+    fname <- fmi2_global$function_map %>%
+      dplyr::filter(.data$`Stored query` == stored_query) %>%
+      dplyr::select(.data$`fmi2 function`) %>%
+      dplyr::pull()
+    fname <- ifelse(length(fname) == 0, NA, fname)
+    return(fname)
+  }
   # See which stored queries have a corresponding function in fmi2
-  query_data <- query_data %>%
-    dplyr::mutate(function_name = ifelse(.data$query_id %in% names(fmi2_global$function_map),
-                                         unlist(fmi2_global$function_map[.data$query_id]),
-                                         NA))
+  query_data$function_name <- purrr::map(query_data$query_id, find_function_name) %>%
+    unlist()
 
   if (!all) {
     query_data <- query_data %>%
