@@ -7,9 +7,11 @@
 obs_weather_daily(starttime, endtime, fmisid = NULL, place = NULL)
 }
 \arguments{
-\item{starttime}{character begin of the time interval in ISO-format.}
+\item{starttime}{character or Date start of the time interval in ISO-format.
+character will be coerced into a Date object.}
 
-\item{endtime}{character end of time interval in ISO-format.
+\item{endtime}{character or Date end of the time interval in ISO-format.
+character will be coerced into a Date object.
 data.}
 
 \item{fmisid}{numeric FMI observation station identifier

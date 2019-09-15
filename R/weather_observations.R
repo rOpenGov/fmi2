@@ -28,7 +28,7 @@
 #' @import dplyr
 #' @importFrom rlang .data
 #' @importFrom checkmate assert check_null
-#' @importFrom lubridate as_Date
+#' @importFrom lubridate as_date
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::daily::simple")`.
