@@ -28,6 +28,7 @@
 #' @import dplyr
 #' @importFrom rlang .data
 #' @importFrom checkmate assert check_null
+#' @importFrom lubridate as_Date
 #'
 #' @note For a complete description of the accepted arguments, see
 #' `list_parameters("fmi::observations::weather::daily::simple")`.
@@ -54,6 +55,9 @@ obs_weather_daily <- function(starttime, endtime, fmisid = NULL, place = NULL) {
   if (is.null(fmisid) & is.null(place)) {
     stop("No location argument provided", call. = FALSE)
   }
+
+  # start and end time must be Dates or characters coercable to Dates, and must
+  # be in the past
 
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::daily::simple",
