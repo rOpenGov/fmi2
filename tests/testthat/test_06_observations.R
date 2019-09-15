@@ -9,7 +9,9 @@ test_that("obs_weather_daily() arguments are handled correctly", {
                "No location argument provided")
   # Start and end times must be dates or strings that can be coerced into
   # dates
-
+  expect_error(obs_weather_daily(starttime = "foo",
+                                 endtime = "2020-01-04",
+                                 fmisid = hanko_id))
   # Start and end times must be in the past
 })
 
