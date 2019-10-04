@@ -2,7 +2,7 @@
 % Please edit documentation in R/api.R
 \name{fmi_api}
 \alias{fmi_api}
-\title{fmi_api}
+\title{FMI API}
 \usage{
 fmi_api(request, storedquery_id = NULL, ...)
 }
@@ -26,17 +26,19 @@ fmi_api (S3) object with the following attributes:
 }
 }
 \description{
-Make a request to the FMI API. The base url is
-http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0 to which other
-components defined by the arguments are appended.
+Requests to FMI API.
 }
 \details{
+Make a request to the FMI API. The base url is
+\url{http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0} to which other
+components defined by the arguments are appended.
+
 This is a low-level function intended to be used by other higher level
 functions in the package.
 
 Note that GET requests are used using \code{httpcache} meaning that requests
 are cached. If you want clear cache, use \code{\link[httpcache:clearCache]{httpcache::clearCache()}}. To turn
-the cahce off completely, use \code{\link[httpcache:cacheOff]{httpcache::cacheOff()}}
+the cache off completely, use \code{\link[httpcache:cacheOff]{httpcache::cacheOff()}}
 }
 \examples{
   # List stored queries

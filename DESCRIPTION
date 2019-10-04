@@ -4,12 +4,12 @@ Version: 0.1.0.9001
 Date: 2019-10-04
 Authors@R: c(
   person("Joona", "Lehtomaki", email = "jlehtoma@pm.me", role = c("aut", "cre")),
-  person("Leo", "Lahti", role = "aut"),
+  person("Leo", "Lahti", role = c("aut"), comment = c(ORCID = "0000-0001-5537-637X")),  
   person("Ilari", "Scheinin", role = "ctb")
   )
 Description: R client for the Finnish Meteorological Institute (FMI) open data 
   API. This package supersedes the obsolete fmi package. Client can be used to 
-  fetch geospatial over FMI's WFS (http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
+  fetch geospatial over FMI's WFS <http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data>
   and converted into geospatial objects in R.
 License: MIT + file LICENSE
 Depends: 
