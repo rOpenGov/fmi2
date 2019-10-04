@@ -2,7 +2,7 @@
 % Please edit documentation in R/stored_queries.R
 \name{list_parameters}
 \alias{list_parameters}
-\title{List and describe all valid parameters for a given stored query.}
+\title{List Parameters}
 \usage{
 list_parameters(query_id)
 }
@@ -13,6 +13,9 @@ list_parameters(query_id)
 a tibble describing the valid parameters.
 }
 \description{
+List and describe all valid parameters for a given stored query.
+}
+\details{
 For valid stored query IDs, see \code{\link[fmi2]{list_queries}}.
 }
 \examples{
