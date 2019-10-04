@@ -48,3 +48,12 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+Collate: 
+    'fmi2-global.R'
+    'aaa.R'
+    'api.R'
+    'stored_queries.R'
+    'utils-pipe.R'
+    'utils-wfs.R'
+    'weather_observations.R'
+    'weather_stations.R'
