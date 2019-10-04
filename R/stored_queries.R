@@ -1,6 +1,7 @@
-#' List and describe all valid parameters for a given stored query.
+#' @title List Parameters
+#' @description List and describe all valid parameters for a given stored query.
 #'
-#' For valid stored query IDs, see \code{\link[fmi2]{list_queries}}.
+#' @details For valid stored query IDs, see \code{\link[fmi2]{list_queries}}.
 #'
 #' @param query_id character string query ID.
 #'
