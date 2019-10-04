@@ -30,7 +30,7 @@ Requests to FMI API.
 }
 \details{
 Make a request to the FMI API. The base url is
-\url{http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0} to which other
+\url{https://opendata.fmi.fi/wfs} to which other
 components defined by the arguments are appended.
 
 This is a low-level function intended to be used by other higher level
