@@ -45,7 +45,7 @@ ByteCompile: true
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Collate: 
     'fmi2-global.R'
     'aaa.R'

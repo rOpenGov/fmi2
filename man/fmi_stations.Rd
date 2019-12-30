@@ -5,9 +5,10 @@
 \alias{fmi_weather_stations}
 \title{Get a list of active FMI observation stations.}
 \usage{
-
-  fmi_stations(url = "http://en.ilmatieteenlaitos.fi/observation-stations",
-  quiet = FALSE)
+fmi_stations(
+  url = "http://en.ilmatieteenlaitos.fi/observation-stations",
+  quiet = FALSE
+)
 }
 \arguments{
 \item{url}{character URL where to look for the weather stations table}

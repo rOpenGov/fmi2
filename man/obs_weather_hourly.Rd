@@ -38,7 +38,7 @@ is returned from last 24 hours. At least one location parameter
 }
 \details{
 The FMI WFS stored query used by this function is
-\code{fmi::observations::weather::hourly::simple}. For more informations, see
+\verb{fmi::observations::weather::hourly::simple}. For more informations, see
 \href{https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services}{the FMI documentation page}.
 }
 \note{

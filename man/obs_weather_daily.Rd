@@ -39,7 +39,7 @@ has to be given.
 }
 \details{
 The FMI WFS stored query used by this function is
-\code{fmi::observations::weather::daily::simple}. For more informations, see
+\verb{fmi::observations::weather::daily::simple}. For more informations, see
 \href{https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services}{the FMI documentation page}.
 }
 \note{
