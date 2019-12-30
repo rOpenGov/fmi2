@@ -11,6 +11,8 @@ longer available when offline, but so are most of the data as well.
 
 ### Bug fixes
 
++ Remove partial URL definition in the docs, as CRAN will error on these.
+
 ### Development related
 
 + Test coverage increased to 100%.

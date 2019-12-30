@@ -1,8 +1,7 @@
 #' fmi_api
 #'
-#' Make a request to the FMI API. The base url is
-#' http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0 to which other
-#' components defined by the arguments are appended.
+#' Make a request to the FMI API. Components defined by the arguments are
+#' appended to a base URL.
 #'
 #' This is a low-level function intended to be used by other higher level
 #' functions in the package.
