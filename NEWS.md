@@ -19,6 +19,8 @@ longer available when offline, but so are most of the data as well.
 + Internally, `fmi2_global$function_map` is now a tibble instead of a list. 
 + Stored query / function -mapping in README is generated automatically with
   `list_queries()`.
++ Each function now lives in a file with the same name as the function (see
+  [#7](https://github.com/rOpenGov/fmi2/issues/7))
 
 ## CHANGES IN VERSION 0.1.0 (2019-09-09)
 
