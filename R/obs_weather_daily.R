@@ -1,13 +1,15 @@
-#' Daily weather observations from weather stations.
+#' @title Weather observations
+#' @description Daily weather observations from weather stations.
 #'
-#' Default set contains daily precipitation rate, mean temperature, snow depth,
+#' @details Default set contains daily precipitation rate, mean temperature,
+#' snow depth,
 #' and minimum and maximum temperature. By default, the data is returned from
 #' last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
 #' has to be given.
 #'
 #' The FMI WFS stored query used by this function is
-#' `fmi::observations::weather::daily::simple`. For more informations, see
-#' [the FMI documentation page](https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services).
+#' `fmi::observations::weather::daily::simple`. For more informations, see the 
+#' \href{https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services}{FMI documentation page}.
 #'
 #' @param starttime character or Date start of the time interval in ISO-format.
 #'                  character will be coerced into a Date object.

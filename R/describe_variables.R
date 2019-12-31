@@ -1,7 +1,9 @@
-#' Decsribe FMI observation variable(s).
+#' @title Describe FMI Variables
+#' @description Describe FMI observation variable(s).
 #'
-#' FMI provides a machine-reabable (XML) description of different observation
-#' variables. Use this function to see the specifications of a given variable.
+#' @details FMI provides a machine-reabable (XML) description of different
+#' observation variables. Use this function to see the specifications of a
+#' given variable.
 #'
 #' @param x character vector of observation variables to be described.
 #'

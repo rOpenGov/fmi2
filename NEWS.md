@@ -5,7 +5,9 @@
 + Remove local weather stations table (CSV). This means that FMI weather 
 stations are downloaded from the FMI website once per each session. Table is no 
 longer available when offline, but so are most of the data as well. 
-+ 
+
++ Man pages revised
+
 
 ### New features
 

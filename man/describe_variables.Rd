@@ -2,7 +2,7 @@
 % Please edit documentation in R/describe_variables.R
 \name{describe_variables}
 \alias{describe_variables}
-\title{Decsribe FMI observation variable(s).}
+\title{Describe FMI Variables}
 \usage{
 describe_variables(x)
 }
@@ -21,8 +21,12 @@ tibble containing the following columns:
 }
 }
 \description{
-FMI provides a machine-reabable (XML) description of different observation
-variables. Use this function to see the specifications of a given variable.
+Describe FMI observation variable(s).
+}
+\details{
+FMI provides a machine-reabable (XML) description of different
+observation variables. Use this function to see the specifications of a
+given variable.
 }
 \examples{
   \dontrun{
