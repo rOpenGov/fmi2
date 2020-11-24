@@ -48,3 +48,13 @@ httr::GET(dat_obj$url)
 
 httptest::stop_capturing()
 
+# FMI stations ------------------------------------------------------------
+
+dat_obj <- fmi_api(request = "getFeature",
+                   storedquery_id = "fmi::ef::stations")
+
+httptest::start_capturing()
+
+httr::GET(dat_obj$url)
+
+httptest::stop_capturing()
