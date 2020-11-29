@@ -17,7 +17,7 @@ valid_fmisid <- function(fmisid) {
   } else {
     fmisid <- as.numeric(fmisid)
     stations <- fmi_stations()
-    if (fmisid %in% stations$FMISID) {
+    if (fmisid %in% stations$fmisid) {
       return(TRUE)
     } else {
       return(FALSE)

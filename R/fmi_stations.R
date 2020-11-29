@@ -1,54 +1,5 @@
 # function fmi_station()
 
-# Use a closure for function fmi_station() in order to cache the results.
-.fmi_stations_closure <- function() {
-
-  cached_stations <- NULL
-
-    function(url = "http://en.ilmatieteenlaitos.fi/observation-stations",
-             quiet = FALSE) {
-
-      stations <- NULL
-      tryCatch({
-        if (!is.null(cached_stations)) {
-          stations <- cached_stations
-          message("Using cached stations")
-        } else {
-          # Check that the URL exists
-          resp <- httpcache::GET(url)
-          if (httr::http_error(resp)) {
-            stop("URL not good: ", url, .call = FALSE)
-          }
-
-          stations <- xml2::read_html(resp$content) %>%
-            rvest::html_table() %>%
-            `[[`(1L) %>%
-            tibble::as_tibble() %>%
-            dplyr::mutate(
-              Elevation = .data$Elevation %>% sub(pattern = "\n.*$", replacement = "") %>%
-            as.integer())
-
-          # Groups can contain multiple values, but html_table() and
-          # readHTMLable() both lose the separating '<br />'. Since group names
-          # seem to start with an uppercase letter, use that to separate them.
-          # It seems that the order in which they are returned can vary, so
-          # sort them in alphabetical order to get consistent results
-          stations$Groups <- stations$Groups %>%
-            strsplit("(?<=[a-z])(?=[A-Z])", perl = TRUE) %>%
-            lapply(sort) %>%
-            lapply(paste, collapse = ", ") %>%
-            unlist()
-          cached_stations <<- stations
-          if (!quiet) {
-            message("Station list downloaded from ", url)
-          }
-        }
-        return(stations)
-    }, error = function(e) {
-      stop(e)
-    })
-  }
-}
 #' Get a list of active FMI observation stations.
 #'
 #' A table of active observation stations is downloaded from the website of
@@ -69,40 +20,72 @@
 #' @author Joona Lehtomaki \email{joona.lehtomaki@@gmail.com},
 #' Ilari Scheinin
 #'
+#' @importFrom dplyr bind_rows
 #' @importFrom magrittr %>%
+#' @importFrom purrr pluck
 #' @importFrom rlang .data
-#' @importFrom rvest html_table
-#' @importFrom xml2 read_html
+#' @importFrom tibble tibble_row
+#' @importFrom xml2 as_list
 #'
 #' @export
 #'
 #' @aliases fmi_weather_stations
 #'
-fmi_stations <- .fmi_stations_closure()
+fmi_stations <- function() {
 
-#' Check if a provided ID number is a valid FMI SID.
-#'
-#' \code{fmisid} is a ID numbering system used by the FMI.
-#'
-#' @param fmisid numeric or character ID number.
-#'
-#' @return logical
-#'
-#' @seealso \code{\link{fmi_stations}}
-#'
-#' @author Joona Lehtomaki \email{joona.lehtomaki@@gmail.com}
-#' @export
-#'
-valid_fmisid <- function(fmisid) {
-  if (is.null(fmisid)) {
-    return(FALSE)
-  } else {
-   fmisid <- as.numeric(fmisid)
-    stations <- fmi_stations()
-    if (fmisid %in% stations$FMISID) {
-      return(TRUE)
-    } else {
-      return(FALSE)
-    }
+  # start and end time must be Dates or characters coercable to Dates, and must
+  # be in the past
+
+  fmi_obj <- fmi_api(request = "getFeature",
+                     storedquery_id = "fmi::ef::stations") %>%
+    purrr::pluck("content") %>%
+    xml2::as_list()
+
+  parse_nodes <- function(node) {
+    # First level name in the list is a GML type. Store the value and get the
+    # rest of the values (children nodes)n
+    gml_type <- names(node)
+    children <- purrr::pluck(node, 1)
+
+    # The values of interest are a combination of actual list values and
+    # attributes. More robust implementations would sniff out which one,
+    # but here we rely on hard coded approach.
+
+    # Station identifier
+    fmisid <- purrr::pluck(children$identifier, 1)
+
+    # Station name
+    name <- purrr::pluck(children$name, 1)
+
+    # Station type
+    type <- attr(children$belongsTo, "title")
+
+    # Location data. Get lat/long data
+    point_data <- children$representativePoint$Point$pos %>%
+      purrr::pluck(1) %>%
+      strsplit(split = " ") %>%
+      unlist()
+    lat <- as.numeric(point_data[1])
+    lon <- as.numeric(point_data[2])
+
+    # Also get the EPSG code
+    epsg <- attr(children$representativePoint$Point, "srsName") %>%
+      strsplit(split = "/") %>%
+      unlist() %>%
+      tail(n = 1)
+
+    # Operational activity period
+    oap_start <- children$operationalActivityPeriod$OperationalActivityPeriod$activityTime$TimePeriod$beginPosition %>%
+      purrr::pluck(1)
+    oap_end <- children$operationalActivityPeriod$OperationalActivityPeriod$activityTime$TimePeriod$endPosition %>%
+      attr("indeterminatePosition")
+
+    station_data <- tibble::tibble_row(name, fmisid, type, lat, lon, epsg,
+                                       oap_start, oap_end)
+    return(station_data)
   }
+
+  station_data <- purrr::map(fmi_obj[[1]], parse_nodes) %>%
+    dplyr::bind_rows()
+  return(station_data)
 }

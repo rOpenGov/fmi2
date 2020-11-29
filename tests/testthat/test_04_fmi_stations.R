@@ -1,18 +1,13 @@
-test_that("downloading works", {
-  # Check for faulty url. NOTE: this needs to be done first because of the
-  # closure's caching
-  expect_error(stations <- fmi_stations(url = "http://en.ilmatieteenlaitos.fi/foobar"))
-  # First, time should download the data
-  expect_message(stations <- fmi_stations(), "Station list downloaded")
-  # If done again immediately, should use cached version
-  expect_message(stations <- fmi_stations(), "Using cached stations")
-  # Check the returned data
-  expect_is(stations, "tbl")
+httptest::with_mock_api({
 
-  # A dummy call to cover the whole closure. Normally the closure is evaluated
-  # when the package is loaded, but covr will miss parts of the closure if
-  # this is not done.
-  fmi2:::.fmi_stations_closure()
+  test_that("FMI stations are retrieved correctly", {
+    stat_dat <- fmi_stations()
+
+    expect_is(stat_dat, "tbl")
+    #expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    #expect_is(obs_dat$time, "Date")
+    #expect_is(obs_dat$variable, "character")
+    #expect_is(obs_dat$value, "numeric")
+    #expect_is(obs_dat$geometry, "sfc")
+  })
 })
-
-
