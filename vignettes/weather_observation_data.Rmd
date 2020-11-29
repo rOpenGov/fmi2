@@ -75,15 +75,15 @@ Before we get the actual data, let's visualize Hanko region.
 ```{r plot-hanko-map}
 # Get data for Tulliniemi only
 tulliniemi_station <- station_data %>% 
-  dplyr::filter(FMISID == 100946)
+  dplyr::filter(fmisid == 100946)
 
 # Plot on a map using leaflet
 leaflet::leaflet(station_data) %>% 
-  leaflet::setView(lng = tulliniemi_station$Lon, 
-                   lat = tulliniemi_station$Lat, 
+  leaflet::setView(lng = tulliniemi_station$lon, 
+                   lat = tulliniemi_station$lat, 
                    zoom = 11) %>% 
   leaflet::addTiles() %>%  
-  leaflet::addMarkers(~Lon, ~Lat, popup = ~Name, label = ~as.character(FMISID))
+  leaflet::addMarkers(~lon, ~lat, popup = ~name, label = ~as.character(fmisid))
 ```
 
 
