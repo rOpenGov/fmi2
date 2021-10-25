@@ -6,7 +6,7 @@
 #'
 #' @return a \code{tibble} of active observation stations
 #'
-#' @seealso \url{http://en.ilmatieteenlaitos.fi/observation-stations}
+#' @seealso \url{https://en.ilmatieteenlaitos.fi/observation-stations}
 #'
 #' @author Joona Lehtomaki \email{joona.lehtomaki@@gmail.com}
 #'

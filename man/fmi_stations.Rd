@@ -14,7 +14,7 @@ a \code{tibble} of active observation stations
 Data is retrieved using a FMI API stored query.
 }
 \seealso{
-\url{http://en.ilmatieteenlaitos.fi/observation-stations}
+\url{https://en.ilmatieteenlaitos.fi/observation-stations}
 }
 \author{
 Joona Lehtomaki \email{joona.lehtomaki@gmail.com}
