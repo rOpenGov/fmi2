@@ -1,7 +1,6 @@
 ---
-output: md_document
+output: github_document
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -13,17 +12,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-# fmi2 - R client for the Finnish Meteorological Institute's (FMI) API
+# fmi2 - R client for the Finnish Meteorological Institute's (FMI) API <a href='https://ropengov.github.io/fmi2/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![codecov](https://codecov.io/gh/rOpenGov/fmi2/branch/master/graph/badge.svg)](https://codecov.io/gh/rOpenGov/fmi2)
+[![rOG-badge](https://ropengov.github.io/rogtemplate/reference/figures/ropengov-badge.svg)](http://ropengov.org/)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![codecov](https://codecov.io/gh/rOpenGov/fmi2/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rOpenGov/fmi2)
 [![CRAN status](https://www.r-pkg.org/badges/version/fmi2)](https://CRAN.R-project.org/package=fmi2)
 [![R build status](https://github.com/rOpenGov/fmi2/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/fmi2/actions)
+
 <!-- badges: end -->
 
 R client package for [the Finnish Meteorological Institute (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data-manual). `fmi2` provides access
-to a subset of the FMI [download](http://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
+to a subset of the FMI [download](https://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data) 
 service. FMI maintains and is reponsible for the data available through their
 API, but has no official connections to `fmi2`. 
 
@@ -57,9 +58,9 @@ More data sets and queries may be wrapped in the future.
 
 ## Example
 
-For usage examples, see the package [function reference](https://ropengov.github.io/fmi2/reference/index.html) and the following vignettes:
+For usage examples, see the package [function reference](https://ropengov.github.io/fmi2//reference/index.html) and the following vignettes:
 
-- [Getting weather observation data](https://ropengov.github.io/fmi2/articles/weather_observation_data.html)
+- [Getting weather observation data](https://ropengov.github.io/fmi2//articles/weather_observation_data.html)
 
 ## Contributing
 
