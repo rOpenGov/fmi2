@@ -42,10 +42,10 @@
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
   <div class="col-md-9 contents">
-    <img src="../logo.png" class="pkg-logo" alt=""><div class="page-header pb-2 mt-4 mb-2 border-bottom toc-ignore">
-    <h1>Weather observations</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/obs_weather_daily.R" class="external-link"><code>R/obs_weather_daily.R</code></a></small>
-    <div class="d-none name"><code>obs_weather_daily.Rd</code></div>
+    <div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Weather observations</h1>
+      <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/obs_weather_daily.R" class="external-link"><code>R/obs_weather_daily.R</code></a></small>
+      <div class="d-none name"><code>obs_weather_daily.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
@@ -56,23 +56,20 @@
     <pre class="sourceCode r"><code><span class="fu">obs_weather_daily</span><span class="op">(</span><span class="va">starttime</span>, <span class="va">endtime</span>, fmisid <span class="op">=</span> <span class="cn">NULL</span>, place <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
     </div>
 
-    <div class="ref-arguments section level2">
+    <div id="ref-sections">
+    <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="ref-argument-starttime">starttime</dt>
-      <dd><p>character or Date start of the time interval in ISO-format.
+    
+
+<dl><dt>starttime</dt><dd><p>character or Date start of the time interval in ISO-format.
 character will be coerced into a Date object.</p></dd>
-      <dt id="ref-argument-endtime">endtime</dt>
-      <dd><p>character or Date end of the time interval in ISO-format.
+</dl><dl><dt>endtime</dt><dd><p>character or Date end of the time interval in ISO-format.
 character will be coerced into a Date object.
 data.</p></dd>
-      <dt id="ref-argument-fmisid">fmisid</dt>
-      <dd><p>numeric FMI observation station identifier
+</dl><dl><dt>fmisid</dt><dd><p>numeric FMI observation station identifier
 (see <a href="fmi_stations.html">fmi_stations</a>.</p></dd>
-      <dt id="ref-argument-place">place</dt>
-      <dd><p>character location name for which to provide data.</p></dd>
-    </dl></div>
-
-    <div id="ref-sections">
+</dl><dl><dt>place</dt><dd><p>character location name for which to provide data.</p></dd>
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>sf object in a long (melted) form. Observation variables names are

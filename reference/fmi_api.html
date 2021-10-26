@@ -42,10 +42,10 @@
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
   <div class="col-md-9 contents">
-    <img src="../logo.png" class="pkg-logo" alt=""><div class="page-header pb-2 mt-4 mb-2 border-bottom toc-ignore">
-    <h1>FMI API</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/fmi_api.R" class="external-link"><code>R/fmi_api.R</code></a></small>
-    <div class="d-none name"><code>fmi_api.Rd</code></div>
+    <div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>FMI API</h1>
+      <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/fmi_api.R" class="external-link"><code>R/fmi_api.R</code></a></small>
+      <div class="d-none name"><code>fmi_api.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
@@ -56,21 +56,19 @@
     <pre class="sourceCode r"><code><span class="fu">fmi_api</span><span class="op">(</span><span class="va">request</span>, storedquery_id <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre>
     </div>
 
-    <div class="ref-arguments section level2">
+    <div id="ref-sections">
+    <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="ref-argument-request">request</dt>
-      <dd><p>character request type of either <code>DescribeStoredQueries</code> or
+    
+
+<dl><dt>request</dt><dd><p>character request type of either <code>DescribeStoredQueries</code> or
 <code>getFeature</code>.</p></dd>
-      <dt id="ref-argument-storedquery_id">storedquery_id</dt>
-      <dd><p>character id of the stored query id. If <code>request</code> is
+</dl><dl><dt>storedquery_id</dt><dd><p>character id of the stored query id. If <code>request</code> is
 <code>getFeature</code>, then <code>storedquery_id</code> must be provided and otherwise
 it's ignored.</p></dd>
-      <dt id="ref-argument-...">...</dt>
-      <dd><p>stored query specific parameters. NOTE: it's up to the high-level
+</dl><dl><dt>...</dt><dd><p>stored query specific parameters. NOTE: it's up to the high-level
 functions to check the validity of the parameters.</p></dd>
-    </dl></div>
-
-    <div id="ref-sections">
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>fmi_api (S3) object with the following attributes:</p><dl><dt>content</dt><dd><p>XML payload.</p></dd>
@@ -104,7 +102,7 @@ the cache off completely, use <code><a href="https://enpiar.com/r/httpcache/refe
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $response</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response [http://opendata.fmi.fi/wfs?service=WFS&amp;version=2.0.0&amp;request=DescribeStoredQueries]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Date: 2021-10-25 13:27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Date: 2021-10-26 16:18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Status: 200</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Content-Type: text/xml; charset=UTF-8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Size: 425 kB</span>

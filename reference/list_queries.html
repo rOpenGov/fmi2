@@ -52,10 +52,10 @@ request parameters."><meta property="og:image" content="https://ropengov.github.
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
   <div class="col-md-9 contents">
-    <img src="../logo.png" class="pkg-logo" alt=""><div class="page-header pb-2 mt-4 mb-2 border-bottom toc-ignore">
-    <h1>List stored queries available over the FMI API.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/list_queries.R" class="external-link"><code>R/list_queries.R</code></a></small>
-    <div class="d-none name"><code>list_queries.Rd</code></div>
+    <div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>List stored queries available over the FMI API.</h1>
+      <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/list_queries.R" class="external-link"><code>R/list_queries.R</code></a></small>
+      <div class="d-none name"><code>list_queries.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
@@ -71,14 +71,14 @@ request parameters.</p>
     <pre class="sourceCode r"><code><span class="fu">list_queries</span><span class="op">(</span>all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre>
     </div>
 
-    <div class="ref-arguments section level2">
-    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="ref-argument-all">all</dt>
-      <dd><p>logical should all stored queries available through the API be
-listed(default: FALSE)?</p></dd>
-    </dl></div>
-
     <div id="ref-sections">
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    
+
+<dl><dt>all</dt><dd><p>logical should all stored queries available through the API be
+listed(default: FALSE)?</p></dd>
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>tibble containing the following columns:</p><dl><dt>query_id</dt><dd><p>ID of the storied query.</p></dd>

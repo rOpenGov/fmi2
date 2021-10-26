@@ -54,10 +54,10 @@ is returned from last 24 hours. At least one location parameter
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
   <div class="col-md-9 contents">
-    <img src="../logo.png" class="pkg-logo" alt=""><div class="page-header pb-2 mt-4 mb-2 border-bottom toc-ignore">
-    <h1>Hourly weather observations from weather stations.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/obs_weather_hourly.R" class="external-link"><code>R/obs_weather_hourly.R</code></a></small>
-    <div class="d-none name"><code>obs_weather_hourly.Rd</code></div>
+    <div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Hourly weather observations from weather stations.</h1>
+      <small class="dont-index">Source: <a href="https://github.com/rOpenGov/fmi2/blob/master/R/obs_weather_hourly.R" class="external-link"><code>R/obs_weather_hourly.R</code></a></small>
+      <div class="d-none name"><code>obs_weather_hourly.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
@@ -74,19 +74,17 @@ is returned from last 24 hours. At least one location parameter
     <pre class="sourceCode r"><code><span class="fu">obs_weather_hourly</span><span class="op">(</span><span class="va">starttime</span>, <span class="va">endtime</span>, fmisid <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
     </div>
 
-    <div class="ref-arguments section level2">
-    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="ref-argument-starttime">starttime</dt>
-      <dd><p>character begin of the time interval in ISO-format.</p></dd>
-      <dt id="ref-argument-endtime">endtime</dt>
-      <dd><p>character end of time interval in ISO-format.
-data.</p></dd>
-      <dt id="ref-argument-fmisid">fmisid</dt>
-      <dd><p>numeric FMI observation station identifier
-(see <a href="fmi_stations.html">fmi_stations</a>.</p></dd>
-    </dl></div>
-
     <div id="ref-sections">
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    
+
+<dl><dt>starttime</dt><dd><p>character begin of the time interval in ISO-format.</p></dd>
+</dl><dl><dt>endtime</dt><dd><p>character end of time interval in ISO-format.
+data.</p></dd>
+</dl><dl><dt>fmisid</dt><dd><p>numeric FMI observation station identifier
+(see <a href="fmi_stations.html">fmi_stations</a>.</p></dd>
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>sf object in a long (melted) form. Observation variables names are
