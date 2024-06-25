@@ -51,7 +51,7 @@ VignetteBuilder:
 ByteCompile: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.1
 X-schema.org-isPartOf: http://ropengov.org/
 X-schema.org-keywords: ropengov
 Collate: 
@@ -64,6 +64,7 @@ Collate:
     'list_queries.R'
     'obs_weather_daily.R'
     'obs_weather_hourly.R'
+    'obs_weather_monthly.R'
     'to_sf.R'
     'utils-pipe.R'
     'valid_fmisid.R'
