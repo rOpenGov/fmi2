@@ -2,22 +2,39 @@
 % Please edit documentation in R/obs_weather_daily.R
 \name{obs_weather_daily}
 \alias{obs_weather_daily}
-\title{Weather observations}
+\title{Daily weather observations}
 \usage{
-obs_weather_daily(starttime, endtime, fmisid = NULL, place = NULL)
+obs_weather_daily(
+  starttime = NULL,
+  endtime = NULL,
+  fmisid = NULL,
+  place = NULL,
+  parameters = NULL,
+  crs = NULL,
+  bbox = NULL,
+  timestep = NULL
+)
 }
 \arguments{
 \item{starttime}{character or Date start of the time interval in ISO-format.
 character will be coerced into a Date object.}
 
 \item{endtime}{character or Date end of the time interval in ISO-format.
-character will be coerced into a Date object.
-data.}
+character will be coerced into a Date object.}
 
 \item{fmisid}{numeric FMI observation station identifier
 (see \link[fmi2]{fmi_stations}.}
 
 \item{place}{character location name for which to provide data.}
+
+\item{parameters}{character vector of parameters to return (see below).}
+
+\item{crs}{character coordinate projection to use in results.}
+
+\item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
+data.}
+
+\item{timestep}{numeric the time step of data in minutes.}
 }
 \value{
 sf object in a long (melted) form. Observation variables names are

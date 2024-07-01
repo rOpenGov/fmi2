@@ -1,6 +1,7 @@
-#' Hourly weather observations from weather stations.
+#' @title Hourly weather observations
+#' @description Hourly weather observations from weather stations.
 #'
-#' Default set contains hourly air temperature average, maximum and minimum, air
+#' @details Default set contains hourly air temperature average, maximum and minimum, air
 #' relative humidity average, wind speed average, minumum (10 minute average)
 #' and maximum (10 minute average), wind direction average, wind gust speed
 #' maximum (3 second average), rain accumulated, rain intensity maximum, air
@@ -14,12 +15,12 @@
 #'
 #' @param starttime character begin of the time interval in ISO-format.
 #' @param endtime character end of time interval in ISO-format.
-# @param timestep numeric the time step of data in minutes.
-# @param parameters character vector of parameters to return (see below).
-# @param crs character coordinate projection to use in results.
-# @param bbox numeric vector (EXAMPLE) bounding box of area for which to return
+#' @param timestep numeric the time step of data in minutes.
+#' @param parameters character vector of parameters to return (see below).
+#' @param crs character coordinate projection to use in results.
+#' @param bbox numeric vector (EXAMPLE) bounding box of area for which to return
 #'        data.
-# @param place character location name for which to provide data.
+#' @param place character location name for which to provide data.
 #' @param fmisid numeric FMI observation station identifier
 #'        (see \link[fmi2]{fmi_stations}.
 # @param	maxlocations numeric maximum amount of locations.
@@ -48,10 +49,23 @@
 #' @seealso https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,
 #' @seealso \link[fmi2]{list_parameters}
 #'
-obs_weather_hourly <- function(starttime, endtime, fmisid = NULL) {
+obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, place = NULL,
+                               parameters = NULL, crs = NULL, bbox = NULL, timestep = NULL) {
+
+  # At least one location argument must be provided
+  if (all(is.null(c(fmisid, place, bbox)))) {
+    stop("No location argument provided", call = FALSE)
+  }
+
+  # Format crs
+  if(!is.null(crs)){
+    crs <- paste0("EPSG::", crs)
+  }
+
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::hourly::simple",
-                     starttime = starttime, endtime = endtime, fmisid = fmisid)
+                     starttime = starttime, endtime = endtime, parameters = parameters,
+                     fmisid = fmisid, place = place, crs = crs, bbox = bbox, timestep = timestep)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
     dplyr::select(time = .data$Time, variable = .data$ParameterName,
@@ -61,5 +75,11 @@ obs_weather_hourly <- function(starttime, endtime, fmisid = NULL) {
                   # Factor needs to be coerced into character first
                   value = as.numeric(as.character(.data$value))) %>%
     dplyr::mutate(value = ifelse(is.nan(.data$value), NA, .data$value))
+
+  # Check for duplicate values
+  sf_obj <- sf_obj %>%
+    arrange(.data$time, .data$variable, is.na(.data$value)) %>%
+    distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
+
   return(sf_obj)
 }

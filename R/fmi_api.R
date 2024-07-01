@@ -68,6 +68,33 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     queries <- append(queries, list(storedquery_id = storedquery_id, ...))
   }
 
+  # Check if there is several parameters arguments
+  if (length(queries$parameters) > 1){
+    para <- queries$parameters
+    queries$parameters <- NULL
+    for (i in 1:length(para)) {
+      queries <- append(queries, list(parameters = para[i]))
+    }
+  }
+
+  # Check if there is several place arguments
+  if (length(queries$place) > 1){
+    pla <- queries$place
+    queries$place <- NULL
+    for (i in 1:length(pla)) {
+      queries <- append(queries, list(place = pla[i]))
+    }
+  }
+
+  # Check if there is several fmisid arguments
+  if (length(queries$fmisid) > 1){
+    id <- queries$fmisid
+    queries$fmisid <- NULL
+    for (i in 1:length(id)) {
+      queries <- append(queries, list(fmisid = id[i]))
+    }
+  }
+
   # Construct the query URL
   url <- httr::modify_url(base_url, query = queries)
 
