@@ -21,7 +21,7 @@ obs_weather_hourly(
 \item{endtime}{character end of time interval in ISO-format.}
 
 \item{fmisid}{numeric FMI observation station identifier
-(see \link[fmi2]{fmi_stations}.}
+(see \link[fmi2]{fmi_stations}).}
 
 \item{place}{character location name for which to provide data.}
 

@@ -23,7 +23,7 @@ character will be coerced into a Date object.}
 character will be coerced into a Date object.}
 
 \item{fmisid}{numeric FMI observation station identifier
-(see \link[fmi2]{fmi_stations}.}
+(see \link[fmi2]{fmi_stations}).}
 
 \item{place}{character location name for which to provide data.}
 

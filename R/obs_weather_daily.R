@@ -22,7 +22,7 @@
 #'        data.
 #' @param place character location name for which to provide data.
 #' @param fmisid numeric FMI observation station identifier
-#'        (see \link[fmi2]{fmi_stations}.
+#'        (see \link[fmi2]{fmi_stations}).
 # @param	maxlocations numeric maximum amount of locations.
 # @param geoid numeric geoid of the location for which to return data.
 # @param wmo numeric WMO code of the location for which to return data.
