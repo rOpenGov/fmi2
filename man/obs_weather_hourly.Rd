@@ -38,12 +38,18 @@ data.}
 sf object in a long (melted) form. Observation variables names are
 given in \code{variable} column. Following variables are returned:
 \describe{
-\item{rrday}{Precipitation amount}
-\item{snow}{Snow depth}
-\item{tday}{Average air temperature}
-\item{tmin}{Minimum air temperature}
-\item{tmax}{Maximum air temperature}
-\item{TG_PT12H_min}{Ground minimum temperature}
+\item{PA_PT1H_AVG}{Air pressure (hPa)}
+\item{PRA_PT1H_ACC}{Precipitation amount (mm)}
+\item{PRI_PT1H_MAX}{Maximum precipitation intensity (mm/h)}
+\item{RH_PT1H_AVG}{Relative humidity (\%)}
+\item{TA_PT1H_AVG}{Air temperature (degC)}
+\item{TA_PT1H_MAX}{Highest temperature (degC)}
+\item{TA_PT1H_MIN }{Lowest temperature (degC)}
+\item{WAWA_PT1H_RANK}{Present weather}
+\item{WD_PT1H_AVG }{Wind direction (deg)}
+\item{WS_PT1H_AVG }{Wind speed (m/s)}
+\item{WS_PT1H_MAX }{Maximum wind speed (m/s)}
+\item{WS_PT1H_MIN }{Minimum wind speed (m/s)}
 }
 }
 \description{

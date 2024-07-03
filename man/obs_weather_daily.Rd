@@ -40,12 +40,12 @@ data.}
 sf object in a long (melted) form. Observation variables names are
 given in \code{variable} column. Following variables are returned:
 \describe{
-\item{rrday}{Precipitation amount}
-\item{snow}{Snow depth}
-\item{tday}{Average air temperature}
-\item{tmin}{Minimum air temperature}
-\item{tmax}{Maximum air temperature}
-\item{TG_PT12H_min}{Ground minimum temperature}
+\item{TG_PT12H_min}{Ground minimum temperature (degC)}
+\item{rrday}{Precipitation amount (mm)}
+\item{snow}{Snow depth (cm)}
+\item{tday}{Average air temperature (degC)}
+\item{tmin}{Minimum air temperature (degC)}
+\item{tmax}{Maximum air temperature (degC)}
 }
 }
 \description{
@@ -55,7 +55,7 @@ Daily weather observations from weather stations.
 Default set contains daily precipitation rate, mean temperature,
 snow depth,
 and minimum and maximum temperature. By default, the data is returned from
-last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
+last 744 hours (31 days). At least one location parameter (geoid/place/fmisid/wmo/bbox)
 has to be given.
 
 The FMI WFS stored query used by this function is

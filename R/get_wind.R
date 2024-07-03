@@ -10,7 +10,14 @@
 #' @inheritParams obs_weather_hourly
 #' @param label A logical for whether to label the variables. Default value is `FALSE`.
 #' @param station A logical for whether to add station info into the data. Default value is `FALSE`.
-#' @return sf object in a long (melted) form.
+#' @return sf object in a long (melted) form. Observation variables names are
+#' given in `variable` column. Following variables are returned:
+#'   \describe{
+#'     \item{WD_PT1H_AVG}{Wind direction (deg)}
+#'     \item{WS_PT1H_AVG}{Wind speed (m/s)}
+#'     \item{WS_PT1H_MAX}{Maximum wind speed (m/s)}
+#'     \item{WS_PT1H_MIN}{Minimum wind speed (m/s)}
+#'   }
 #' @export
 #'
 #' @examples
@@ -39,7 +46,7 @@ get_wind <- function(fmisid = NULL, place = NULL, starttime = NULL, endtime = NU
   if (station) {
 
     y <- y %>%
-      add_station()
+      add_station(crs = crs)
 
   }
 

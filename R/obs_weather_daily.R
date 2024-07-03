@@ -4,7 +4,7 @@
 #' @details Default set contains daily precipitation rate, mean temperature,
 #' snow depth,
 #' and minimum and maximum temperature. By default, the data is returned from
-#' last 744 hours. At least one location parameter (geoid/place/fmisid/wmo/bbox)
+#' last 744 hours (31 days). At least one location parameter (geoid/place/fmisid/wmo/bbox)
 #' has to be given.
 #'
 #' The FMI WFS stored query used by this function is
@@ -37,12 +37,12 @@
 #' @return sf object in a long (melted) form. Observation variables names are
 #' given in `variable` column. Following variables are returned:
 #'   \describe{
-#'     \item{rrday}{Precipitation amount}
-#'     \item{snow}{Snow depth}
-#'     \item{tday}{Average air temperature}
-#'     \item{tmin}{Minimum air temperature}
-#'     \item{tmax}{Maximum air temperature}
-#'     \item{TG_PT12H_min}{Ground minimum temperature}
+#'     \item{TG_PT12H_min}{Ground minimum temperature (degC)}
+#'     \item{rrday}{Precipitation amount (mm)}
+#'     \item{snow}{Snow depth (cm)}
+#'     \item{tday}{Average air temperature (degC)}
+#'     \item{tmin}{Minimum air temperature (degC)}
+#'     \item{tmax}{Maximum air temperature (degC)}
 #'   }
 #'
 #' @export
@@ -64,6 +64,15 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
   # Format crs
   if(!is.null(crs)){
     crs <- paste0("EPSG::", crs)
+  }
+
+  # Check time arguments
+  if (is.null(c(starttime, endtime))) {
+    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
+  } else if (any(sapply(list(starttime, endtime), is.null))) {
+    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
+    starttime <- NULL
+    endtime <- NULL
   }
 
   fmi_obj <- fmi_api(request = "getFeature",

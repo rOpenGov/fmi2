@@ -49,7 +49,14 @@ data.}
 \item{station}{A logical for whether to add station info into the data. Default value is \code{FALSE}.}
 }
 \value{
-sf object in a long (melted) form.
+sf object in a long (melted) form. Observation variables names are
+given in \code{variable} column. One of following variables is returned, depending on which
+spatial resolution is used:
+\describe{
+\item{PRA_PT1H_ACC}{Hourly precipitation amount (mm)}
+\item{rrday}{Daily precipitation amount (mm)}
+\item{rrmon}{Monthly precipitation amount (mm)}
+}
 }
 \description{
 Precipitation observations for different spatial resolutions.

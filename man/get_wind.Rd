@@ -38,7 +38,14 @@ data.}
 \item{station}{A logical for whether to add station info into the data. Default value is \code{FALSE}.}
 }
 \value{
-sf object in a long (melted) form.
+sf object in a long (melted) form. Observation variables names are
+given in \code{variable} column. Following variables are returned:
+\describe{
+\item{WD_PT1H_AVG}{Wind direction (deg)}
+\item{WS_PT1H_AVG}{Wind speed (m/s)}
+\item{WS_PT1H_MAX}{Maximum wind speed (m/s)}
+\item{WS_PT1H_MIN}{Minimum wind speed (m/s)}
+}
 }
 \description{
 Retrieve hourly wind observations from weather stations.

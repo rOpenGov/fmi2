@@ -40,8 +40,8 @@ data.}
 sf object in a long (melted) form. Observation variables names are
 given in \code{variable} column. Following variables are returned:
 \describe{
-\item{rrmon}{Monthly precipitation amount}
-\item{tmon}{Monthly mean temperature}
+\item{rrmon}{Monthly precipitation amount (mm)}
+\item{tmon}{Monthly mean temperature (degC)}
 }
 }
 \description{

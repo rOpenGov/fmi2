@@ -36,8 +36,8 @@
 #' @return sf object in a long (melted) form. Observation variables names are
 #' given in `variable` column. Following variables are returned:
 #'   \describe{
-#'     \item{rrmon}{Monthly precipitation amount}
-#'     \item{tmon}{Monthly mean temperature}
+#'     \item{rrmon}{Monthly precipitation amount (mm)}
+#'     \item{tmon}{Monthly mean temperature (degC)}
 #'   }
 #'
 #' @export
@@ -64,6 +64,15 @@ obs_weather_monthly <- function(starttime = NULL, endtime = NULL, fmisid = NULL,
   # Format crs
   if(!is.null(crs)){
     crs <- paste0("EPSG::", crs)
+  }
+
+  # Check time arguments
+  if (is.null(c(starttime, endtime))) {
+    message("No time arguments given. Observations will be returned from the last 12 months.")
+  } else if (any(sapply(list(starttime, endtime), is.null))) {
+    message("Only one of the time arguments given. Observations will be returned from the last 12 months.")
+    starttime <- NULL
+    endtime <- NULL
   }
 
   fmi_obj <- fmi_api(request = "getFeature",

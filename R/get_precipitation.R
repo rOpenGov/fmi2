@@ -13,7 +13,14 @@
 #' @inheritParams obs_weather_daily
 #' @param label A logical for whether to label the variables. Default value is `FALSE`.
 #' @param station A logical for whether to add station info into the data. Default value is `FALSE`.
-#' @return sf object in a long (melted) form.
+#' @return sf object in a long (melted) form. Observation variables names are
+#' given in `variable` column. One of following variables is returned, depending on which
+#' spatial resolution is used:
+#'   \describe{
+#'     \item{PRA_PT1H_ACC}{Hourly precipitation amount (mm)}
+#'     \item{rrday}{Daily precipitation amount (mm)}
+#'     \item{rrmon}{Monthly precipitation amount (mm)}
+#'   }
 #' @export
 #'
 #' @examples
@@ -81,7 +88,7 @@ get_precipitation <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fm
   if (station) {
 
     y <- y %>%
-      add_station()
+      add_station(crs = crs)
 
   }
 
