@@ -109,14 +109,14 @@ valid_crs <- function(crs){
 valid_bbox <- function(bbox){
 
   # Check bbox is valid
-  if (class(bbox) == "character") {
+  if (inherits(bbox, "character")) {
     values <- as.numeric(unlist(strsplit(bbox, split = ",")))
     if (all(dplyr::between(values[c(1,3)], 15, 40)) && all(dplyr::between(values[c(2,4)], 50, 80))) {
       return(TRUE)
     } else {
       return(FALSE)
     }
-  } else if (class(bbox) == "numeric"){
+  } else if (inherits(bbox, "numeric")){
     if (all(dplyr::between(bbox[c(1,3)], 15, 40)) && all(dplyr::between(bbox[c(2,4)], 50, 80))) {
       return(TRUE)
     } else {

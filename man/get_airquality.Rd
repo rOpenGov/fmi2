@@ -45,8 +45,8 @@ given in \code{variable} column. Following variables are returned:
 \item{NO2_PT1H_avg}{Nitrogen dioxide (ug/m3)}
 \item{NO_PT1H_avg}{Nitrogen monoxide (ug/m3)}
 \item{O3_PT1H_avg}{Ozone (ug/m3)}
-\item{PM10_PT1H_avg}{Partucalte matter < 10 µm (ug/m3)}
-\item{PM25_PT1H_avg}{Partucalte matter < 2.5 µm (ug/m3)}
+\item{PM10_PT1H_avg}{Particulate matter < 10 µm (ug/m3)}
+\item{PM25_PT1H_avg}{Particulate matter < 2.5 µm (ug/m3)}
 \item{QBCPM25_PT1H_AVG}{musta hiili (black coal) PM2.5 (ug/m3)}
 \item{SO2_PT1H_avg}{Sulphur dioxide (ug/m3)}
 \item{TRSC_PT1H_avg}{Odorous sulphur compounds (ugS/m3)}
