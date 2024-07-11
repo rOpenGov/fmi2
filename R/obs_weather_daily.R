@@ -26,6 +26,10 @@
 # @param	maxlocations numeric maximum amount of locations.
 # @param geoid numeric geoid of the location for which to return data.
 # @param wmo numeric WMO code of the location for which to return data.
+#' @param cache A logical whether to do caching. Default is `TRUE`.
+#' @param cache_dir A path to to cache directory. `NULL` (default) creates a "fmi2" directory in
+#' the temporary directory defined by base R [tempdir()] function and uses this directory to
+#' cache data in.
 #'
 #' @import dplyr
 #' @importFrom checkmate assert check_null
@@ -51,7 +55,8 @@
 #' @seealso \link[fmi2]{list_parameters}
 #'
 obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, place = NULL,
-                              parameters = NULL, crs = NULL, bbox = NULL, timestep = NULL) {
+                              parameters = NULL, crs = NULL, bbox = NULL, timestep = NULL,
+                              cache = TRUE, cache_dir = NULL) {
 
   # At least one location argument must be provided
   if (all(is.null(c(fmisid, place, bbox)))) {
@@ -75,6 +80,26 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
     endtime <- NULL
   }
 
+  # Query for caching
+  query <- list(
+    type = "obs_weather_daily",
+    starttime = starttime,
+    endtime = endtime,
+    fmisid = fmisid,
+    place = place,
+    parameters = parameters,
+    crs = crs,
+    bbox = bbox,
+    timestep = timestep
+  )
+  query_hash <- fmi2_fixity(query)
+
+  # Check if data is in cache
+  check_cache <- read_fmi2_cache(cache, cache_dir, query_hash)
+  if (!is.null(check_cache)) {
+    return(check_cache)
+  }
+
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::daily::simple",
                      starttime = starttime, endtime = endtime, parameters = parameters,
@@ -93,6 +118,9 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
   sf_obj <- sf_obj %>%
     arrange(.data$time, .data$variable, is.na(.data$value)) %>%
     distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
+
+  # Check if should be written in cache
+  write_fmi2_cache(cache, cache_dir, query_hash, sf_obj)
 
   return(sf_obj)
 }

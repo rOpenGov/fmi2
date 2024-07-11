@@ -12,7 +12,9 @@ get_airquality(
   parameters = NULL,
   crs = NULL,
   bbox = NULL,
-  timestep = NULL
+  timestep = NULL,
+  cache = TRUE,
+  cache_dir = NULL
 )
 }
 \arguments{
@@ -35,6 +37,12 @@ character will be coerced into a Date object.}
 data.}
 
 \item{timestep}{numeric the time step of data in minutes.}
+
+\item{cache}{A logical whether to do caching. Default is \code{TRUE}.}
+
+\item{cache_dir}{A path to to cache directory. \code{NULL} (default) creates a "fmi2" directory in
+the temporary directory defined by base R \code{\link[=tempdir]{tempdir()}} function and uses this directory to
+cache data in.}
 }
 \value{
 sf object in a long (melted) form. Observation variables names are

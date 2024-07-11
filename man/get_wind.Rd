@@ -13,7 +13,9 @@ get_wind(
   bbox = NULL,
   timestep = NULL,
   label = FALSE,
-  station = FALSE
+  station = FALSE,
+  cache = TRUE,
+  cache_dir = NULL
 )
 }
 \arguments{
@@ -36,6 +38,12 @@ data.}
 \item{label}{A logical for whether to label the variables. Default value is \code{FALSE}.}
 
 \item{station}{A logical for whether to add station info into the data. Default value is \code{FALSE}.}
+
+\item{cache}{A logical whether to do caching. Default is \code{TRUE}.}
+
+\item{cache_dir}{A path to to cache directory. \code{NULL} (default) creates a "fmi2" directory in
+the temporary directory defined by base R \code{\link[=tempdir]{tempdir()}} function and uses this directory to
+cache data in.}
 }
 \value{
 sf object in a long (melted) form. Observation variables names are

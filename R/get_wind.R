@@ -26,13 +26,15 @@
 #'     y <- get_wind(place = "Turku", starttime = "2024-06-23", endtime = "2024-06-30")
 #'   }
 get_wind <- function(fmisid = NULL, place = NULL, starttime = NULL, endtime = NULL,
-                     crs = NULL, bbox = NULL, timestep = NULL, label = FALSE, station = FALSE){
+                     crs = NULL, bbox = NULL, timestep = NULL, label = FALSE, station = FALSE,
+                     cache = TRUE, cache_dir = NULL){
 
 
   # Get hourly data
   y <- obs_weather_hourly(fmisid = fmisid, place = place, starttime = starttime,
                           endtime = endtime, crs = crs, bbox = bbox, timestep = timestep,
-                          parameters = c("WD_PT1H_AVG", "WS_PT1H_AVG", "WS_PT1H_MAX", "WS_PT1H_MIN"))
+                          parameters = c("WD_PT1H_AVG", "WS_PT1H_AVG", "WS_PT1H_MAX", "WS_PT1H_MIN"),
+                          cache = cache, cache_dir = cache_dir)
 
   # Check if variables should be labeled
   if (label) {
