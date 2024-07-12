@@ -119,6 +119,13 @@ get_airquality <- function(starttime = NULL, endtime = NULL, fmisid = NULL, plac
     arrange(.data$time, .data$variable, is.na(.data$value)) %>%
     distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
 
+  # Adding metadata into data.frame
+  attr(sf_obj, "title") <- "Hourly air quality observations"
+  attr(sf_obj, "organization") <- "Finnish Meteorological Institute (FMI)"
+  attr(sf_obj, "time_stamp") <- as.character(Sys.Date())
+  attr(sf_obj, "parameters") <- parameters
+  attr(sf_obj, "url") <- fmi_obj$url
+
   # Check if should be written in cache
   write_fmi2_cache(cache, cache_dir, query_hash, sf_obj)
 

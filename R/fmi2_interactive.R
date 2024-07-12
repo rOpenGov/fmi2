@@ -130,7 +130,7 @@ fmi2_interactive <- function(){
   # Ask if user wants to specify crs
   crs_select <- switch(
     menu(c("Yes", "No"),
-         title = "Specify coordinate reference system (crs)?") + 1,
+         title = "Do you want to specify coordinate reference system (crs)?") + 1,
     return(invisible()),
     TRUE,
     FALSE
@@ -306,14 +306,23 @@ fmi2_interactive <- function(){
     FALSE
   )
 
+  # Should fixity be printed
+  print_fixity <- switch(
+    menu(c("Yes", "No"),
+         title = "Print fixity checksum for the data?") + 1,
+    return(invisible()),
+    TRUE,
+    FALSE
+  )
+
   # Tempfile for citation and function call code
-  if (print_citation || print_code) {
+  if (print_citation || print_code || print_fixity) {
     tempfile_for_sink <- tempfile()
   }
 
   # Write citation info
   if (print_citation) {
-    citation <- "Citation"
+    citation <- cite_fmi2(y, printCitation = FALSE)
     capture.output(cat("#### DATASET CITATION \n\n"),
                    file = tempfile_for_sink, append = TRUE)
     capture.output(citation,
@@ -323,7 +332,7 @@ fmi2_interactive <- function(){
   }
 
   # Write code info
-  if (print_code){
+  if (print_code) {
     capture.output(cat("#### DOWNLOAD PARAMETERS: \n\n"),
                    file = tempfile_for_sink, append = TRUE)
     capture.output(y_print,
@@ -332,8 +341,20 @@ fmi2_interactive <- function(){
                    file = tempfile_for_sink, append = TRUE)
   }
 
+  # Write fixity info
+  if (print_fixity) {
+    fixity <- fmi2_fixity(y, algorithm = "md5")
+    capture.output(cat("### FIXITY CHECKSUM: \n\n"),
+                   file = tempfile_for_sink, append = TRUE)
+    capture.output(print(
+      paste0("Fixity checksum (md5) for the dataset: ", fixity)),
+      file = tempfile_for_sink, append = TRUE)
+    capture.output(cat("\n"),
+                   file = tempfile_for_sink, append = TRUE)
+  }
+
   # Print citation and code, and return data
-  if (print_code || print_citation) {
+  if (print_code || print_citation || print_fixity) {
     cat(readLines(tempfile_for_sink), sep = "\n")
   }
   return(y)

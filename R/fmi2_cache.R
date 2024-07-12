@@ -20,7 +20,7 @@ write_fmi2_cache <- function(cache, cache_dir, query_hash, data){
     }
     # Write data into cache
     cache_file <- file.path(cache_dir, paste0(query_hash, ".gpkg"))
-    sf::st_write(data, cache_file, driver = "GPKG")
+    sf::st_write(data, cache_file, driver = "GPKG", quiet = TRUE)
   }
 }
 
@@ -47,7 +47,7 @@ read_fmi2_cache <- function(cache, cache_dir, query_hash){
       cache_file <- file.path(cache_dir, paste0(query_hash, ".gpkg"))
       # Check if file exists
       if (file.exists(cache_file)){
-        y <- sf::st_read(cache_file)
+        y <- sf::st_read(cache_file, quiet = TRUE)
         return(y)
       } else {
         return(NULL)
