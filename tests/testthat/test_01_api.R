@@ -1,4 +1,4 @@
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("FMI API object is correctly created", {
     expect_error(fmi_api(request = "foobar"),

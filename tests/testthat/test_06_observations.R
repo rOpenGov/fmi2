@@ -15,7 +15,7 @@ test_that("obs_weather_daily() arguments are handled correctly", {
   # Start and end times must be in the past
 })
 
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("daily observation data for a weather station are retrieved correctly", {
     # Use Hanko Tulliniemi weather station
@@ -25,11 +25,11 @@ httptest::with_mock_api({
                                  fmisid = hanko_id)
 
     expect_is(obs_dat, "sf")
-    expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
     expect_is(obs_dat$time, "Date")
     expect_is(obs_dat$variable, "character")
     expect_is(obs_dat$value, "numeric")
-    expect_is(obs_dat$geometry, "sfc")
+    expect_is(obs_dat$Location, "sfc")
   })
 
   test_that("hourly observation data for a weather station are retrieved correctly", {
@@ -41,11 +41,11 @@ httptest::with_mock_api({
                                   fmisid = hanko_id)
 
     expect_is(obs_dat, "sf")
-    expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
     expect_is(obs_dat$time, "POSIXct")
     expect_is(obs_dat$variable, "character")
     expect_is(obs_dat$value, "numeric")
-    expect_is(obs_dat$geometry, "sfc")
+    expect_is(obs_dat$Location, "sfc")
   })
 
 })

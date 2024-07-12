@@ -21,7 +21,7 @@
 #'
 #' @importFrom dplyr bind_rows
 #' @importFrom glue glue
-#' @importFrom httpcache GET
+#' @importFrom httr2 request req_user_agent req_perform resp_body_xml
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_attr xml_children xml_name
@@ -43,12 +43,16 @@ describe_variables <- function(x) {
   url <- glue::glue("https://opendata.fmi.fi/meta?observableProperty=observation&param={vars}&language=eng")
 
   # Set the user agent
-  ua <- httr::user_agent("https://github.com/rOpenGov/fmi2")
+  ua <- "https://github.com/rOpenGov/fmi2"
 
   # Get the response and check the response.
-  resp <- httr::GET(url, ua)
+  resp <- httr2::request(url) %>%
+    httr2::req_user_agent(ua) %>%
+    httr2::req_perform()
+
   # Parse the XML content
-  content <- xml2::read_xml(resp$content)
+  content <- resp %>%
+    httr2::resp_body_xml()
   xml2::xml_ns_strip(content)
 
   # Process a single node (variable)

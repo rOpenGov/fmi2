@@ -1,4 +1,4 @@
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("FMI stations are retrieved correctly", {
     stat_dat <- fmi_stations()

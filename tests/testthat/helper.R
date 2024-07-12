@@ -1,5 +1,5 @@
-library(httptest)
-library(httr)
+library(httptest2)
+library(httr2)
 
 if (Sys.getenv("MOCK_BYPASS") == "true") {
   with_mock_api <- force

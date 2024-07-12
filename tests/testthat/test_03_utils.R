@@ -1,4 +1,4 @@
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("FMI API variable descriptions work", {
     # Use min ground temperature (TG_PT12H_min) and average precipitation
