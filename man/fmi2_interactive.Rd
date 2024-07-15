@@ -10,12 +10,14 @@ fmi2_interactive()
 sf object in a long (melted) form.
 }
 \description{
-Interactive function for using the different functions of \code{fmi2} package.
+Interactive function for getting data from the different functions of
+\code{fmi2} package.
 }
 \details{
 The function allows user to interactively get observations from different \code{fmi2}
-functions. The function also allows printing dataset citation and the code used for
-the function call.
+functions. The function also allows printing dataset citation, the function call used for
+getting the data and a fixity checksum. Function can also add variable labels and station
+information to the dataset.
 }
 \examples{
   \dontrun{

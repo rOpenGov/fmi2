@@ -4,7 +4,7 @@
 \alias{read_fmi2_cache}
 \title{Read cache for fmi2 data}
 \usage{
-read_fmi2_cache(cache, cache_dir, query_hash)
+read_fmi2_cache(cache, cache_dir, query_hash, meta)
 }
 \arguments{
 \item{cache}{A logical whether to check cache.}
@@ -12,6 +12,8 @@ read_fmi2_cache(cache, cache_dir, query_hash)
 \item{cache_dir}{A path to the cache directory.}
 
 \item{query_hash}{A character string used to identify the dataset.}
+
+\item{meta}{A logical whether to also read the dataset metadata.}
 }
 \value{
 sf object or \code{NULL}

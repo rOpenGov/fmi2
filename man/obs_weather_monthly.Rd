@@ -13,6 +13,8 @@ obs_weather_monthly(
   crs = NULL,
   bbox = NULL,
   timestep = NULL,
+  geoid = NULL,
+  wmo = NULL,
   cache = TRUE,
   cache_dir = NULL
 )
@@ -33,10 +35,14 @@ character will be coerced into a Date object.}
 
 \item{crs}{character coordinate projection to use in results.}
 
-\item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
-data.}
+\item{bbox}{numeric vector (for example \code{c(22, 64, 24, 68)}) bounding box of area for
+which to return data.}
 
 \item{timestep}{numeric the time step of data in minutes.}
+
+\item{geoid}{numeric geoid of the location for which to return data.}
+
+\item{wmo}{numeric WMO code of the location for which to return data.}
 
 \item{cache}{A logical whether to do caching. Default is \code{TRUE}.}
 

@@ -21,7 +21,7 @@ functions to check the validity of the parameters.}
 fmi_api (S3) object with the following attributes:
 \describe{
 \item{content}{XML payload.}
-\item{path}{path provided to get the resonse.}
+\item{url}{url to get the response.}
 \item{response}{the original response object.}
 }
 }

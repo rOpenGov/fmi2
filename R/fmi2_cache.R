@@ -5,9 +5,10 @@
 #' @param cache_dir A path to the cache directory.
 #' @param query_hash A character string used to identify the dataset.
 #' @param data FMI dataset
+#' @param meta A logical whether also save the dataset metadata.
 #'
 #' @keywords internal
-write_fmi2_cache <- function(cache, cache_dir, query_hash, data){
+write_fmi2_cache <- function(cache, cache_dir, query_hash, data, meta){
   # Check if data should be written to cache
   if (cache) {
     if (is.null(cache_dir)) {
@@ -21,6 +22,13 @@ write_fmi2_cache <- function(cache, cache_dir, query_hash, data){
     # Write data into cache
     cache_file <- file.path(cache_dir, paste0(query_hash, ".gpkg"))
     sf::st_write(data, cache_file, driver = "GPKG", quiet = TRUE)
+
+    # Write metadata into cache
+    if (meta) {
+      attri <- attributes(data)
+      meta_file <- file.path(cache_dir, paste0(query_hash, "_meta.rds"))
+      saveRDS(attri, file = meta_file, compress = TRUE)
+    }
   }
 }
 
@@ -31,11 +39,12 @@ write_fmi2_cache <- function(cache, cache_dir, query_hash, data){
 #' @param cache A logical whether to check cache.
 #' @param cache_dir A path to the cache directory.
 #' @param query_hash A character string used to identify the dataset.
+#' @param meta A logical whether to also read the dataset metadata.
 #'
 #' @return sf object or `NULL`
 #'
 #' @keywords internal
-read_fmi2_cache <- function(cache, cache_dir, query_hash){
+read_fmi2_cache <- function(cache, cache_dir, query_hash, meta){
   # Check if cache should be checked
   if (cache) {
     if (is.null(cache_dir)) {
@@ -48,7 +57,19 @@ read_fmi2_cache <- function(cache, cache_dir, query_hash){
       # Check if file exists
       if (file.exists(cache_file)){
         y <- sf::st_read(cache_file, quiet = TRUE)
-        return(y)
+        if (meta) {
+          # Add metadata back into the data
+          meta_file <- file.path(cache_dir, paste0(query_hash, "_meta.rds"))
+          ym <- readRDS(meta_file)
+          attr(y, "title") <- ym$title
+          attr(y, "organization") <- ym$organization
+          attr(y, "time_stamp") <- ym$time_stamp
+          attr(y, "parameters") <- ym$parameters
+          attr(y, "url") <- ym$url
+          return(y)
+        } else {
+          return(y)
+        }
       } else {
         return(NULL)
       }
@@ -81,7 +102,7 @@ clean_fmi2_cache <- function(cache_dir = NULL){
   } else if (dir.exists(cache_dir)) {
     # Get cache file names
     files <- list.files(cache_dir,
-                        pattern = ".gpkg",
+                        pattern = "*.(gpkg|rds)$",
                         full.names = TRUE)
   }
   # Check that cache had files
@@ -90,7 +111,7 @@ clean_fmi2_cache <- function(cache_dir = NULL){
   } else {
     # Delete cache files
     unlink(files)
-    message("Deleted .gpkg files from ", cache_dir)
+    message("Deleted .gpkg and .rds files from ", cache_dir)
   }
   invisible(TRUE)
 }

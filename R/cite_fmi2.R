@@ -34,12 +34,9 @@ cite_fmi2 <- function(x, format = "Biblatex", printCitation = TRUE){
     format <- "biblatex"
   }
 
-  parameters <- paste(attr(x, "parameters"), collapse = ", ")
-
   ref <- RefManageR::BibEntry(
     bibtype = "Misc",
     title = attr(x, "title"),
-    parameters = parameters,
     organization = attr(x, "organization"),
     author = utils::person(attr(x, "organization")),
     year = lubridate::year(attr(x, "time_stamp")),

@@ -13,6 +13,8 @@ obs_weather_daily(
   crs = NULL,
   bbox = NULL,
   timestep = NULL,
+  geoid = NULL,
+  wmo = NULL,
   cache = TRUE,
   cache_dir = NULL
 )
@@ -33,10 +35,14 @@ character will be coerced into a Date object.}
 
 \item{crs}{character coordinate projection to use in results.}
 
-\item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
-data.}
+\item{bbox}{numeric vector (for example \code{c(22, 64, 24, 68)}) bounding box of area for
+which to return data.}
 
 \item{timestep}{numeric the time step of data in minutes.}
+
+\item{geoid}{numeric geoid of the location for which to return data.}
+
+\item{wmo}{numeric WMO code of the location for which to return data.}
 
 \item{cache}{A logical whether to do caching. Default is \code{TRUE}.}
 
@@ -73,6 +79,13 @@ The FMI WFS stored query used by this function is
 \note{
 For a complete description of the accepted arguments, see
 \code{list_parameters("fmi::observations::weather::daily::simple")}.
+}
+\examples{
+  \dontrun{
+  # Get daily weather observations from Turku
+  y <- obs_weather_daily(place = "Turku", starttime = "2024-01-01", endtime = "2024-02-01")
+  }
+
 }
 \seealso{
 https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,

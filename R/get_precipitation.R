@@ -37,9 +37,8 @@
 #'   }
 get_precipitation <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fmisid = NULL,
                               place = NULL, starttime = NULL, endtime = NULL,
-                              crs = NULL, bbox = NULL, timestep = NULL,
-                              label = FALSE, station = FALSE,
-                              cache = TRUE, cache_dir = NULL){
+                              crs = NULL, bbox = NULL, wmo = NULL, geoid = NULL, timestep = NULL,
+                              label = FALSE, station = FALSE, cache = TRUE, cache_dir = NULL){
 
   # Check that only one of hourly, daily or monthly is TRUE
   if (sum(c(hourly, daily, monthly)) > 1) {
@@ -53,7 +52,7 @@ get_precipitation <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fm
   if (hourly){
 
     y <- obs_weather_hourly(fmisid = fmisid, place = place, starttime = starttime,
-                            endtime = endtime, crs = crs, bbox = bbox,
+                            endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,
                             timestep = timestep, parameters = "PRA_PT1H_ACC",
                             cache = cache, cache_dir = cache_dir)
 
@@ -63,7 +62,7 @@ get_precipitation <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fm
   if (daily){
 
     y <- obs_weather_daily(fmisid = fmisid, place = place, starttime = starttime,
-                           endtime = endtime, crs = crs, bbox = bbox,
+                           endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,
                            timestep = timestep, parameters = "rrday",
                            cache = cache, cache_dir = cache_dir)
 
@@ -74,7 +73,7 @@ get_precipitation <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fm
   if (monthly) {
 
     y <- obs_weather_monthly(fmisid = fmisid, place = place, starttime = starttime,
-                             endtime = endtime, crs = crs, bbox = bbox,
+                             endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,
                              timestep = timestep, parameters = "rrmon",
                              cache = cache, cache_dir = cache_dir)
 

@@ -18,14 +18,14 @@
 #' @param timestep numeric the time step of data in minutes.
 #' @param parameters character vector of parameters to return (see below).
 #' @param crs character coordinate projection to use in results.
-#' @param bbox numeric vector (EXAMPLE) bounding box of area for which to return
-#'        data.
+#' @param bbox numeric vector (for example `c(22, 64, 24, 68)`) bounding box of area for
+#'  which to return data.
 #' @param place character location name for which to provide data.
 #' @param fmisid numeric FMI observation station identifier
 #'        (see \link[fmi2]{fmi_stations}).
 # @param	maxlocations numeric maximum amount of locations.
-# @param geoid numeric geoid of the location for which to return data.
-# @param wmo numeric WMO code of the location for which to return data.
+#' @param geoid numeric geoid of the location for which to return data.
+#' @param wmo numeric WMO code of the location for which to return data.
 #' @param cache A logical whether to do caching. Default is `TRUE`.
 #' @param cache_dir A path to to cache directory. `NULL` (default) creates a "fmi2" directory in
 #' the temporary directory defined by base R [tempdir()] function and uses this directory to
@@ -59,27 +59,85 @@
 #' @seealso https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,
 #' @seealso \link[fmi2]{list_parameters}
 #'
+#' @examples
+#'   \dontrun{
+#'   # Get hourly weather observations from Helsinki
+#'   y <- obs_weather_hourly(place = "Helsinki", starttime = "2024-01-01", endtime = "2024-01-07")
+#'   }
+#'
 obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, place = NULL,
                                parameters = NULL, crs = NULL, bbox = NULL, timestep = NULL,
-                               cache = TRUE, cache_dir = NULL) {
+                               geoid = NULL, wmo = NULL, cache = TRUE, cache_dir = NULL) {
 
   # At least one location argument must be provided
-  if (is.null(c(fmisid, place, bbox))) {
+  if (is.null(c(fmisid, place, bbox, geoid, wmo))) {
     stop("No location argument provided", call = FALSE)
   }
 
+  # Check fmisid is valid
+  if (!is.null(fmisid)) {
+    if (!valid_fmisid(fmisid)) {
+      stop("Invalid fmisid argument")
+    }
+  }
+
+  # Check place is valid
+  if (!is.null(place)) {
+    if (!valid_place(place)) {
+      stop("Invalid place argument")
+    }
+  }
+
+  # Check geoid is valid
+  if (!is.null(geoid)) {
+    if (!valid_geoid(geoid)) {
+      stop("Invalid geoid argument")
+    }
+  }
+
+  # Check wmo is valid
+  if (!is.null(wmo)) {
+    if (!valid_wmo(wmo)) {
+      stop("Invalid wmo valid")
+    }
+  }
+
+  # Check bbox is valid
+  if (!is.null(bbox)) {
+    if (!valid_bbox(bbox)) {
+      stop("Invalid bbox argument")
+    }
+  }
+
+  # Check timestep is valid
+  if (!is.null(timestep)) {
+    if (!valid_timestep(timestep)) {
+      stop("Invalid timestep argument")
+    }
+  }
+
   # Format crs
-  if (!is.null(crs)) {
-    crs <- paste0("EPSG::", crs)
+  if(!is.null(crs)){
+    if (!valid_crs(crs)) {
+      stop("Invalid crs argument")
+    } else {
+      crs <- paste0("EPSG::", crs)
+    }
   }
 
   # Check time arguments
   if (is.null(c(starttime, endtime))) {
-    message("No time arguments given. Observations will be returned from the last 24 hours.")
+    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
   } else if (any(sapply(list(starttime, endtime), is.null))) {
-    message("Only one of the time arguments given. Observations will be returned from the last 24 hours.")
+    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
     starttime <- NULL
     endtime <- NULL
+  }
+
+  if (!is.null(c(starttime, endtime))) {
+    if (!valid_time(starttime, endtime)) {
+      stop("Invalid time arguments")
+    }
   }
 
   # Query for caching
@@ -92,12 +150,15 @@ obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, 
     parameters = parameters,
     crs = crs,
     bbox = bbox,
-    timestep = timestep
+    timestep = timestep,
+    geoid = geoid,
+    wmo = wmo,
+    download_data = Sys.Date()
   )
   query_hash <- fmi2_fixity(query)
 
   # Check if data is in cache
-  check_cache <- read_fmi2_cache(cache, cache_dir, query_hash)
+  check_cache <- read_fmi2_cache(cache, cache_dir, query_hash, meta = TRUE)
   if (!is.null(check_cache)) {
     return(check_cache)
   }
@@ -105,7 +166,8 @@ obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, 
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::observations::weather::hourly::simple",
                      starttime = starttime, endtime = endtime, parameters = parameters,
-                     fmisid = fmisid, place = place, crs = crs, bbox = bbox, timestep = timestep)
+                     fmisid = fmisid, place = place, crs = crs, bbox = bbox, timestep = timestep,
+                     geoid = geoid, wmo = wmo)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
     dplyr::select(time = .data$Time, variable = .data$ParameterName,
@@ -129,7 +191,7 @@ obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, 
   attr(sf_obj, "url") <- fmi_obj$url
 
   # Check if should be written in cache
-  write_fmi2_cache(cache, cache_dir, query_hash, sf_obj)
+  write_fmi2_cache(cache, cache_dir, query_hash, sf_obj, meta = TRUE)
 
   return(sf_obj)
 }

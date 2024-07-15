@@ -24,7 +24,7 @@
 #' @return fmi_api (S3) object with the following attributes:
 #'        \describe{
 #'           \item{content}{XML payload.}
-#'           \item{path}{path provided to get the resonse.}
+#'           \item{url}{url to get the response.}
 #'           \item{response}{the original response object.}
 #'         }
 #'
@@ -93,6 +93,24 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     queries$fmisid <- NULL
     for (i in 1:length(id)) {
       queries <- append(queries, list(fmisid = id[i]))
+    }
+  }
+
+  # Check if there is several geoid arguments
+  if (length(queries$geoid) > 1){
+    id <- queries$geoid
+    queries$geoid <- NULL
+    for (i in 1:length(id)) {
+      queries <- append(queries, list(geoid = id[i]))
+    }
+  }
+
+  # Check if there is several wmo arguments
+  if (length(queries$wmo) > 1){
+    id <- queries$wmo
+    queries$wmo <- NULL
+    for (i in 1:length(id)) {
+      queries <- append(queries, list(wmo = id[i]))
     }
   }
 

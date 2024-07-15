@@ -1,9 +1,11 @@
 #' @title Interactive function for fmi2
-#' @description Interactive function for using the different functions of `fmi2` package.
+#' @description Interactive function for getting data from the different functions of
+#'  `fmi2` package.
 #'
 #' @details The function allows user to interactively get observations from different `fmi2`
-#' functions. The function also allows printing dataset citation and the code used for
-#' the function call.
+#' functions. The function also allows printing dataset citation, the function call used for
+#' getting the data and a fixity checksum. Function can also add variable labels and station
+#' information to the dataset.
 #'
 #' @importFrom utils menu capture.output
 #'
@@ -68,11 +70,13 @@ fmi2_interactive <- function(){
   if (location_selection == "para") {
     # Selecting location parameter
     location_type <- switch(
-      menu(c("place", "fmisid", "bbox"),
+      menu(c("place", "fmisid", "wmo", "geoid", "bbox"),
            title = "Select location parameter") + 1,
       return(invisible()),
       "place",
       "fmisid",
+      "wmo",
+      "geoid",
       "bbox"
     )
 
@@ -93,7 +97,7 @@ fmi2_interactive <- function(){
 
     if (location_type == "fmisid") {
       fmi_ok <- NULL
-      while (is.null()){
+      while (is.null(fmi_ok)){
         fmisid <- readline(prompt = "Enter station fmisid: ")
         # Check fmisid
         if (!valid_fmisid(fmisid)) {
@@ -103,6 +107,34 @@ fmi2_interactive <- function(){
         }}
     } else {
       fmisid <- NULL
+    }
+
+    if (location_type == "wmo") {
+      wmo_ok <- NULL
+      while (is.null(wmo_ok)){
+        wmo <- readline(prompt = "Enter station wmo: ")
+        # Check wmo
+        if (!valid_wmo(wmo)) {
+          message("Invalid wmo")
+        } else if (valid_wmo(wmo)) {
+          wmo_ok <- TRUE
+        }}
+    } else {
+      wmo <- NULL
+    }
+
+    if (location_type == "geoid") {
+      geoid_ok <- NULL
+      while (is.null(geoid_ok)){
+        geoid <- readline(prompt = "Enter station geoid: ")
+        # Check geoid
+        if (!valid_geoid(geoid)) {
+          message("Invalid geoid")
+        } else if (valid_geoid(geoid)) {
+          geoid_ok <- TRUE
+        }}
+    } else {
+      geoid <- NULL
     }
 
     if (location_type == "bbox") {
@@ -185,28 +217,34 @@ fmi2_interactive <- function(){
   if (obs_type == "obs") {
     if (hourly) {
       y <- obs_weather_hourly(starttime = starttime, endtime = endtime, place = place,
-                              fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                              fmisid = fmisid, crs = crs, bbox = bbox,
+                              wmo = wmo, geoid = geoid, timestep = timestep)
       y_print <- substitute(
         obs_weather_hourly(starttime = starttime, endtime = endtime, place = place,
-                           fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                           fmisid = fmisid, crs = crs, bbox = bbox,
+                           wmo = wmo, geoid = geoid, timestep = timestep),
         list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
-             crs = crs, bbox = bbox, timestep = timestep))
+             crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
     } else if (daily) {
       y <- obs_weather_daily(starttime = starttime, endtime = endtime, place = place,
-                             fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                             fmisid = fmisid, crs = crs, bbox = bbox,
+                             wmo = wmo, geoid = geoid, timestep = timestep)
       y_print <- substitute(
         obs_weather_daily(starttime = starttime, endtime = endtime, place = place,
-                          fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                          fmisid = fmisid, crs = crs, bbox = bbox,
+                          wmo = wmo, geoid = geoid, timestep = timestep),
         list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
-             crs = crs, bbox = bbox, timestep = timestep))
+             crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
     } else if (monthly) {
       y <- obs_weather_monthly(starttime = starttime, endtime = endtime, place = place,
-                               fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                               fmisid = fmisid, crs = crs, bbox = bbox,
+                               wmo = wmo, geoid = geoid, timestep = timestep)
       y_print <- substitute(
         obs_weather_monthly(starttime = starttime, endtime = endtime, place = place,
-                            fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                            fmisid = fmisid, crs = crs, bbox = bbox,
+                            wmo = wmo, geoid = geoid, timestep = timestep),
         list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
-             crs = crs, bbox = bbox, timestep = timestep))
+             crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
     }
   }
 
@@ -214,50 +252,58 @@ fmi2_interactive <- function(){
   if (obs_type == "temp") {
     y <- get_temperature(hourly = hourly, daily = daily, monthly = monthly,
                          starttime = starttime, endtime = endtime, place = place,
-                         fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                         fmisid = fmisid, crs = crs, bbox = bbox,
+                         wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
       get_temperature(hourly = hourly, daily = daily, monthly = monthly,
                       starttime = starttime, endtime = endtime, place = place,
-                      fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                      fmisid = fmisid, crs = crs, bbox = bbox,
+                      wmo = wmo, geoid = geoid, timestep = timestep),
       list(hourly = hourly, daily = daily, monthly = monthly, starttime = starttime,
            endtime = endtime, place = place, fmisid = fmisid, crs = crs, bbox = bbox,
-           timestep = timestep))
+           wmo = wmo, geoid = geoid, timestep = timestep))
   }
 
   # Getting wind data
   if (obs_type == "wind") {
     y <- get_wind(starttime = starttime, endtime = endtime, place = place,
-                  fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                  fmisid = fmisid, crs = crs, bbox = bbox,
+                  wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
       get_wind(starttime = starttime, endtime = endtime, place = place,
-               fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+               fmisid = fmisid, crs = crs, bbox = bbox,
+               wmo = wmo, geoid = geoid, timestep = timestep),
       list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
-           crs = crs, bbox = bbox, timestep = timestep))
+           crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
   }
 
   # Getting precipitation data
   if (obs_type == "prec") {
     y <- get_precipitation(hourly = hourly, daily = daily, monthly = monthly,
                            starttime = starttime, endtime = endtime, place = place,
-                           fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                           fmisid = fmisid, crs = crs, bbox = bbox,
+                           wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
       get_precipitation(hourly = hourly, daily = daily, monthly = monthly,
                         starttime = starttime, endtime = endtime, place = place,
-                        fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                        fmisid = fmisid, crs = crs, bbox = bbox,
+                        wmo = wmo, geoid = geoid, timestep = timestep),
       list(hourly = hourly, daily = daily, monthly = monthly, starttime = starttime,
            endtime = endtime, place = place, fmisid = fmisid, crs = crs, bbox = bbox,
-           timestep = timestep))
+           wmo = wmo, geoid = geoid, timestep = timestep))
   }
 
   # Getting air quality data
   if (obs_type == "air") {
     y <- get_airquality(starttime = starttime, endtime = endtime, place = place,
-                        fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep)
+                        fmisid = fmisid, crs = crs, bbox = bbox,
+                        wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
       get_airquality(starttime = starttime, endtime = endtime, place = place,
-                     fmisid = fmisid, crs = crs, bbox = bbox, timestep = timestep),
+                     fmisid = fmisid, crs = crs, bbox = bbox,
+                     wmo = wmo, geoid = geoid, timestep = timestep),
       list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
-           crs = crs, bbox = bbox, timestep = timestep))
+           crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
   }
 
   # Should label be added

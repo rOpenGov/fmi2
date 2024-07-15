@@ -4,7 +4,7 @@
 \alias{write_fmi2_cache}
 \title{Write fmi2 data into cache}
 \usage{
-write_fmi2_cache(cache, cache_dir, query_hash, data)
+write_fmi2_cache(cache, cache_dir, query_hash, data, meta)
 }
 \arguments{
 \item{cache}{A logical whether to do caching.}
@@ -14,6 +14,8 @@ write_fmi2_cache(cache, cache_dir, query_hash, data)
 \item{query_hash}{A character string used to identify the dataset.}
 
 \item{data}{FMI dataset}
+
+\item{meta}{A logical whether also save the dataset metadata.}
 }
 \description{
 Helper function that writes FMI dataset into cache.

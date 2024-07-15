@@ -14,7 +14,7 @@ valid_fmisid <- function(fmisid) {
     return(FALSE)
   } else {
     stations <- fmi_stations()
-    if (fmisid %in% stations$fmisid) {
+    if (all(fmisid %in% stations$fmisid)) {
       return(TRUE)
     } else {
       return(FALSE)
@@ -69,10 +69,26 @@ valid_place <- function(place){
   } else {
     # Get station data
     stations <- fmi_stations()
-    if (sum(grepl(place, stations$name)) >= 1) {
-      return(TRUE)
+    if (length(place) > 1) {
+      place_ok <- c()
+      for (i in 1:length(place)) {
+        if (sum(grepl(place[i], stations$name)) >= 1) {
+          place_ok <- c(place_ok, TRUE)
+        } else {
+          place_ok <- c(place_ok, FALSE)
+        }
+      }
+      if (all(place_ok)) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
     } else {
-      return(FALSE)
+      if (sum(grepl(place, stations$name)) >= 1) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
     }
   }
 }
@@ -142,5 +158,132 @@ valid_timestep <- function(timestep){
     return(FALSE)
   } else {
     return(TRUE)
+  }
+}
+
+
+#' @title Check wmo argument
+#' @description Check that `wmo` argument is valid.
+#'
+#' @param wmo numeric WMO code of the location for which to return data.
+#'
+#' @importFrom purrr pluck
+#' @importFrom xml2 as_list
+#'
+#' @return logical
+#' @keywords internal
+valid_wmo <- function(wmo){
+
+  # Check if wmo codes are in cache
+  query <- list(type = "wmo list",
+                download_date = Sys.Date())
+  query_hash <- fmi2_fixity(query)
+  cache_dir <- file.path(tempdir(), "fmi2")
+  cache_dir <- path.expand(cache_dir)
+  cache_file <- file.path(cache_dir, paste0(query_hash, ".rds"))
+  if (dir.exists(cache_dir) && file.exists(cache_file)) {
+    wmo_list <- readRDS(cache_file)
+  } else {
+    # Get list of wmo codes
+    fmi_obj <- fmi_api(request = "getFeature",
+                       storedquery_id = "fmi::ef::stations") %>%
+      purrr::pluck("content") %>%
+      xml2::as_list()
+
+    obj <- fmi_obj[[1]]
+
+    wmo_list <- c()
+
+    for (j in seq_along(fmi_obj$FeatureCollection)){
+
+      children <- purrr::pluck(obj, j)
+
+      for (i in seq_along(children$EnvironmentalMonitoringFacility)) {
+        attri <- attributes(children$EnvironmentalMonitoringFacility[[i]])
+        attri <- ifelse(is.null(attri), "", attri)
+        if (grepl("wmo", attri, ignore.case = TRUE)) {
+          wmo_list <- c(wmo_list, children$EnvironmentalMonitoringFacility[[i]])
+        }
+      }
+    }
+    wmo_list <- as.numeric(unlist(wmo_list))
+
+    # Write the list into cache
+    if (!dir.exists(cache_dir)) {
+      dir.create(cache_dir, recursive = TRUE)
+    }
+    saveRDS(wmo_list, file = cache_file, compress = TRUE)
+}
+
+  # Check that wmo is valid
+  wmo <- as.numeric(wmo)
+  if (all(wmo %in% wmo_list)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+
+#' @title Check geoid argument
+#' @description Check that `geoid` argument is valid.
+#'
+#' @param geoid numeric geoid of the location for which to return data.
+#'
+#' @return logical
+#'
+#' @importFrom purrr pluck
+#' @importFrom xml2 as_list
+#'
+#' @keywords internal
+valid_geoid <- function(geoid){
+
+  # Check if geoid codes are in cache
+  query <- list(type = "geoid list",
+                download_date = Sys.Date())
+  query_hash <- fmi2_fixity(query)
+  cache_dir <- file.path(tempdir(), "fmi2")
+  cache_dir <- path.expand(cache_dir)
+  cache_file <- file.path(cache_dir, paste0(query_hash, ".rds"))
+  if (dir.exists(cache_dir) && file.exists(cache_file)) {
+      geoid_list <- readRDS(cache_file)
+    } else {
+    # Get list of geoid codes
+    fmi_obj <- fmi_api(request = "getFeature",
+                       storedquery_id = "fmi::ef::stations") %>%
+      purrr::pluck("content") %>%
+      xml2::as_list()
+
+    obj <- fmi_obj[[1]]
+
+    geoid_list <- c()
+
+    for (j in seq_along(fmi_obj$FeatureCollection)){
+
+      children <- purrr::pluck(obj, j)
+
+      for (i in seq_along(children$EnvironmentalMonitoringFacility)) {
+        attri <- attributes(children$EnvironmentalMonitoringFacility[[i]])
+        attri <- ifelse(is.null(attri), "", attri)
+        if (grepl("geoid", attri, ignore.case = TRUE)) {
+          geoid_list <- c(geoid_list, children$EnvironmentalMonitoringFacility[[i]])
+        }
+      }
+    }
+    geoid_list <-as.numeric(unlist(geoid_list))
+
+    # Write the list into cache
+    if (!dir.exists(cache_dir)) {
+      dir.create(cache_dir, recursive = TRUE)
+    }
+    saveRDS(geoid_list, file = cache_file, compress = TRUE)
+  }
+
+  # Check that geoid is valid
+  geoid <- as.numeric(geoid)
+  if (all(geoid %in% geoid_list)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
   }
 }

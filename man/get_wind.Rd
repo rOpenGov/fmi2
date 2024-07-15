@@ -11,6 +11,8 @@ get_wind(
   endtime = NULL,
   crs = NULL,
   bbox = NULL,
+  wmo = NULL,
+  geoid = NULL,
   timestep = NULL,
   label = FALSE,
   station = FALSE,
@@ -30,8 +32,12 @@ get_wind(
 
 \item{crs}{character coordinate projection to use in results.}
 
-\item{bbox}{numeric vector (EXAMPLE) bounding box of area for which to return
-data.}
+\item{bbox}{numeric vector (for example \code{c(22, 64, 24, 68)}) bounding box of area for
+which to return data.}
+
+\item{wmo}{numeric WMO code of the location for which to return data.}
+
+\item{geoid}{numeric geoid of the location for which to return data.}
 
 \item{timestep}{numeric the time step of data in minutes.}
 

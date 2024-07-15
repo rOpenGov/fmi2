@@ -30,7 +30,11 @@ given variable.
 }
 \examples{
   \dontrun{
+     # Get description for list of variables
      desc <- describe_variables(c("TG_PT12H_min", "rrday"))
+     # Get description for variables in dataset
+     y <- obs_weather_daily(place = "Turku", starttime = "2024-01-01", endtime = "2024-02-01")
+     desc <- describe_variables(y$variable)
   }
 }
 \author{
