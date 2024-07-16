@@ -1,6 +1,6 @@
 library(fmi2)
 library(httptest2)
-library(httr2)
+library(httr2, warn.conflicts = FALSE)
 
 .mockPaths("tests/testthat")
 
