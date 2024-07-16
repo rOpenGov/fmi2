@@ -8,7 +8,8 @@ bibentry(
   title    = "fmi2: Finnish Meteorological Institute open data API R client",
   author   = c(
     person(given = "Joona", family = "Lehtomäki", email = "jlehtoma@pm.me"),
-    person(given = "Leo", family = "Lahti")
+    person(given = "Leo", family = "Lahti"),
+    person(given = "Aleksi", family = "Lahtinen")
   ),
   url      = "https://github.com/rOpenGov/fmi2",
   type     = "Computer software",
@@ -16,7 +17,7 @@ bibentry(
   note     = vers,
   textVersion =
     paste0(
-    "Lehtomäki J., Lahti L. (", sub("-.*", "", meta$Date),
+    "Lehtomäki J., Lahti L., Lahtinen A. (", sub("-.*", "", meta$Date),
     "). fmi2: Finnish Meteorological Institute open data API R client [Computer software]. ",
     vers,
     ". https://github.com/rOpenGov/fmi2"

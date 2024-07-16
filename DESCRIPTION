@@ -1,13 +1,14 @@
 Package: fmi2
 Title: Finnish Meteorological Institute Open Data API R Client
-Version: 0.3.1.9000
-Date: 2024-07-08
+Version: 0.3.1
+Date: 2024-07-16
 Authors@R: c(
     person("Joona", "Lehtomaki", , "jlehtoma@pm.me", role = c("aut", "cre")),
     person("Leo", "Lahti", role = "aut",
            comment = c(ORCID = "0000-0001-5537-637X")),
     person("Ilari", "Scheinin", role = "ctb"),
-    person("Aleksi", "Lahtinen", role = "ctb")
+    person("Aleksi", "Lahtinen", role = "aut",
+           comment = c(ORCID = "0009-0009-9640-5187"))
   )
 Description: R client for the Finnish Meteorological Institute (FMI) open
     data API. This package supersedes the obsolete fmi package. Client can
@@ -55,7 +56,7 @@ ByteCompile: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-X-schema.org-isPartOf: http://ropengov.org/
+X-schema.org-isPartOf: https://ropengov.org/
 X-schema.org-keywords: ropengov
 Collate: 
     'fmi2-global.R'

@@ -7,8 +7,8 @@ cff-version: 1.2.0
 message: 'To cite package "fmi2" in publications use:'
 type: software
 license: MIT
-title: 'fmi2: Finnish Meteorological Institute open data API R client'
-version: 0.3.0.9000
+title: 'fmi2: Finnish Meteorological Institute Open Data API R Client'
+version: 0.3.1.
 abstract: R client for the Finnish Meteorological Institute (FMI) open data API. This
   package supersedes the obsolete fmi package. Client can be used to fetch geospatial
   over FMI's WFS <https://en.ilmatieteenlaitos.fi/open-data-manual-accessing-data>
@@ -20,9 +20,25 @@ authors:
 - family-names: Lahti
   given-names: Leo
   orcid: https://orcid.org/0000-0001-5537-637X
+- family-names: Lahtinen
+  given-names: Aleksi
+  orcid: https://orcid.org/0009-0009-9640-5187
+preferred-citation:
+  type: generic
+  title: 'fmi2: Finnish Meteorological Institute open data API R client'
+  authors:
+  - family-names: Lehtomäki
+    given-names: Joona
+    email: jlehtoma@pm.me
+  - family-names: Lahti
+    given-names: Leo
+    orcid: https://orcid.org/0000-0001-5537-637X
+  url: https://github.com/rOpenGov/fmi2
+  year: '2024'
+  notes: R package version 0.3.1.
 repository-code: https://github.com/rOpenGov/fmi2
 url: https://ropengov.github.io/fmi2/
-date-released: '2024-07-08'
+date-released: '2024-07-16'
 contact:
 - family-names: Lehtomaki
   given-names: Joona
@@ -57,6 +73,66 @@ references:
     orcid: https://orcid.org/0000-0001-9754-0393
   year: '2024'
   version: '>= 1.9.4'
+- type: software
+  title: digest
+  abstract: 'digest: Create Compact Hash Digests of R Objects'
+  notes: Imports
+  url: https://dirk.eddelbuettel.com/code/digest.html
+  repository: https://CRAN.R-project.org/package=digest
+  authors:
+  - family-names: Lucas
+    given-names: Dirk Eddelbuettel with contributions by Antoine
+    email: edd@debian.org
+  - family-names: Tuszynski
+    given-names: Jarek
+  - family-names: Bengtsson
+    given-names: Henrik
+  - family-names: Urbanek
+    given-names: Simon
+  - family-names: Frasca
+    given-names: Mario
+  - family-names: Lewis
+    given-names: Bryan
+  - family-names: Stokely
+    given-names: Murray
+  - family-names: Muehleisen
+    given-names: Hannes
+  - family-names: Murdoch
+    given-names: Duncan
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Wu
+    given-names: Wush
+  - family-names: Kou
+    given-names: Qiang
+  - family-names: Onkelinx
+    given-names: Thierry
+  - family-names: Lang
+    given-names: Michel
+  - family-names: Simko
+    given-names: Viliam
+  - family-names: Hornik
+    given-names: Kurt
+  - family-names: Neal
+    given-names: Radford
+  - family-names: Bell
+    given-names: Kendon
+  - family-names: Queljoe
+    given-names: Matthew
+    name-particle: de
+  - family-names: Suruceanu
+    given-names: Ion
+  - family-names: Denney
+    given-names: Bill
+  - family-names: Schumacher
+    given-names: Dirk
+  - family-names: Chang
+    given-names: Winston
+  - family-names: Attali
+    given-names: Dean
+  - family-names: Chirico.
+    given-names: Michael
+  year: '2024'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -99,29 +175,16 @@ references:
   year: '2024'
   version: '>= 1.3.1'
 - type: software
-  title: httpcache
-  abstract: 'httpcache: Query Cache for HTTP Clients'
+  title: httr2
+  abstract: 'httr2: Perform HTTP Requests and Process the Responses'
   notes: Imports
-  url: https://enpiar.com/r/httpcache/
-  repository: https://CRAN.R-project.org/package=httpcache
-  authors:
-  - family-names: Richardson
-    given-names: Neal
-    email: neal.p.richardson@gmail.com
-  year: '2024'
-  version: '>= 1.1.0'
-- type: software
-  title: httr
-  abstract: 'httr: Tools for Working with URLs and HTTP'
-  notes: Imports
-  url: https://httr.r-lib.org/
-  repository: https://CRAN.R-project.org/package=httr
+  url: https://httr2.r-lib.org
+  repository: https://CRAN.R-project.org/package=httr2
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@posit.co
+    email: hadley@rstudio.com
   year: '2024'
-  version: '>= 1.4.1'
 - type: software
   title: lubridate
   abstract: 'lubridate: Make Dealing with Dates a Little Easier'
@@ -215,6 +278,19 @@ references:
   year: '2024'
   version: '>= 0.3.2'
 - type: software
+  title: RefManageR
+  abstract: 'RefManageR: Straightforward ''BibTeX'' and ''BibLaTeX'' Bibliography
+    Management'
+  notes: Imports
+  url: https://github.com/ropensci/RefManageR/
+  repository: https://CRAN.R-project.org/package=RefManageR
+  authors:
+  - family-names: McLean
+    given-names: Mathew W.
+    email: mathew.w.mclean@gmail.com
+    orcid: https://orcid.org/0000-0002-7891-9645
+  year: '2024'
+- type: software
   title: rlang
   abstract: 'rlang: Functions for Base Types and Core R and ''Tidyverse'' Features'
   notes: Imports
@@ -229,18 +305,6 @@ references:
     email: hadley@posit.co
   year: '2024'
   version: '>= 0.1.2'
-- type: software
-  title: rvest
-  abstract: 'rvest: Easily Harvest (Scrape) Web Pages'
-  notes: Imports
-  url: https://rvest.tidyverse.org/
-  repository: https://CRAN.R-project.org/package=rvest
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2024'
-  version: '>= 0.3.2'
 - type: software
   title: sf
   abstract: 'sf: Simple Features for R'
@@ -355,18 +419,17 @@ references:
   year: '2024'
   version: '>= 3.2.1'
 - type: software
-  title: httptest
-  abstract: 'httptest: A Test Environment for HTTP Requests'
+  title: httptest2
+  abstract: 'httptest2: Test Helpers for ''httr2'''
   notes: Suggests
-  url: https://enpiar.com/r/httptest/
-  repository: https://CRAN.R-project.org/package=httptest
+  url: https://enpiar.com/httptest2/
+  repository: https://CRAN.R-project.org/package=httptest2
   authors:
   - family-names: Richardson
     given-names: Neal
     email: neal.p.richardson@gmail.com
     orcid: https://orcid.org/0009-0002-7992-3520
   year: '2024'
-  version: '>= 3.2.2'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'

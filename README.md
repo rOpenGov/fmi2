@@ -71,9 +71,9 @@ the following vignette:
 
 There are also the following articles:
 
-- [Tutorial for fmi2 R package]()
-- [Säähavaintojen hakeminen]()
-- [Tutoriaali fmi2 R-paketille]()
+- \[Tutorial for fmi2 R package\]
+- \[Säähavaintojen hakeminen\]
+- \[Tutoriaali fmi2 R-paketille\]
 
 ## Contributing
 
@@ -96,9 +96,10 @@ complicated than `fmi2` and too laborious to maintain.
 
 ## Acknowledgements
 
-Kindly cite this work as follows: Joona Lehtomäki and Leo Lahti
-(rOpenGov 2024). fmi2: Finnish Meteorological Institute open data API R
-client. R package version 0.3.1. URL: <https://github.com/rOpenGov/fmi2>
+Kindly cite this work as follows: Joona Lehtomäki, Leo Lahti and Aleksi
+Lahtinen (rOpenGov 2024). fmi2: Finnish Meteorological Institute open
+data API R client. R package version 0.3.1. URL:
+<https://github.com/rOpenGov/fmi2>
 
 We are grateful for all
 [contributors](https://github.com/rOpenGov/fmi2/graphs/contributors).
