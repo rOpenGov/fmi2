@@ -1,5 +1,27 @@
 # fmi2 (development version)
 
+## CHANGES IN VERSION 0.3.1 (2024-07-16)
+
+### NEW FEATURES
+* Support for new stored queries in form of functions `obs_weather_monthly()`, gives monthly weather observations (issue #2, PR #23 by @Allaht2), and `get_airquality()`, gives hourly air quality observations.
+* New wrapper functions `get_precipitation()`, `get_temperature()` and `get_wind()` for getting specific weather observations (issue #18, PR #23 by @Allaht2).
+* Interactive function `fmi2_interactive()` for interactively getting data (issue #18, PR #23 by @Allaht2).
+* Functions for interactively viewing and selecting weather stations: `plot_stations()` and `select_stations()` (issue #5, PR #23 by @Allaht2).
+* Function `cite_fmi2()` added for citing `fmi2` datasets (issue #19, PR #23 by @Allaht2).
+* Other new functions: `add_station()` and `label_variables()`.
+* New depencies / imports: move from `httr` package to `httr2` package (issue #21, PR #23 by @Allaht2). Other new imports are `digest`, `mapedit`, `mapview` and `RefManageR`.
+* Added support for data caching to data querying functions (issue #22, PR #23 by @Allaht2).
+
+### DEPRECATED AND DEFUNCT
+* Remove dependencies / imports: `httr`, `httpcache` and `rvest`.
+
+### MINOR IMPROVEMENETS
+* Update vignette and add Finnish version as article. Also add a new article going over new functions, Finnish version also included (issue #17, PR #23 by @Allaht2).
+* Added support for arguments `parameters`, `crs`, `bbox`, `timestep`, `geoid`, and `wmo` to data querying functions.
+* Update package citation information (issue #20, PR #23 by @Allaht2).
+* Add functions for checking validity of arguments (issue #1, PR #23 by @Allaht2).
+
+
 ## CHANGES IN VERSION 0.2.0 (2020-11-29)
 
 -   Use the FMI API to retrieve the FMI stations data. Previously this 
