@@ -25,6 +25,9 @@
 #'
 label_variables <- function(x, replcace = FALSE){
 
+  # Get dataset attributes
+  attri <- attributes(x)
+
   var_desc <- describe_variables(x$variable)
 
   combined <- x %>%
@@ -39,6 +42,13 @@ label_variables <- function(x, replcace = FALSE){
       dplyr::rename(variable = .data$label)
 
   }
+
+  # Reinsert metadata
+  attr(combined, "title") <- attri$title
+  attr(combined, "organization") <- attri$organization
+  attr(combined, "time_stamp") <- attri$time_stamp
+  attr(combined, "parameters") <- attri$parameters
+  attr(combined, "url") <- attri$url
 
   return(combined)
 

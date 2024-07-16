@@ -1,0 +1,372 @@
+---
+title: "Tutoriaali fmi2 R-paketille"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Ennen tämän artikkelin lukemista kannattaa tutustua `fmi2` paketin toiseen [artikkeliin](weather_observation_data_fi.Rmd). Siinä käydään läpi perustiedot paketista ja esitellään säähavaintojen saamiseen tarvittavat funktiot, esimerkiksi `obs_weather_daily()`. Tässä artikkelissa keskitytään funktioihin, joita ei käsitelty toisessa artikkelissa. Aloitetaan lataamalla tarvittavat paketit.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(fmi2)
+library(ggplot2)
+library(DT)
+```
+
+# Wrapper funktiot
+
+Tässä osiossa käydään läpi paketin wrapper funktioita. Nämä funktiot kutsuvat säähavaintojen saamiseen tarvittavia funktioita ja antavat käyttäjälle haluamansa havainnot. 
+
+## Sademäärä havainnot
+
+Sademäärä havaintoja voi hakea käyttämällä `get_precipitation()` funktiota. Funktion käyttäminen vaatii havaintojen aikavälin määrittämisen, eli halutaanko tuntikohtaiset, päivittäiset vai kuukausittaiset havainnot. Käydään läpi funktion käyttöä vertaamalla Helsingin, Turun ja Oulun päivittäisiä sademääriä.
+
+```{r precipitation, warning = FALSE}
+# Datan hakeminen
+helsinki_precipitation <- get_precipitation(daily = TRUE, place = "Helsinki",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+turku_precipitation <- get_precipitation(daily = TRUE, place = "Turku",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+oulu_precipitation <- get_precipitation(daily = TRUE, place = "Oulu",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+helsinki_precipitation$location <- "Helsinki"
+turku_precipitation$location <- "Turku"
+oulu_precipitation$location <- "Oulu"
+
+all_data <- rbind(helsinki_precipitation, turku_precipitation, oulu_precipitation)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Oulu"),
+                                  ordered = TRUE))
+# Piirretään kuvaajat
+all_data %>% 
+  dplyr::filter(variable == "rrday") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Sademäärä (mm)\n") +
+  xlab("\nPäivä") + theme_minimal()
+```
+
+## Lämpötilahavainnot
+
+Funktio `get_temperature()` mahdollistaa lämpötilahavaintojen hakemisen. Funktion palauttamat muuttujat riippuvat käytetystä aikavälistä. Tuntikohtaiset ja päivittäiset havainnot sisältävät keskilämpötilan, minimi ja maksimi lämpötilan. Kuukausikohtaiset havainnot taas sisältävät vain keskilämpötilan. Verrataan tuntikohtaisia lämpötila havaintoja samassa kolmessa kaupungissa.
+
+```{r temperature, warning=FALSE}
+# Datan hakeminen
+helsinki_temperature <- get_temperature(hourly = TRUE, place = "Helsinki",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+turku_temperature <- get_temperature(hourly = TRUE, place = "Turku",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+oulu_temperature <- get_temperature(hourly = TRUE, place = "Oulu",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+helsinki_temperature$location <- "Helsinki"
+turku_temperature$location <- "Turku"
+oulu_temperature$location <- "Oulu"
+
+all_data <- rbind(helsinki_temperature, turku_temperature, oulu_temperature)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Oulu"),
+                                  ordered = TRUE))
+# Piirretään kuvaajat
+all_data %>% 
+  dplyr::filter(
+    variable == "TA_PT1H_AVG" | variable == "TA_PT1H_MAX" | variable == "TA_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Lämpötila (C)\n") +
+  xlab("\nPäivä") + theme_minimal() + 
+  scale_color_discrete(name = "Muuttuja",
+                      labels = c("Keskilämpötila", "Maksimi lämpötila", "Minimi lämpötila"))
+```
+
+## Tuulihavainnot
+
+Tuulihavaintojen hakemiseen voi käyttää `get_wind()` funktiota. Funktio palauttaa tuntikohtaiset havainnot tuulen suunnasta, keskinopeudesta, minimi ja maksimi nopeudesta. Vain tuntikohtaiset havainnot ovat saatavilla. Verrataan tuulen nopeutta Helsingissä, Turussa ja Tampereella.
+
+```{r wind, warning = FALSE}
+# Datan hakeminen
+helsinki_wind <- get_wind(place = "Helsinki", starttime = "2024-07-01", endtime = "2024-07-07")
+turku_wind <- get_wind(place = "Turku", starttime = "2024-07-01", endtime = "2024-07-07")
+tampere_wind <- get_wind(place = "Tampere", starttime = "2024-07-01", endtime = "2024-07-07")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+helsinki_wind$location <- "Helsinki"
+turku_wind$location <- "Turku"
+tampere_wind$location <- "Tampere"
+
+all_data <- rbind(helsinki_wind, turku_wind, tampere_wind)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Tampere"),
+                                  ordered = TRUE))
+# Piirretään kuvaajat
+all_data %>% 
+  dplyr::filter(
+    variable == "WS_PT1H_AVG" | variable == "WS_PT1H_MAX" | variable == "WS_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Tuulen nopeus (m/s)\n") +
+  xlab("\nPäivä") + theme_minimal() +
+  scale_color_discrete(name = "Muuttuja",
+                       label = c("Keskinopeus", "Maksimi nopeus", "Minimi nopeus"))
+```
+
+# Muut funktiot
+
+Käydään nyt läpi muita paketissa olevia funktioita.
+
+## Ilmanlaatuhavainnot
+
+Tuntikohtaiset ilmanlaatuhavainnot saa käyttämällä funktiota `get_airquality()`. Funktio palauttama data sisältää kymmenen eri muuttujaa. Tarkan listan muuttujista löytää funktion dokumentaatiosta (`?get_airquality()`). Verrataan typpioksidin (NO2_PT1H_avg) ja alle 10 µm kokoisten hiukkasten määrää Turussa, Helsingissä ja Tampereella.
+
+```{r airquality, warning = FALSE}
+# Datan hakeminen
+helsinki_air <- get_airquality(place = "Helsinki",
+                               starttime = "2024-07-01", endtime = "2024-07-07")
+turku_air <- get_airquality(place = "Turku",
+                            starttime = "2024-07-01", endtime = "2024-07-07")
+tampere_air <- get_airquality(place = "Tampere",
+                              starttime = "2024-07-01", endtime = "2024-07-07")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+helsinki_air$location <- "Helsinki"
+turku_air$location <- "Turku"
+tampere_air$location <- "Tampere"
+
+all_data <- rbind(helsinki_air, turku_air, tampere_air)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Tampere"),
+                                  ordered = TRUE))
+# Piirretään kuvaajat
+all_data %>% 
+  dplyr::filter(
+    variable == "NO2_PT1H_avg" | variable == "PM10_PT1H_avg") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Tiheys (ug/m3)\n") +
+  xlab("\nDate") + theme_minimal()
+```
+
+## Muuttujien nimeäminen ja havaintoasemien tietojen lisääminen
+
+Funktio `describe_variables()` mahdollistaa lisätiedon saamisen erilaisten FMI havaintojen muuttujista. `label_variables()` funktion avulla voi taas lisätä dataan sarakkeen, jossa kuvataan tarkemmin muuttujia. Havainnollistetaan funktion käyttöä ilmanlaatuhavainnoilla.
+
+```{r label, warning=FALSE}
+# Datan hakeminen
+turku_air <- get_airquality(place = "Turku",
+                            starttime = "2024-07-01", endtime = "2024-07-07")
+# Muuttujien nimeäminen
+turku_air <- turku_air %>%
+  label_variables()
+turku_air %>%
+  DT::datatable()
+```
+
+Havaintoasemien tiedot pystyy lisäämään dataan käyttämällä funktiota `add_station()`. Funktio lisää aseman nimen ja fmisid tunnuksen.
+
+```{r station_info, warning=FALSE}
+# Datan hakeminen
+turku_wind <- get_wind(place = "Turku", starttime = "2024-07-01", endtime = "2024-07-07")
+# Lisätään havaintoasemian tiedot
+turku_wind <- turku_wind %>%
+  add_station()
+turku_wind %>%
+  DT::datatable()
+```
+
+
+## Havaintoasemien kartoittaminen
+
+Havaintoasemia voi etsiä käyttämällä funktiota `fmi_stations()` tai selaamalla [FMI-nettisivuja](https://www.ilmatieteenlaitos.fi/havaintoasemat). Funktio `plot_stations()` piirtää havaintoasemat interaktiiviselle kartalle, josta voi etsiä haluamansa aseman. Klikkaamalla havaintoasemaa saa sen perustiedot, esimerkiksi nimen ja fmisid tunnuksen. 
+
+```{r map_stations, warning = FALSE}
+# Piirretään havaintoasemat kartalle
+plot_stations(legend = FALSE)
+```
+
+Funktiolla `select_stations()` voi taas valita interaktiivisesti osajoukon havaintoasemista. Funktio piirtää myös asemat interaktiiviselle kartalle, josta voi valita haluamansa asemat. Funktio palauttaa lopuksi tiedot valituista asemista.
+
+## Interaktiivinen funktio
+
+Erilaisa FMI havaintotietoja voi myös hakea käyttämällä interaktiivista `fmi2_interactive()` funktiota. Funktion avulla käyttäjä voi valita interaktiivisesti havaintojen saamista varten tarvittavat tiedot. Se pystyy myös tulostamaan viitteen datalle ja funktiokutsun, jolla havainnot saatiin.
+
+Datan hakeminen käyttämällä interaktiivista funktiota näyttää kutakuinkin seuraavalta:
+
+```{}
+> fmi2_interactive()
+Which observations do you want? 
+
+1: Weather observations
+2: Temperature observations
+3: Wind observations
+4: Precipitation observations
+5: Airquality observations
+
+Selection: 2
+Select spatial resolution 
+
+1: Hourly
+2: Daily
+3: Monthly
+
+Selection: 1
+Give start time in ISO-format: 2024-01-01
+Give end time: 2024-01-07
+Select the way of choosing location 
+
+1: Input parameter
+2: Select from interactive map
+
+Selection: 1
+Select location parameter 
+
+1: place
+2: fmisid
+3: wmo
+4: geoid
+5: bbox
+
+Selection: 2
+Enter station fmisid: 101065
+Do you want to specify coordinate reference system (crs)? 
+
+1: Yes
+2: No
+
+Selection: 2
+Do you want to specify timestep? 
+
+1: Yes
+2: No
+
+Selection: 2
+Add labels for variables? 
+
+1: Yes
+2: No
+
+Selection: 2
+Add station info? 
+
+1: Yes
+2: No
+
+Selection: 2
+Print dataset citation? 
+
+1: Yes
+2: No
+
+Selection: 1
+Print the code for the function call? 
+
+1: Yes
+2: No
+
+Selection: 1
+Print fixity checksum for the data? 
+
+1: Yes
+2: No
+
+Selection: 1
+#### DATASET CITATION 
+
+@Misc{,
+  title = {Hourly weather observations},
+  organization = {Finnish Meteorological Institute (FMI)},
+  author = {{Finnish Meteorological Institute (FMI)}},
+  year = {2024},
+  url = {http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi%3A%3Aobservations%3A%3Aweather%3A%3Ahourly%3A%3Asimple&starttime=2024-01-01&endtime=2024-01-07&fmisid=101065&parameters=TA_PT1H_AVG&parameters=TA_PT1H_MAX&parameters=TA_PT1H_MIN},
+  type = {Dataset},
+  note = {Accessed 2024-07-16 using fmi2 R package 0.3.1.9000},
+}
+
+#### DOWNLOAD PARAMETERS: 
+
+get_temperature(hourly = TRUE, daily = FALSE, monthly = FALSE, 
+    starttime = "2024-01-01", endtime = "2024-01-07", place = NULL, 
+    fmisid = "101065", crs = NULL, bbox = NULL, wmo = NULL, geoid = NULL, 
+    timestep = NULL)
+
+### FIXITY CHECKSUM: 
+
+[1] "Fixity checksum (md5) for the dataset: 7f87c358dd85d5b2834128ba6587df89"
+
+Simple feature collection with 435 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 22.27916 ymin: 60.51565 xmax: 22.27916 ymax: 60.51565
+Geodetic CRS:  ETRS89
+First 10 features:
+                  time    variable value                  Location
+1  2024-01-01 00:00:00 TA_PT1H_AVG -16.8 POINT (22.27916 60.51565)
+2  2024-01-01 00:00:00 TA_PT1H_MAX -16.6 POINT (22.27916 60.51565)
+3  2024-01-01 00:00:00 TA_PT1H_MIN -17.0 POINT (22.27916 60.51565)
+4  2024-01-01 01:00:00 TA_PT1H_AVG -17.0 POINT (22.27916 60.51565)
+5  2024-01-01 01:00:00 TA_PT1H_MAX -16.8 POINT (22.27916 60.51565)
+6  2024-01-01 01:00:00 TA_PT1H_MIN -17.2 POINT (22.27916 60.51565)
+7  2024-01-01 02:00:00 TA_PT1H_AVG -17.3 POINT (22.27916 60.51565)
+8  2024-01-01 02:00:00 TA_PT1H_MAX -17.0 POINT (22.27916 60.51565)
+9  2024-01-01 02:00:00 TA_PT1H_MIN -17.6 POINT (22.27916 60.51565)
+10 2024-01-01 03:00:00 TA_PT1H_AVG -17.7 POINT (22.27916 60.51565)
+```
+
+## Funktio fmi2 datojen viittaamista varten
+
+Mille tahanasa `fmi2` datalle voi tulostaa viitteen käyttämälle `cite_fmi2()` funktiota. Funktio printtaa viittauksen halutulle datalle ja se myös tukee eri bibliografia formaatteja. Viite aiemmin käytetylle tuuli datalle on:
+
+```{r citation_func, warning = FALSE}
+# Viitteen tulostus
+cite_fmi2(turku_wind)
+```
+
+Funktio tulostaa myös viitteen `fmi2` paketille.
+
+# Lisensointi ja viittaminen
+
+### FMI data
+
+Viittaa FMI:in ja jaa linkki [https://www.ilmatieteenlaitos.fi](https://www.ilmatieteenlaitos.fi).
+
+* [Täysi lisenssi ja käyttöehdot](https://www.ilmatieteenlaitos.fi/avoin-data)
+
+Keskeiset kohdat tiivistettynä:
+
+* FMI:n avoin data on [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lisenssin alainen.
+* FMI omistaa datan, ellei sopimusperusteisesti toisin mainita.
+
+### fmi2 R-paketti
+
+Mikäli käytät julkaisussasi dataa, jonka olet hankkinut fmi2-pakettia käyttäen, toivomme että viittaat pakettiin seuraavalla tavalla:
+
+```{r citation, message=FALSE, warning=FALSE}
+citation("fmi2")
+```
+
+Tutkimuksessa käytettyihin ohjelmistoihin ja algoritmeihin viittaaminen ja niiden relevanssin tunnistaminen ja tunnustaminen on toisen FORCE11-julkaisun, FORCE11 Software Citation Principlesin ([Smith et al., 2016](https://doi.org/10.7717/peerj-cs.86)), mukaan tärkeää.
+
+# Paketin kehittäminen, vikojen raportointi ja parannusehdotukset
+
+Pakettia voi muokata, käyttää ja levittää vapaasti  [MIT-lisenssin](https://fi.wikipedia.org/wiki/MIT-lisenssi) ehtojen mukaisesti.
+
+Tunnistetut ja raportoidut bugit, puutteet ja muut rajoitteet on listattu projektin [GitHub-issueissa](https://github.com/rOpenGov/fmi2/issues). Sivulla voi myös ilmoittaa uusista vioista ja antaa parannusehdotuksia. Käyttäjien tekemät koodikontribuutiot ovat myös erittäin tervetulleita.
+
+# Istunnon tiedot 
+
+Tämä artikkeli luotiin seuraavalla laitteisto- ja ohjelmistokokoonpanolla:
+
+```{r sessioninfo, warning = FALSE}
+sessionInfo()
+```
+

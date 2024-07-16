@@ -24,6 +24,9 @@
 #'
 add_station <- function(x, crs = 4258){
 
+  # Get dataset attributes
+  attri <- attributes(x)
+
   # Get weather station data
   stations <- fmi_stations() %>%
     dplyr::select(.data$name, .data$fmisid, .data$lat, .data$lon) %>%
@@ -36,6 +39,13 @@ add_station <- function(x, crs = 4258){
 
   y <- y %>%
     dplyr::rename(station_name = .data$name)
+
+  # Reinsert metadata
+  attr(y, "title") <- attri$title
+  attr(y, "organization") <- attri$organization
+  attr(y, "time_stamp") <- attri$time_stamp
+  attr(y, "parameters") <- attri$parameters
+  attr(y, "url") <- attri$url
 
   return(y)
 
