@@ -12,10 +12,10 @@ desc_url_2 <- "https://opendata.fmi.fi/meta?observableProperty=observation&param
 
 httptest2::start_capturing()
 
-httr2::request(des_url_1) %>%
+httr2::request(desc_url_1) %>%
   httr2::req_perform()
 httr2::request(desc_url_2) %>%
-  httr2::req_perform(desc_url_2)
+  httr2::req_perform()
 
 httptest2::stop_capturing()
 
@@ -53,6 +53,42 @@ httr2::request(dat_obj$url) %>%
   httr2::req_perform()
 
 httptest2::stop_capturing()
+
+
+# Monthly weather observations ---------------------------------------------
+
+dsq_obj <- fmi_api("DescribeStoredQueries")
+dat_obj <- fmi_api(request = "getFeature",
+                   storedquery_id = "fmi::observations::weather::monthly::simple",
+                   starttime = "2019-01-01", endtime = "2019-05-01",
+                   fmisid = 100946)
+
+httptest2::start_capturing()
+
+httr2::request(dsq_obj$url) %>%
+  httr2::req_perform()
+httr2::request(dat_obj$url) %>%
+  httr2::req_perform()
+
+httptest2::stop_capturing()
+
+# Hourly air quality observations -----------------------------------------
+
+dsq_obj <- fmi_api("DescribeStoredQueries")
+dat_obj <- fmi_api(request = "getFeature",
+                   storedquery_id = "urban::observations::airquality::hourly::simple",
+                   starttime = "2019-01-01", endtime = "2019-01-05",
+                   fmisid = 100662)
+
+httptest2::start_capturing()
+
+httr2::request(dsq_obj$url) %>%
+  httr2::req_perform()
+httr2::request(dat_obj$url) %>%
+  httr2::req_perform()
+
+httptest2::stop_capturing()
+
 
 # FMI stations ------------------------------------------------------------
 

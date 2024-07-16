@@ -7,6 +7,8 @@
 #' @param data FMI dataset
 #' @param meta A logical whether also save the dataset metadata.
 #'
+#' @importFrom sf st_write
+#'
 #' @keywords internal
 write_fmi2_cache <- function(cache, cache_dir, query_hash, data, meta){
   # Check if data should be written to cache
@@ -43,6 +45,8 @@ write_fmi2_cache <- function(cache, cache_dir, query_hash, data, meta){
 #'
 #' @return sf object or `NULL`
 #'
+#' @importFrom sf st_read st_geometry
+#'
 #' @keywords internal
 read_fmi2_cache <- function(cache, cache_dir, query_hash, meta){
   # Check if cache should be checked
@@ -59,6 +63,7 @@ read_fmi2_cache <- function(cache, cache_dir, query_hash, meta){
         y <- sf::st_read(cache_file, quiet = TRUE)
         if (meta) {
           # Add metadata back into the data
+          sf::st_geometry(y) <- "Location"
           meta_file <- file.path(cache_dir, paste0(query_hash, "_meta.rds"))
           ym <- readRDS(meta_file)
           attr(y, "title") <- ym$title
@@ -66,6 +71,9 @@ read_fmi2_cache <- function(cache, cache_dir, query_hash, meta){
           attr(y, "time_stamp") <- ym$time_stamp
           attr(y, "parameters") <- ym$parameters
           attr(y, "url") <- ym$url
+          # Return timezone back to UTC
+          y$time <- as.POSIXct(y$time, tz = "UTC")
+          # Return data
           return(y)
         } else {
           return(y)

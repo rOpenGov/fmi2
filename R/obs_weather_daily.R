@@ -155,6 +155,7 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
   # Check if data is in cache
   check_cache <- read_fmi2_cache(cache, cache_dir, query_hash, meta = TRUE)
   if (!is.null(check_cache)) {
+    check_cache$time <- as.Date(check_cache$time)
     return(check_cache)
   }
 

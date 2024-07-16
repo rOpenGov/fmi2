@@ -48,4 +48,36 @@ httptest2::with_mock_api({
     expect_is(obs_dat$Location, "sfc")
   })
 
+  test_that("monthly observation data for a weather station are retrieved correctly", {
+    # Use Hanko Tulliniemi weather station
+    hanko_id <- 100946
+
+    obs_dat <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-01-02",
+                                  fmisid = hanko_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly air quality observation data for a weather station are retrieved correctly", {
+    # Use Helsinki Kallio 2 weather station
+    kallio_id <- 100662
+
+    obs_dat <- get_airquality(starttime = "2019-01-01",
+                                   endtime = "2019-01-02",
+                                   fmisid = kallio_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
 })

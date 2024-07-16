@@ -152,9 +152,12 @@ valid_bbox <- function(bbox){
 valid_timestep <- function(timestep){
 
   # Check that timestep is valid
-  timestep <- as.numeric(timestep)
+  timestep <- suppressWarnings(as.numeric(timestep))
   if (is.na(timestep)) {
     message("Timestep must be a numeric")
+    return(FALSE)
+  } else if (timestep < 0) {
+    message("Timestep can't be negative")
     return(FALSE)
   } else {
     return(TRUE)
