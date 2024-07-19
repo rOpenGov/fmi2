@@ -17,7 +17,7 @@
 #' @export
 #'
 plot_stations <- function(crs = 4258, legend = TRUE){
-
+  # nocov start
   # Get station data
   station_data <- fmi_stations()
   station_data <- station_data %>%
@@ -27,7 +27,7 @@ plot_stations <- function(crs = 4258, legend = TRUE){
   # Plot station data
   mapview::mapview(station_data, zcol = "type", burst = TRUE, homebutton = FALSE,
                    legend = legend, crs = crs)
-
+  # nocov end
 }
 
 
@@ -53,7 +53,7 @@ plot_stations <- function(crs = 4258, legend = TRUE){
 #'   }
 #'
 select_stations <- function(crs = 4258){
-
+  # nocov start
   # Get station data
   station_data <- fmi_stations()
   station_data <- station_data %>%
@@ -64,4 +64,5 @@ select_stations <- function(crs = 4258){
   stations <- stations %>%
     sf::st_transform(crs = crs)
   return(stations)
+  # nocov end
 }

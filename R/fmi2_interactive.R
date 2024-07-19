@@ -17,6 +17,8 @@
 #'     y <- fmi2_interactive()
 #'   }
 fmi2_interactive <- function(){
+  # Interactive function not feasible to test
+  # nocov start
 
   # Selecting which observations user wants
   obs_type <- switch(
@@ -404,4 +406,5 @@ fmi2_interactive <- function(){
     cat(readLines(tempfile_for_sink), sep = "\n")
   }
   return(y)
+  # nocov end
 }

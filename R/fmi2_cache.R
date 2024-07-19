@@ -100,6 +100,7 @@ read_fmi2_cache <- function(cache, cache_dir, query_hash, meta){
 #'   }
 #' @export
 clean_fmi2_cache <- function(cache_dir = NULL){
+  # nocov start
   if (is.null(cache_dir)) {
     cache_dir <- file.path(tempdir(), "fmi2")
     cache_dir <- path.expand(cache_dir)
@@ -122,4 +123,5 @@ clean_fmi2_cache <- function(cache_dir = NULL){
     message("Deleted .gpkg and .rds files from ", cache_dir)
   }
   invisible(TRUE)
+  # nocov end
 }

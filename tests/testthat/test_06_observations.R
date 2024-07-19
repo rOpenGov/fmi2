@@ -80,4 +80,116 @@ httptest2::with_mock_api({
     expect_is(obs_dat$Location, "sfc")
   })
 
+  test_that("hourly wind observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_wind(starttime = "2019-01-01",
+                              endtime = "2019-01-05",
+                              fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(hourly = TRUE, starttime = "2019-01-01",
+                        endtime = "2019-01-02",
+                        fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("daily temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(daily = TRUE, starttime = "2019-01-01",
+                               endtime = "2019-01-05",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("monthly temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(monthly = TRUE, starttime = "2019-01-01",
+                               endtime = "2019-05-01",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(hourly = TRUE, starttime = "2019-01-01",
+                               endtime = "2019-01-02",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("daily precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(daily = TRUE, starttime = "2019-01-01",
+                               endtime = "2019-01-05",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("monthly precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(monthly = TRUE, starttime = "2019-01-01",
+                               endtime = "2019-05-01",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
 })

@@ -10,9 +10,11 @@ test_that("arguments for weather observations are checked", {
   ## place
   # Valid
   expect_true(valid_place("Turku"))
+  expect_true(valid_place(c("Turku", "Helsinki")))
   # Fail
   expect_false(valid_place(NULL))
   expect_false(valid_place("test"))
+  expect_false(valid_place(c("Helsinki", "test")))
 
   ## geoid
   # Valid
@@ -35,10 +37,25 @@ test_that("arguments for weather observations are checked", {
   expect_false(suppressMessages(valid_timestep("test")))
   expect_false(suppressMessages(valid_timestep(-120)))
 
+  ## time arguments
+  # Valid
+  expect_true(valid_time("2024-01-01", "2024-01-07"))
+  # Fail
+  expect_false(valid_time("01-01-2024", "07-01-2024"))
+  expect_false(valid_time("2024-01-07", "2024-01-01"))
+
   ## bbox
   # Valid
   expect_true(valid_bbox(c(22, 64, 24, 68)))
+  expect_true(valid_bbox("22,64,24,68"))
   # Fail
   expect_false(valid_bbox(c(1,1,1,1)))
+  expect_false(valid_bbox("1,1,1,1"))
   expect_false(valid_bbox(c(-99, -99, -99, -99)))
+
+  ## crs
+  # Valid
+  expect_true(valid_crs("4258"))
+  # Fail
+  expect_false(valid_crs("0000"))
 })
