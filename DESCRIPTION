@@ -65,6 +65,7 @@ Collate:
     'check_validity.R'
     'cite_fmi2.R'
     'describe_variables.R'
+    'firstlib.R'
     'fmi2_cache.R'
     'fmi2_fixity.R'
     'fmi2_interactive.R'
