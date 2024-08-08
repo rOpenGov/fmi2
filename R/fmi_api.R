@@ -69,7 +69,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     queries <- append(queries, list(storedquery_id = storedquery_id, ...))
   }
 
-  # Check if there is several parameters arguments
+  # Check if there are several parameters arguments
   if (length(queries$parameters) > 1){
     para <- queries$parameters
     queries$parameters <- NULL
@@ -78,7 +78,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     }
   }
 
-  # Check if there is several place arguments
+  # Check if there are several place arguments
   if (length(queries$place) > 1){
     pla <- queries$place
     queries$place <- NULL
@@ -87,7 +87,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     }
   }
 
-  # Check if there is several fmisid arguments
+  # Check if there are several fmisid arguments
   if (length(queries$fmisid) > 1){
     id <- queries$fmisid
     queries$fmisid <- NULL
@@ -96,7 +96,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     }
   }
 
-  # Check if there is several geoid arguments
+  # Check if there are several geoid arguments
   if (length(queries$geoid) > 1){
     id <- queries$geoid
     queries$geoid <- NULL
@@ -105,7 +105,7 @@ fmi_api <- function(request, storedquery_id = NULL, ...) {
     }
   }
 
-  # Check if there is several wmo arguments
+  # Check if there are several wmo arguments
   if (length(queries$wmo) > 1){
     id <- queries$wmo
     queries$wmo <- NULL

@@ -3,7 +3,7 @@
 #'
 #'
 #' @param x The FMI dataset, which variables you want labeled.
-#' @param replcace A logical for whether to replace the variable values with the full label.
+#' @param replace A logical for whether to replace the variable values with the full label.
 #' Default is `FALSE`, which adds a new column for the labels.
 #'
 #' @import dplyr
@@ -19,11 +19,11 @@
 #'
 #'   # Labels replace variable values
 #'   y <- obs_weather_monthly(place = "Turku")
-#'   y <- label_variable(y, replcae = TRUE)
+#'   y <- label_variables(y, replace = TRUE)
 #'   }
 #'
 #'
-label_variables <- function(x, replcace = FALSE){
+label_variables <- function(x, replace = FALSE){
 
   # Get dataset attributes
   attri <- attributes(x)
@@ -35,7 +35,7 @@ label_variables <- function(x, replcace = FALSE){
                        dplyr::select(.data$variable, .data$label),
                      by = "variable")
 
-  if (replcace) {
+  if (replace) {
 
     combined <- combined %>%
       dplyr::select(-.data$variable) %>%

@@ -4,12 +4,12 @@
 \alias{label_variables}
 \title{Label FMI variables}
 \usage{
-label_variables(x, replcace = FALSE)
+label_variables(x, replace = FALSE)
 }
 \arguments{
 \item{x}{The FMI dataset, which variables you want labeled.}
 
-\item{replcace}{A logical for whether to replace the variable values with the full label.
+\item{replace}{A logical for whether to replace the variable values with the full label.
 Default is \code{FALSE}, which adds a new column for the labels.}
 }
 \value{
@@ -26,7 +26,7 @@ sf object
 
   # Labels replace variable values
   y <- obs_weather_monthly(place = "Turku")
-  y <- label_variable(y, replcae = TRUE)
+  y <- label_variables(y, replace = TRUE)
   }
 
 

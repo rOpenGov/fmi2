@@ -25,7 +25,7 @@ httptest2::with_mock_api({
     expect_identical(names(obs_dat_no_rep), c("time", "variable", "value", "label", "Location"))
     expect_false(is.null(obs_dat_no_rep$label))
     # With replacement
-    obs_dat_rep <- label_variables(obs_dat, replcace = TRUE)
+    obs_dat_rep <- label_variables(obs_dat, replace = TRUE)
     expect_identical(names(obs_dat_rep), c("time", "value", "variable", "Location"))
     expect_false(is.null(obs_dat_rep$variable))
   })
