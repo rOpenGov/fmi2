@@ -30,7 +30,7 @@
 #' the temporary directory defined by base R [tempdir()] function and uses this directory to
 #' cache data in.
 #'
-#' @import dplyr
+#' @importFrom dplyr select mutate arrange distinct
 #' @importFrom checkmate assert check_null
 #' @importFrom lubridate parse_date_time
 #'
@@ -172,8 +172,8 @@ obs_weather_monthly <- function(starttime = NULL, endtime = NULL, fmisid = NULL,
 
   # Check for duplicated values
   sf_obj <- sf_obj %>%
-    arrange(.data$time, .data$variable, is.na(.data$value)) %>%
-    distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
+    dplyr::arrange(.data$time, .data$variable, is.na(.data$value)) %>%
+    dplyr::distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
 
   # Adding metadata into data.frame
   attr(sf_obj, "title") <- "Monthly weather observations"

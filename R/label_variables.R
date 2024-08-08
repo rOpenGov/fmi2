@@ -6,7 +6,7 @@
 #' @param replace A logical for whether to replace the variable values with the full label.
 #' Default is `FALSE`, which adds a new column for the labels.
 #'
-#' @import dplyr
+#' @importFrom dplyr left_join select rename
 #'
 #' @return sf object
 #' @export

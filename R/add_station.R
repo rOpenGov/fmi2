@@ -5,7 +5,7 @@
 #' @param crs The coordinate reference system to be used. The default value is `4258`,
 #'  which is the default used by the FMI API.
 #'
-#' @import dplyr
+#' @importFrom dplyr select rename
 #' @importFrom sf st_as_sf st_join st_nearest_feature st_transform
 #'
 #' @return sf object

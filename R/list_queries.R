@@ -10,7 +10,7 @@
 #' @param all logical should all stored queries available through the API be
 #'        listed(default: FALSE)?
 #'
-#' @import dplyr
+#' @importFrom dplyr bind_rows filter select pull
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_find_all xml_text xml_attr xml_name
 #' @importFrom purrr map

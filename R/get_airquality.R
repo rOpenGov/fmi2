@@ -31,7 +31,7 @@
 #' the temporary directory defined by base R [tempdir()] function and uses this directory to
 #' cache data in.
 #'
-#' @import dplyr
+#' @importFrom dplyr select mutate
 #' @importFrom lubridate parse_date_time
 #'
 #' @return sf object in a long (melted) form. Observation variables names are

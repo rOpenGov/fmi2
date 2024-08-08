@@ -32,7 +32,7 @@
 #' the temporary directory defined by base R [tempdir()] function and uses this directory to
 #' cache data in.
 #'
-#' @import dplyr
+#' @importFrom dplyr select mutate
 #' @importFrom lubridate parse_date_time
 #'
 #' @note For a complete description of the accepted arguments, see
