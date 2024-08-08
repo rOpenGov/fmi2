@@ -5,9 +5,7 @@
 \title{Get temperature observations}
 \usage{
 get_temperature(
-  hourly = FALSE,
-  daily = FALSE,
-  monthly = FALSE,
+  interval = "hourly",
   fmisid = NULL,
   place = NULL,
   starttime = NULL,
@@ -24,11 +22,9 @@ get_temperature(
 )
 }
 \arguments{
-\item{hourly}{A logical for whether to return hourly precipitation observations.}
-
-\item{daily}{A logical for whether to return daily precipitation observations.}
-
-\item{monthly}{A logical for whether to return monthly precipitation observations.}
+\item{interval}{A character for the spatial resolution. \code{"hourly"} returns hourly observations,
+\code{"daily"} returns daily observations and \code{"monthly"} returns monthly observations. The default value
+is \code{"hourly"}.}
 
 \item{fmisid}{numeric FMI observation station identifier
 (see \link[fmi2]{fmi_stations}).}
@@ -95,13 +91,13 @@ label variables by using \code{label_variables()} and add info on station(s) by 
 \examples{
   \dontrun{
     # Hourly temperature values from Turku
-    y <- get_temperature(hourly = TRUE, place = "Turku", starttime = "2024-06-01",
+    y <- get_temperature(interval = "hourly", place = "Turku", starttime = "2024-06-01",
                          endtime = "2024-06-07")
     # Daily temperature values from Helsinki
-    y <- get_temperature(daily = TRUE, place = "Helsinki", starttime = "2024-06-01",
+    y <- get_temperature(interval = "daily", place = "Helsinki", starttime = "2024-06-01",
                          endtime = "2024-07-01")
     # Monthly temperature values from Tampere
-    y <- get_temperature(monthly = TRUE, place = "Tampere", starttime = "2023-06-01",
+    y <- get_temperature(interval = "monthly", place = "Tampere", starttime = "2023-06-01",
                          endtime = "2024-06-01")
   }
 }

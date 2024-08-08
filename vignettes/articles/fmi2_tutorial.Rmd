@@ -31,11 +31,11 @@ You can get precipitation data by using the function `get_precipitation()`. To u
 
 ```{r precipitation, warning = FALSE}
 # Getting the data
-helsinki_precipitation <- get_precipitation(daily = TRUE, place = "Helsinki",
+helsinki_precipitation <- get_precipitation(interval = "daily", place = "Helsinki",
                                             starttime = "2024-06-07", endtime = "2024-07-07")
-turku_precipitation <- get_precipitation(daily = TRUE, place = "Turku",
+turku_precipitation <- get_precipitation(interval = "daily", place = "Turku",
                                             starttime = "2024-06-07", endtime = "2024-07-07")
-oulu_precipitation <- get_precipitation(daily = TRUE, place = "Oulu",
+oulu_precipitation <- get_precipitation(interval = "daily", place = "Oulu",
                                             starttime = "2024-06-07", endtime = "2024-07-07")
 # Add location name to each data set and combine them
 helsinki_precipitation$location <- "Helsinki"
@@ -62,11 +62,11 @@ Function `get_temperature()` returns temperature data for the specified spatial 
 
 ```{r temperature, warning=FALSE}
 # Getting the data
-helsinki_temperature <- get_temperature(hourly = TRUE, place = "Helsinki",
+helsinki_temperature <- get_temperature(interval = "hourly", place = "Helsinki",
                                             starttime = "2024-07-01", endtime = "2024-07-07")
-turku_temperature <- get_temperature(hourly = TRUE, place = "Turku",
+turku_temperature <- get_temperature(interval = "hourly", place = "Turku",
                                             starttime = "2024-07-01", endtime = "2024-07-07")
-oulu_temperature <- get_temperature(hourly = TRUE, place = "Oulu",
+oulu_temperature <- get_temperature(interval = "hourly", place = "Oulu",
                                             starttime = "2024-07-01", endtime = "2024-07-07")
 # Add location name to each data set and combine them
 helsinki_temperature$location <- "Helsinki"
@@ -290,10 +290,9 @@ Selection: 1
 
 #### DOWNLOAD PARAMETERS: 
 
-get_temperature(hourly = TRUE, daily = FALSE, monthly = FALSE, 
-    starttime = "2024-01-01", endtime = "2024-01-07", place = NULL, 
-    fmisid = "101065", crs = NULL, bbox = NULL, wmo = NULL, geoid = NULL, 
-    timestep = NULL)
+get_temperature(interval = "hourly", starttime = "2024-01-01", endtime = "2024-01-07",
+    place = NULL, fmisid = "101065", crs = NULL, bbox = NULL,
+    wmo = NULL, geoid = NULL, timestep = NULL)
 
 ### FIXITY CHECKSUM: 
 

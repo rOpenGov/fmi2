@@ -7,9 +7,9 @@
 #' label variables by using `label_variables()` and add info on station(s) by using `add_station()`.
 #'
 #'
-#' @param hourly A logical for whether to return hourly precipitation observations.
-#' @param daily A logical for whether to return daily precipitation observations.
-#' @param monthly A logical for whether to return monthly precipitation observations.
+#' @param interval A character for the spatial resolution. `"hourly"` returns hourly observations,
+#' `"daily"` returns daily observations and `"monthly"` returns monthly observations. The default value
+#' is `"hourly"`.
 #' @inheritParams obs_weather_hourly
 #' @param label A logical for whether to label the variables. Default value is `FALSE`.
 #' @param station A logical for whether to add station info into the data. Default value is `FALSE`.
@@ -37,29 +37,27 @@
 #' @examples
 #'   \dontrun{
 #'     # Hourly temperature values from Turku
-#'     y <- get_temperature(hourly = TRUE, place = "Turku", starttime = "2024-06-01",
+#'     y <- get_temperature(interval = "hourly", place = "Turku", starttime = "2024-06-01",
 #'                          endtime = "2024-06-07")
 #'     # Daily temperature values from Helsinki
-#'     y <- get_temperature(daily = TRUE, place = "Helsinki", starttime = "2024-06-01",
+#'     y <- get_temperature(interval = "daily", place = "Helsinki", starttime = "2024-06-01",
 #'                          endtime = "2024-07-01")
 #'     # Monthly temperature values from Tampere
-#'     y <- get_temperature(monthly = TRUE, place = "Tampere", starttime = "2023-06-01",
+#'     y <- get_temperature(interval = "monthly", place = "Tampere", starttime = "2023-06-01",
 #'                          endtime = "2024-06-01")
 #'   }
-get_temperature <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fmisid = NULL,
+get_temperature <- function(interval = "hourly", fmisid = NULL,
                             place = NULL, starttime = NULL, endtime = NULL,
                             crs = NULL, bbox = NULL, wmo = NULL, geoid = NULL, timestep = NULL,
                             label = FALSE, station = FALSE, cache = TRUE, cache_dir = NULL) {
 
-  # Check that only one of hourly, daily or monthly is TRUE
-  if (sum(c(hourly, daily, monthly)) > 1) {
-    stop("Function can only return data for one spatial resolution at the time.")
-  } else if (sum(c(hourly, daily, monthly)) == 0) {
-    stop("No spatial resolution specified. One of arguments: hourly, daily or monthly has to be TRUE.")
+  # Check that interval argument is right
+  if (!interval %in% c("daily", "hourly", "monthly")) {
+    stop("The interval argument ", interval, " is not recognized.")
   }
 
   # Get hourly temperature observations
-  if (hourly) {
+  if (interval == "hourly") {
 
     y <- obs_weather_hourly(fmisid = fmisid, place = place, starttime = starttime,
                             endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,
@@ -70,7 +68,7 @@ get_temperature <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fmis
   }
 
   # Get daily temperature observations
-  if (daily) {
+  if (interval == "daily") {
 
     y <- obs_weather_daily(fmisid = fmisid, place = place, starttime = starttime,
                            endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,
@@ -81,7 +79,7 @@ get_temperature <- function(hourly = FALSE, daily = FALSE, monthly = FALSE, fmis
   }
 
   # Get monthly temperature observations
-  if (monthly) {
+  if (interval == "monthly") {
 
     y <- obs_weather_monthly(fmisid = fmisid, place = place, starttime = starttime,
                            endtime = endtime, crs = crs, bbox = bbox, wmo = wmo, geoid = geoid,

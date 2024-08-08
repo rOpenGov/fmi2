@@ -100,7 +100,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_temperature(hourly = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_temperature(interval = "hourly", starttime = "2019-01-01",
                         endtime = "2019-01-02",
                         fmisid = turku_id)
 
@@ -116,7 +116,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_temperature(daily = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_temperature(interval = "daily", starttime = "2019-01-01",
                                endtime = "2019-01-05",
                                fmisid = turku_id)
 
@@ -132,7 +132,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_temperature(monthly = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_temperature(interval = "monthly", starttime = "2019-01-01",
                                endtime = "2019-05-01",
                                fmisid = turku_id)
 
@@ -148,7 +148,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_precipitation(hourly = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_precipitation(interval = "hourly", starttime = "2019-01-01",
                                endtime = "2019-01-02",
                                fmisid = turku_id)
 
@@ -164,7 +164,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_precipitation(daily = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_precipitation(interval = "daily", starttime = "2019-01-01",
                                endtime = "2019-01-05",
                                fmisid = turku_id)
 
@@ -180,7 +180,7 @@ httptest2::with_mock_api({
     # Use Turku Artukainen weather station
     turku_id <- 100949
 
-    obs_dat <- get_precipitation(monthly = TRUE, starttime = "2019-01-01",
+    obs_dat <- get_precipitation(interval = "monthly", starttime = "2019-01-01",
                                endtime = "2019-05-01",
                                fmisid = turku_id)
 

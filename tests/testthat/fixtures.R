@@ -108,7 +108,7 @@ httptest2::stop_capturing()
 # Hourly temperature observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_temperature(hourly = TRUE,
+dat_obj <- get_temperature(interval = "hourly",
                            starttime = "2019-01-01", endtime = "2019-01-02", fmisid = 100949)
 
 httptest2::start_capturing()
@@ -124,7 +124,7 @@ httptest2::stop_capturing()
 # Daily temperature observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_temperature(daily = TRUE,
+dat_obj <- get_temperature(interval = "daily",
                            starttime = "2019-01-01", endtime = "2019-01-05", fmisid = 100949)
 
 httptest2::start_capturing()
@@ -140,7 +140,7 @@ httptest2::stop_capturing()
 # Monthly temperature observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_temperature(monthly = TRUE,
+dat_obj <- get_temperature(interval = "monthly",
                            starttime = "2019-01-01", endtime = "2019-05-01", fmisid = 100949)
 
 httptest2::start_capturing()
@@ -156,7 +156,7 @@ httptest2::stop_capturing()
 # Hourly precipitation observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_precipitation(hourly = TRUE,
+dat_obj <- get_precipitation(interval = "hourly",
                            starttime = "2019-01-01", endtime = "2019-01-02", fmisid = 100949)
 
 httptest2::start_capturing()
@@ -172,7 +172,7 @@ httptest2::stop_capturing()
 # Daily precipitation observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_precipitation(daily = TRUE,
+dat_obj <- get_precipitation(interval = "daily",
                            starttime = "2019-01-01", endtime = "2019-01-05", fmisid = 100949)
 
 httptest2::start_capturing()
@@ -188,7 +188,7 @@ httptest2::stop_capturing()
 # Monthly precipitation observations -----------------------------------------
 
 dsq_obj <- fmi_api("DescribeStoredQueries")
-dat_obj <- get_precipitation(monthly = TRUE,
+dat_obj <- get_precipitation(interval = "monthly",
                            starttime = "2019-01-01", endtime = "2019-05-01", fmisid = 100949)
 
 httptest2::start_capturing()
