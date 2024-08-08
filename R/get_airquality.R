@@ -164,8 +164,8 @@ get_airquality <- function(starttime = NULL, endtime = NULL, fmisid = NULL, plac
 
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
-    dplyr::select(time = .data$Time, variable = .data$ParameterName,
-                  value = .data$ParameterValue) %>%
+    dplyr::select(time = "Time", variable = "ParameterName",
+                  value = "ParameterValue") %>%
     dplyr::mutate(time = lubridate::parse_date_time(.data$time, "Ymd HMS"),
                   variable = as.character(.data$variable),
                   # Factor needs to be coerced into character first

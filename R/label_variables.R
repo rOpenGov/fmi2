@@ -32,13 +32,13 @@ label_variables <- function(x, replace = FALSE){
 
   combined <- x %>%
     dplyr::left_join(var_desc %>%
-                       dplyr::select(.data$variable, .data$label),
+                       dplyr::select("variable", "label"),
                      by = "variable")
 
   if (replace) {
 
     combined <- combined %>%
-      dplyr::select(-.data$variable) %>%
+      dplyr::select(-"variable") %>%
       dplyr::rename(variable = .data$label)
 
   }

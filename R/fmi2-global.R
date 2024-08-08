@@ -16,7 +16,7 @@ fmi2_global$function_map <- tibble::tibble(
                      "fmi::observations::weather::hourly::simple",
                      "urban::observations::airquality::hourly::simple"
                      ),
-  `fmi2 function` = c("fmi_stations",
+  fmi2_function = c("fmi_stations",
                       "obs_weather_monthly",
                       "obs_weather_daily",
                       "obs_weather_hourly",

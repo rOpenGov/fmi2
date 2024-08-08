@@ -29,7 +29,7 @@ add_station <- function(x, crs = 4258){
 
   # Get weather station data
   stations <- fmi_stations() %>%
-    dplyr::select(.data$name, .data$fmisid, .data$lat, .data$lon) %>%
+    dplyr::select("name", "fmisid", "lat", "lon") %>%
     sf::st_as_sf(coords = c("lon", "lat"), crs = 4258) %>%
     sf::st_transform(crs = crs)
 

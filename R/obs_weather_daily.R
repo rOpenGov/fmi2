@@ -169,8 +169,8 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
                      wmo = wmo, geoid = geoid)
   sf_obj <- to_sf(fmi_obj)
   sf_obj <- sf_obj %>%
-    dplyr::select(time = .data$Time, variable = .data$ParameterName,
-                  value = .data$ParameterValue) %>%
+    dplyr::select(time = "Time", variable = "ParameterName",
+                  value = "ParameterValue") %>%
     dplyr::mutate(time = as.Date(.data$time),
                   variable = as.character(.data$variable),
                   # Factor needs to be coerced into character first

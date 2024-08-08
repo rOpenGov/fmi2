@@ -72,7 +72,7 @@ list_queries <- function(all = FALSE) {
   find_function_name <- function(stored_query) {
     fname <- fmi2_global$function_map %>%
       dplyr::filter(.data$`Stored query` == stored_query) %>%
-      dplyr::select(.data$`fmi2 function`) %>%
+      dplyr::select("fmi2_function") %>%
       dplyr::pull()
     fname <- ifelse(length(fname) == 0, NA, fname)
     return(fname)
