@@ -2,7 +2,8 @@
 #' @description Hourly air quality observations from Finnish municipalities.
 #'
 #' @details Default set contains 10 different air quality variables.
-#' By default, the data is returned from the last 24 hours. At least one location
+#' By default, the data is returned from the last 24 hours. The maximum time interval
+#' for observations is 168 hours (7 days). At least one location
 #' parameter (geoid/place/fmisid/wmo/bbox) has to be given.
 #'
 #' The FMI WFS stored query used by this function is
@@ -117,11 +118,13 @@ get_airquality <- function(starttime = NULL, endtime = NULL, fmisid = NULL, plac
 
   # Check time arguments
   if (is.null(c(starttime, endtime))) {
-    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
-  } else if (any(sapply(list(starttime, endtime), is.null))) {
-    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
-    starttime <- NULL
-    endtime <- NULL
+    message("No time arguments provided. Observations will be returned from the last 24 hours.")
+  } else if (is.null(endtime)) {
+    message("No end time provided. Observations will be returned from 168 hour (7 day) interval.")
+    endtime <- as.character(as.Date(starttime) + 7)
+  } else if(is.null(starttime)) {
+    message("No start time provided. Observations will be returned from 168 hour (7 day) interval.")
+    starttime <- as.character(as.Date(endtime) - 7)
   }
 
   if (!is.null(c(starttime, endtime))) {
@@ -168,11 +171,6 @@ get_airquality <- function(starttime = NULL, endtime = NULL, fmisid = NULL, plac
                   # Factor needs to be coerced into character first
                   value = as.numeric(as.character(.data$value))) %>%
     dplyr::mutate(value = ifelse(is.nan(.data$value), NA, .data$value))
-
-  # Check for duplicated values
-  sf_obj <- sf_obj %>%
-    arrange(.data$time, .data$variable, is.na(.data$value)) %>%
-    distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
 
   # Adding metadata into data.frame
   attr(sf_obj, "title") <- "Hourly air quality observations"

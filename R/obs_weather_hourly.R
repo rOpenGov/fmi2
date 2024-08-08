@@ -6,7 +6,8 @@
 #' and maximum (10 minute average), wind direction average, wind gust speed
 #' maximum (3 second average), rain accumulated, rain intensity maximum, air
 #' pressure average and the most significant weather code. By default, the data
-#' is returned from last 24 hours. At least one location parameter
+#' is returned from last 24 hours. The maximum time interval for observations is
+#' 744 hours (31 days). At least one location parameter
 #' (geoid/place/fmisid/wmo/bbox) has to be given.
 #'
 #' The FMI WFS stored query used by this function is
@@ -127,11 +128,13 @@ obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, 
 
   # Check time arguments
   if (is.null(c(starttime, endtime))) {
-    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
-  } else if (any(sapply(list(starttime, endtime), is.null))) {
-    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
-    starttime <- NULL
-    endtime <- NULL
+    message("No time arguments provided. Observations will be returned from the last 24 hours.")
+  } else if (is.null(endtime)) {
+    message("No end time provided. Observations will be returned from 744 hour (31 day) interval.")
+    endtime <- as.character(as.Date(starttime) + 31)
+  } else if (is.null(starttime)) {
+    message("No start time provided. Observations will be returned from 744 hour (31 day) interval.")
+    starttime <- as.character(as.Date(endtime) - 31)
   }
 
   if (!is.null(c(starttime, endtime))) {
@@ -177,11 +180,6 @@ obs_weather_hourly <- function(starttime = NULL, endtime = NULL, fmisid = NULL, 
                   # Factor needs to be coerced into character first
                   value = as.numeric(as.character(.data$value))) %>%
     dplyr::mutate(value = ifelse(is.nan(.data$value), NA, .data$value))
-
-  # Check for duplicate values
-  sf_obj <- sf_obj %>%
-    arrange(.data$time, .data$variable, is.na(.data$value)) %>%
-    distinct(.data$time, .data$variable, .data$Location, .keep_all = TRUE)
 
   # Adding metadata into data.frame
   attr(sf_obj, "title") <- "Hourly weather observations"

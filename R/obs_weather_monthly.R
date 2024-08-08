@@ -2,9 +2,9 @@
 #' @description Monthly weather observations from weather stations.
 #'
 #' @details Default set contains monthly precipitation amount and monthly mean temperature.
-#' By default, the data is returned from
-#' last 12 months. At least one location parameter (geoid/place/fmisid/wmo/bbox)
-#' has to be given.
+#' By default, the data is returned from last 12 months. The maximum time interval for
+#' observations is 87600 hours (3650 days). At least one location
+#' parameter (geoid/place/fmisid/wmo/bbox) has to be given.
 #'
 #' The FMI WFS stored query used by this function is
 #' `fmi::observations::weather::monthly::simple`. For more informations, see the
@@ -116,11 +116,13 @@ obs_weather_monthly <- function(starttime = NULL, endtime = NULL, fmisid = NULL,
 
   # Check time arguments
   if (is.null(c(starttime, endtime))) {
-    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
-  } else if (any(sapply(list(starttime, endtime), is.null))) {
-    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
-    starttime <- NULL
-    endtime <- NULL
+    message("No time arguments provided. Observations will be returned from the last 12 months.")
+  } else if (is.null(endtime)) {
+    message("No end time provided. Observations will be returned from 3650 day interval.")
+    endtime <- as.character(as.Date(starttime) + 3650)
+  } else if (is.null(starttime)) {
+    message("No start time provided. Observations will be returned from 3650 day interal.")
+    starttime <- as.character(as.Date(endtime) - 3650)
   }
 
   if (!is.null(c(starttime, endtime))) {

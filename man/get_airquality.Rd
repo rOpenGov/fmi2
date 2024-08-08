@@ -71,7 +71,8 @@ Hourly air quality observations from Finnish municipalities.
 }
 \details{
 Default set contains 10 different air quality variables.
-By default, the data is returned from the last 24 hours. At least one location
+By default, the data is returned from the last 24 hours. The maximum time interval
+for observations is 168 hours (7 days). At least one location
 parameter (geoid/place/fmisid/wmo/bbox) has to be given.
 
 The FMI WFS stored query used by this function is

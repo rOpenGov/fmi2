@@ -69,7 +69,8 @@ Daily weather observations from weather stations.
 Default set contains daily precipitation rate, mean temperature,
 snow depth,
 and minimum and maximum temperature. By default, the data is returned from
-last 744 hours (31 days). At least one location parameter (geoid/place/fmisid/wmo/bbox)
+last 744 hours (31 days). The maximum time interval for observations is 8928 hours (372 days).
+At least one location parameter (geoid/place/fmisid/wmo/bbox)
 has to be given.
 
 The FMI WFS stored query used by this function is

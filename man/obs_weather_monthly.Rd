@@ -63,9 +63,9 @@ Monthly weather observations from weather stations.
 }
 \details{
 Default set contains monthly precipitation amount and monthly mean temperature.
-By default, the data is returned from
-last 12 months. At least one location parameter (geoid/place/fmisid/wmo/bbox)
-has to be given.
+By default, the data is returned from last 12 months. The maximum time interval for
+observations is 87600 hours (3650 days). At least one location
+parameter (geoid/place/fmisid/wmo/bbox) has to be given.
 
 The FMI WFS stored query used by this function is
 \verb{fmi::observations::weather::monthly::simple}. For more informations, see the

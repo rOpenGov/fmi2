@@ -4,7 +4,8 @@
 #' @details Default set contains daily precipitation rate, mean temperature,
 #' snow depth,
 #' and minimum and maximum temperature. By default, the data is returned from
-#' last 744 hours (31 days). At least one location parameter (geoid/place/fmisid/wmo/bbox)
+#' last 744 hours (31 days). The maximum time interval for observations is 8928 hours (372 days).
+#' At least one location parameter (geoid/place/fmisid/wmo/bbox)
 #' has to be given.
 #'
 #' The FMI WFS stored query used by this function is
@@ -122,11 +123,13 @@ obs_weather_daily <- function(starttime = NULL, endtime = NULL, fmisid = NULL, p
 
   # Check time arguments
   if (is.null(c(starttime, endtime))) {
-    message("No time arguments given. Observations will be returned from the last 744 hours (31 days).")
-  } else if (any(sapply(list(starttime, endtime), is.null))) {
-    message("Only one of the time arguments given. Observations will be returned from the last 744 hours (31 days).")
-    starttime <- NULL
-    endtime <- NULL
+    message("No time arguments provided. Observations will be returned from the last 744 hours (31 days).")
+  } else if (is.null(endtime)) {
+    message("No end time provided. Observations will be returned from 372 day interval.")
+    endtime <- as.character(as.Date(starttime) + 372)
+  } else if (is.null(starttime)) {
+    message("No start time provided. Observations will be returned from 372 day interval.")
+    starttime <- as.character(as.Date(endtime) - 372)
   }
 
   if (!is.null(c(starttime, endtime))) {

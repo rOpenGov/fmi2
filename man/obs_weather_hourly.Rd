@@ -75,7 +75,8 @@ relative humidity average, wind speed average, minumum (10 minute average)
 and maximum (10 minute average), wind direction average, wind gust speed
 maximum (3 second average), rain accumulated, rain intensity maximum, air
 pressure average and the most significant weather code. By default, the data
-is returned from last 24 hours. At least one location parameter
+is returned from last 24 hours. The maximum time interval for observations is
+744 hours (31 days). At least one location parameter
 (geoid/place/fmisid/wmo/bbox) has to be given.
 
 The FMI WFS stored query used by this function is
