@@ -8,6 +8,7 @@
 #' information to the dataset.
 #'
 #' @importFrom utils menu capture.output
+#' @importFrom lubridate parse_date_time
 #'
 #' @return sf object in a long (melted) form.
 #' @export
@@ -19,6 +20,9 @@
 fmi2_interactive <- function(){
   # Interactive function not feasible to test
   # nocov start
+
+  # How to exit the function
+  message("You can exit the interactive function at any time by pressing esc")
 
   # Selecting which observations user wants
   obs_type <- switch(
@@ -35,35 +39,49 @@ fmi2_interactive <- function(){
 
   # Selecting spatial resolution
   if (obs_type %in% c("obs", "temp", "prec")) {
-    hourly <- FALSE
-    daily <- FALSE
-    monthly <- FALSE
     switch(
       menu(c("Hourly", "Daily", "Monthly"),
-           title = "Select spatial resolution") + 1,
+           title = "Select spatial resolution (press esc to exit)") + 1,
       return(invisible()),
-      hourly <- TRUE,
-      daily <- TRUE,
-      monthly <- TRUE
+      interval <- "hourly",
+      interval <- "daily",
+      interval <- "monthly"
     )
   }
 
   # Selecting starttime and endtime
-  times_ok <- NULL
-  while (is.null(times_ok)) {
-    starttime <- readline(prompt = "Give start time in ISO-format: ")
-    endtime <- readline(prompt = "Give end time: ")
-    # Check time arguments are valid
-    if (!valid_time(starttime, endtime)) {
-      message("Plase give time in right format, yyyy-mm-dd")
-    } else if (valid_time(starttime, endtime)) {
-      times_ok <- TRUE
+  t_s <- NULL
+  t_e <- NULL
+  message("Give the time arguments in ISO-format (yyyy-mm-dd).\nYou can leave one of the arguments (or both) empty for default value. (press esc to exit)")
+  while (is.null(t_s)) {
+    starttime <- readline(prompt = "Give start time: ")
+    # Check that start time is valid
+    if (is.na(suppressWarnings(lubridate::parse_date_time(starttime, "Ymd"))) && !starttime == "") {
+      message("Please give start time in the right format.")
+    } else {
+      t_s <- TRUE
     }}
+  while (is.null(t_e)) {
+    endtime <- readline(prompt = "Give end time: ")
+    # Check that end time is valid
+    if (is.na(suppressWarnings(lubridate::parse_date_time(endtime, "Ymd"))) && !endtime == "") {
+      message("Please give end time in the right format.")
+    } else {
+      t_e <- TRUE
+    }}
+
+  # Check if the time arguments are empty
+  if (starttime == "") {
+    starttime <- NULL
+  }
+  if (endtime == "") {
+    endtime <- NULL
+  }
 
   # Select the way of choosing location
   location_selection <- switch(
     menu(c("Input parameter", "Select from interactive map"),
-         title = "Select the way of choosing location") + 1,
+         title = "Select the way of choosing location (press esc to exit)") + 1,
     return(invisible()),
     "para",
     "map"
@@ -73,7 +91,7 @@ fmi2_interactive <- function(){
     # Selecting location parameter
     location_type <- switch(
       menu(c("place", "fmisid", "wmo", "geoid", "bbox"),
-           title = "Select location parameter") + 1,
+           title = "Select location parameter (press esc to exit)") + 1,
       return(invisible()),
       "place",
       "fmisid",
@@ -159,6 +177,8 @@ fmi2_interactive <- function(){
     fmisid <- c(stations$fmisid)
     place <- NULL
     bbox <- NULL
+    geoid <- NULL
+    wmo <- NULL
   }
 
   # Ask if user wants to specify crs
@@ -188,6 +208,7 @@ fmi2_interactive <- function(){
   }
 
   # Ask if user wants to specify timestep
+  message("Timestep specifies the time between observations.")
   timestep_select <- switch(
     menu(c("Yes", "No"),
            title = "Do you want to specify timestep?") + 1,
@@ -199,7 +220,7 @@ fmi2_interactive <- function(){
     # Selecting timestep
     timestep_ok <- NULL
     while(is.null(timestep_ok)){
-      timestep <- readline(prompt = "Enter timestep, nothing for default: ")
+      timestep <- readline(prompt = "Enter timestep in minutes, nothing for default: ")
       # Check timestep
       if (timestep == ""){
         timestep <- NULL
@@ -217,7 +238,7 @@ fmi2_interactive <- function(){
 
   # Getting weather observations
   if (obs_type == "obs") {
-    if (hourly) {
+    if (interval == "hourly") {
       y <- obs_weather_hourly(starttime = starttime, endtime = endtime, place = place,
                               fmisid = fmisid, crs = crs, bbox = bbox,
                               wmo = wmo, geoid = geoid, timestep = timestep)
@@ -227,7 +248,7 @@ fmi2_interactive <- function(){
                            wmo = wmo, geoid = geoid, timestep = timestep),
         list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
              crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
-    } else if (daily) {
+    } else if (interval == "daily") {
       y <- obs_weather_daily(starttime = starttime, endtime = endtime, place = place,
                              fmisid = fmisid, crs = crs, bbox = bbox,
                              wmo = wmo, geoid = geoid, timestep = timestep)
@@ -237,7 +258,7 @@ fmi2_interactive <- function(){
                           wmo = wmo, geoid = geoid, timestep = timestep),
         list(starttime = starttime, endtime = endtime, place = place, fmisid = fmisid,
              crs = crs, bbox = bbox, wmo = wmo, geoid = geoid, timestep = timestep))
-    } else if (monthly) {
+    } else if (interval == "monthly") {
       y <- obs_weather_monthly(starttime = starttime, endtime = endtime, place = place,
                                fmisid = fmisid, crs = crs, bbox = bbox,
                                wmo = wmo, geoid = geoid, timestep = timestep)
@@ -252,16 +273,14 @@ fmi2_interactive <- function(){
 
   # Getting temperature data
   if (obs_type == "temp") {
-    y <- get_temperature(hourly = hourly, daily = daily, monthly = monthly,
-                         starttime = starttime, endtime = endtime, place = place,
-                         fmisid = fmisid, crs = crs, bbox = bbox,
+    y <- get_temperature(interval = interval, starttime = starttime, endtime = endtime,
+                         place = place, fmisid = fmisid, crs = crs, bbox = bbox,
                          wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
-      get_temperature(hourly = hourly, daily = daily, monthly = monthly,
-                      starttime = starttime, endtime = endtime, place = place,
-                      fmisid = fmisid, crs = crs, bbox = bbox,
+      get_temperature(interval = interval, starttime = starttime, endtime = endtime,
+                      place = place, fmisid = fmisid, crs = crs, bbox = bbox,
                       wmo = wmo, geoid = geoid, timestep = timestep),
-      list(hourly = hourly, daily = daily, monthly = monthly, starttime = starttime,
+      list(interval = interval, starttime = starttime,
            endtime = endtime, place = place, fmisid = fmisid, crs = crs, bbox = bbox,
            wmo = wmo, geoid = geoid, timestep = timestep))
   }
@@ -281,16 +300,14 @@ fmi2_interactive <- function(){
 
   # Getting precipitation data
   if (obs_type == "prec") {
-    y <- get_precipitation(hourly = hourly, daily = daily, monthly = monthly,
-                           starttime = starttime, endtime = endtime, place = place,
-                           fmisid = fmisid, crs = crs, bbox = bbox,
+    y <- get_precipitation(interval = interval, starttime = starttime, endtime = endtime,
+                           place = place, fmisid = fmisid, crs = crs, bbox = bbox,
                            wmo = wmo, geoid = geoid, timestep = timestep)
     y_print <- substitute(
-      get_precipitation(hourly = hourly, daily = daily, monthly = monthly,
-                        starttime = starttime, endtime = endtime, place = place,
-                        fmisid = fmisid, crs = crs, bbox = bbox,
+      get_precipitation(interval = interval, starttime = starttime, endtime = endtime,
+                        place = place, fmisid = fmisid, crs = crs, bbox = bbox,
                         wmo = wmo, geoid = geoid, timestep = timestep),
-      list(hourly = hourly, daily = daily, monthly = monthly, starttime = starttime,
+      list(interval = interval, starttime = starttime,
            endtime = endtime, place = place, fmisid = fmisid, crs = crs, bbox = bbox,
            wmo = wmo, geoid = geoid, timestep = timestep))
   }
