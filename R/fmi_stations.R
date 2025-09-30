@@ -21,11 +21,25 @@
 #' @export
 #'
 #' @aliases fmi_weather_stations
+#' @examples
+#'   \dontrun{
+#'   # Get table of stations
+#'   stations <- fmi_stations()
+#'   }
 #'
 fmi_stations <- function() {
 
-  # start and end time must be Dates or characters coercable to Dates, and must
-  # be in the past
+  # Check if stations data is in cache
+  query <- list(type = "stations list",
+                download_date = Sys.Date())
+  query_hash <- fmi2_fixity(query)
+  cache_dir <- file.path(tempdir(), "fmi2")
+  cache_dir <- path.expand(cache_dir)
+  cache_file <- file.path(cache_dir, paste0(query_hash, ".rds"))
+  if (dir.exists(cache_dir) && file.exists(cache_file)) {
+    stations_data <- readRDS(cache_file)
+    return(stations_data)
+  }
 
   fmi_obj <- fmi_api(request = "getFeature",
                      storedquery_id = "fmi::ef::stations") %>%
@@ -78,5 +92,12 @@ fmi_stations <- function() {
 
   station_data <- purrr::map(fmi_obj[[1]], parse_nodes) %>%
     dplyr::bind_rows()
+
+  # Write stations data into cache
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
+  saveRDS(station_data, file = cache_file, compress = TRUE)
+
   return(station_data)
 }

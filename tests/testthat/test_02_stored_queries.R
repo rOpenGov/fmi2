@@ -1,6 +1,6 @@
 library(dplyr)
 
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("stored queries data is parsed correctly", {
     sq <- list_queries()

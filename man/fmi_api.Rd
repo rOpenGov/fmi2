@@ -21,7 +21,7 @@ functions to check the validity of the parameters.}
 fmi_api (S3) object with the following attributes:
 \describe{
 \item{content}{XML payload.}
-\item{path}{path provided to get the resonse.}
+\item{url}{url to get the response.}
 \item{response}{the original response object.}
 }
 }
@@ -35,14 +35,12 @@ components defined by the arguments are appended.
 
 This is a low-level function intended to be used by other higher level
 functions in the package.
-
-Note that GET requests are used using \code{httpcache} meaning that requests
-are cached. If you want clear cache, use \code{\link[httpcache:cache-management]{httpcache::clearCache()}}. To turn
-the cache off completely, use \code{\link[httpcache:cache-management]{httpcache::cacheOff()}}
 }
 \examples{
+  \dontrun{
   # List stored queries
   fmi_api(request = "DescribeStoredQueries")
+  }
 
 }
 \author{

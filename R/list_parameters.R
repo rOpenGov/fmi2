@@ -5,7 +5,7 @@
 #' @param query_id character string query ID.
 #'
 #' @importFrom purrr map
-#' @import xml2
+#' @importFrom xml2 xml_attr xml_find_all xml_text
 #'
 #' @return a tibble describing the valid parameters.
 #' @export

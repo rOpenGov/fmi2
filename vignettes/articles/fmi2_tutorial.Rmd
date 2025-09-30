@@ -1,0 +1,367 @@
+---
+title: "Tutorial for the fmi2 R package"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Before reading this article it is advised to check out the `fmi2` package  [vignette](weather_observation_data.Rmd) for basic overview of the package and introduction to the different weather observation functions, for example `obs_weather_daily`. This article focuses on the functions not covered in the vignette. Let's start by loading all the packages needed for the article.
+
+```{r load_packages, message=FALSE, warning=FALSE}
+library(fmi2)
+library(ggplot2)
+library(DT)
+```
+
+# Wrapper functions
+
+In this section we will go over the different wrapper functions available in the package. These functions call the weather observation functions allowing user to get the specific data they want.
+
+## Precipitation data
+
+You can get precipitation data by using the function `get_precipitation()`. To use the function, you have to specify the spatial resolution you want to use, i.e. hourly, daily or monthly. Let's demonstrate the function by comparing the daily precipitation amounts in of Helsinki, Turku and Oulu
+
+```{r precipitation, warning = FALSE}
+# Getting the data
+helsinki_precipitation <- get_precipitation(interval = "daily", place = "Helsinki",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+turku_precipitation <- get_precipitation(interval = "daily", place = "Turku",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+oulu_precipitation <- get_precipitation(interval = "daily", place = "Oulu",
+                                            starttime = "2024-06-07", endtime = "2024-07-07")
+# Add location name to each data set and combine them
+helsinki_precipitation$location <- "Helsinki"
+turku_precipitation$location <- "Turku"
+oulu_precipitation$location <- "Oulu"
+
+all_data <- rbind(helsinki_precipitation, turku_precipitation, oulu_precipitation)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Oulu"),
+                                  ordered = TRUE))
+# Plotting the data
+all_data %>% 
+  dplyr::filter(variable == "rrday") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Precipitation (mm)\n") +
+  xlab("\nDate") + theme_minimal()
+```
+
+## Temperature data
+
+Function `get_temperature()` returns temperature data for the specified spatial resolution. The list of returned parameters depends on the resolution used. Hourly and daily observations have average, minimum and maximum temperature while monthly observations only have average temperature. Let's compare hourly temperature in the same three locations as previously.
+
+```{r temperature, warning=FALSE}
+# Getting the data
+helsinki_temperature <- get_temperature(interval = "hourly", place = "Helsinki",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+turku_temperature <- get_temperature(interval = "hourly", place = "Turku",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+oulu_temperature <- get_temperature(interval = "hourly", place = "Oulu",
+                                            starttime = "2024-07-01", endtime = "2024-07-07")
+# Add location name to each data set and combine them
+helsinki_temperature$location <- "Helsinki"
+turku_temperature$location <- "Turku"
+oulu_temperature$location <- "Oulu"
+
+all_data <- rbind(helsinki_temperature, turku_temperature, oulu_temperature)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Oulu"),
+                                  ordered = TRUE))
+# Plotting the data
+all_data %>% 
+  dplyr::filter(
+    variable == "TA_PT1H_AVG" | variable == "TA_PT1H_MAX" | variable == "TA_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Temperature (C)\n") +
+  xlab("\nDate") + theme_minimal()
+```
+
+## Wind data
+
+You can get wind data by using function `get_wind()`. The function returns hourly values for wind direction, average speed, maximum speed and minimum speed. Only hourly wind observations are available. Let's compare wind speed in Helsinki, Turku and Tampere.
+
+```{r wind, warning = FALSE}
+# Getting the data
+helsinki_wind <- get_wind(place = "Helsinki", starttime = "2024-07-01", endtime = "2024-07-07")
+turku_wind <- get_wind(place = "Turku", starttime = "2024-07-01", endtime = "2024-07-07")
+tampere_wind <- get_wind(place = "Tampere", starttime = "2024-07-01", endtime = "2024-07-07")
+# Add location name to each data set and combine them
+helsinki_wind$location <- "Helsinki"
+turku_wind$location <- "Turku"
+tampere_wind$location <- "Tampere"
+
+all_data <- rbind(helsinki_wind, turku_wind, tampere_wind)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Tampere"),
+                                  ordered = TRUE))
+# Plotting the data
+all_data %>% 
+  dplyr::filter(
+    variable == "WS_PT1H_AVG" | variable == "WS_PT1H_MAX" | variable == "WS_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Wind speed (m/s)\n") +
+  xlab("\nDate") + theme_minimal()
+```
+
+# Other functions
+
+Let's next go over other functions included in the package.
+
+## Air quality data
+
+You can get hourly air quality observation by using function `get_airquality()`. The function return ten different variables per observation. You can see full list of parameters in the function documentation (`?airquality()`). Let's compare amount of nitrogen dioxide (NO2_PT1H_avg) and particulate matter < 10 µm (PM10_PT1H_avg) in Turku, Helsinki and Tampere.
+
+```{r airquality, warning = FALSE}
+# Getting the data
+helsinki_air <- get_airquality(place = "Helsinki",
+                               starttime = "2024-07-01", endtime = "2024-07-07")
+turku_air <- get_airquality(place = "Turku",
+                            starttime = "2024-07-01", endtime = "2024-07-07")
+tampere_air <- get_airquality(place = "Tampere",
+                              starttime = "2024-07-01", endtime = "2024-07-07")
+# Add location name to each data set and combine them
+helsinki_air$location <- "Helsinki"
+turku_air$location <- "Turku"
+tampere_air$location <- "Tampere"
+
+all_data <- rbind(helsinki_air, turku_air, tampere_air)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Helsinki", "Turku", "Tampere"),
+                                  ordered = TRUE))
+# Plotting the data
+all_data %>% 
+  dplyr::filter(
+    variable == "NO2_PT1H_avg" | variable == "PM10_PT1H_avg") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Density (ug/m3)\n") +
+  xlab("\nDate") + theme_minimal()
+```
+
+## Label variables and add station info
+
+Function `describe_variables()` allows user to get specifications for the different variables in the FMI datasets. If you however want to add labels for the variables to the data you can use `label_variables()` function. Let's demonstrate the use of the function with the air quality data.
+
+```{r label, warning=FALSE}
+# Getting the data
+turku_air <- get_airquality(place = "Turku",
+                            starttime = "2024-07-01", endtime = "2024-07-07")
+# Label variables
+turku_air <- turku_air %>%
+  label_variables()
+turku_air %>%
+  DT::datatable()
+```
+
+
+If you want to include the information about station from which the data is, you can do it with the function `add_station()`. The function adds station name and fmisid into the data. 
+
+```{r station_info, warning=FALSE}
+# Getting the data
+turku_wind <- get_wind(place = "Turku", starttime = "2024-07-01", endtime = "2024-07-07")
+# Add station info
+turku_wind <- turku_wind %>%
+  add_station()
+turku_wind %>%
+  DT::datatable()
+```
+
+
+## Mapping stations
+
+The available weather stations can be found by using `fmi_stations()` function or by browsing the [FMI website](https://en.ilmatieteenlaitos.fi/observation-stations). By using function `plot_stations()` you can plot all the stations on an interactive map. You can interact with the different weather stations and get the basic info about them, for example name, fmisid and type. This is a nice way to look for the right weather station.
+
+```{r map_stations, warning = FALSE}
+plot_stations(legend = FALSE)
+```
+
+You can also use function `select_stations()` to select a subset of stations. The function maps the weather stations, but it also allows user to interactively select stations. After selecting the wanted stations from the map, the function returns a dataset consisting of the info of the selected stations.
+
+## Intercative function
+
+There is also an interactive function `fmi2_interactive()` for obtaining a specific FMI observations. The function allows the user to select which observations they want and then asks for spatial resolution, if applicable, and date range. It also offers the user many different ways of specifying the location and also allows choosing the location interactively from a map. It also can print dataset citation and the function call used for getting the data.
+
+Using `fmi2_interactive() to get data looks like following:
+
+```{}
+> fmi2_interactive()
+Which observations do you want? 
+
+1: Weather observations
+2: Temperature observations
+3: Wind observations
+4: Precipitation observations
+5: Airquality observations
+
+Selection: 2
+Select spatial resolution 
+
+1: Hourly
+2: Daily
+3: Monthly
+
+Selection: 1
+Give start time in ISO-format: 2024-01-01
+Give end time: 2024-01-07
+Select the way of choosing location 
+
+1: Input parameter
+2: Select from interactive map
+
+Selection: 1
+Select location parameter 
+
+1: place
+2: fmisid
+3: wmo
+4: geoid
+5: bbox
+
+Selection: 2
+Enter station fmisid: 101065
+Do you want to specify coordinate reference system (crs)? 
+
+1: Yes
+2: No
+
+Selection: 2
+Do you want to specify timestep? 
+
+1: Yes
+2: No
+
+Selection: 2
+Add labels for variables? 
+
+1: Yes
+2: No
+
+Selection: 2
+Add station info? 
+
+1: Yes
+2: No
+
+Selection: 2
+Print dataset citation? 
+
+1: Yes
+2: No
+
+Selection: 1
+Print the code for the function call? 
+
+1: Yes
+2: No
+
+Selection: 1
+Print fixity checksum for the data? 
+
+1: Yes
+2: No
+
+Selection: 1
+#### DATASET CITATION 
+
+@Misc{,
+  title = {Hourly weather observations},
+  organization = {Finnish Meteorological Institute (FMI)},
+  author = {{Finnish Meteorological Institute (FMI)}},
+  year = {2024},
+  url = {http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi%3A%3Aobservations%3A%3Aweather%3A%3Ahourly%3A%3Asimple&starttime=2024-01-01&endtime=2024-01-07&fmisid=101065&parameters=TA_PT1H_AVG&parameters=TA_PT1H_MAX&parameters=TA_PT1H_MIN},
+  type = {Dataset},
+  note = {Accessed 2024-07-16 using fmi2 R package 0.3.1.9000},
+}
+
+#### DOWNLOAD PARAMETERS: 
+
+get_temperature(interval = "hourly", starttime = "2024-01-01", endtime = "2024-01-07",
+    place = NULL, fmisid = "101065", crs = NULL, bbox = NULL,
+    wmo = NULL, geoid = NULL, timestep = NULL)
+
+### FIXITY CHECKSUM: 
+
+[1] "Fixity checksum (md5) for the dataset: 7f87c358dd85d5b2834128ba6587df89"
+
+Simple feature collection with 435 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 22.27916 ymin: 60.51565 xmax: 22.27916 ymax: 60.51565
+Geodetic CRS:  ETRS89
+First 10 features:
+                  time    variable value                  Location
+1  2024-01-01 00:00:00 TA_PT1H_AVG -16.8 POINT (22.27916 60.51565)
+2  2024-01-01 00:00:00 TA_PT1H_MAX -16.6 POINT (22.27916 60.51565)
+3  2024-01-01 00:00:00 TA_PT1H_MIN -17.0 POINT (22.27916 60.51565)
+4  2024-01-01 01:00:00 TA_PT1H_AVG -17.0 POINT (22.27916 60.51565)
+5  2024-01-01 01:00:00 TA_PT1H_MAX -16.8 POINT (22.27916 60.51565)
+6  2024-01-01 01:00:00 TA_PT1H_MIN -17.2 POINT (22.27916 60.51565)
+7  2024-01-01 02:00:00 TA_PT1H_AVG -17.3 POINT (22.27916 60.51565)
+8  2024-01-01 02:00:00 TA_PT1H_MAX -17.0 POINT (22.27916 60.51565)
+9  2024-01-01 02:00:00 TA_PT1H_MIN -17.6 POINT (22.27916 60.51565)
+10 2024-01-01 03:00:00 TA_PT1H_AVG -17.7 POINT (22.27916 60.51565)
+```
+
+
+## Function for citing fmi2 datasets
+
+You can also print citation for the `fmi2` datasets by using `cite_fmi2()` function. The function prints citation for the wanted dataset and supports several bibliography formats. The citation for wind data used previously is:
+
+```{r citation_func, warning = FALSE}
+# Printing citation
+cite_fmi2(turku_wind)
+```
+
+The function also prints citation for `fmi2` package.
+
+# Licensing and Citations
+
+### FMI data
+
+Cite FMI and link to [https://en.ilmatieteenlaitos.fi](https://en.ilmatieteenlaitos.fi).
+
+* [Full license and terms of use](https://en.ilmatieteenlaitos.fi/open-data).
+
+Central points:
+
+* FMI open data is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+* FMI is owner of the data, unless otherwise stated contractually.
+
+### fmi2 R package
+
+If you use data obtained through fmi2 package in your publication, we wish that you cite the package as follows:
+
+```{r citation, message=FALSE, warning=FALSE}
+citation("fmi2")
+```
+
+Referring to the software and algorithms used in the research and identifying and acknowledging their relevance is important acording to second FORCE11 release, FORCE11 Software Citation Principle ([Smith et al., 2016](https://doi.org/10.7717/peerj-cs.86)).
+
+# Package development, sugestions and bug reports
+
+This package can be freely used, modified and distributed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License). 
+
+You can check the package [GitHub issues](https://github.com/rOpenGov/fmi2) for known bugs, shortcomings and other constraints. You can also use it to report bugs and to make suggestions for improving the package. User contributions are also very welcome.
+
+# Session info
+
+This vignette was created with 
+
+```{r sessioninfo, warning = FALSE}
+sessionInfo()
+```

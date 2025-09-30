@@ -13,6 +13,13 @@ a \code{tibble} of active observation stations
 \description{
 Data is retrieved using a FMI API stored query.
 }
+\examples{
+  \dontrun{
+  # Get table of stations
+  stations <- fmi_stations()
+  }
+
+}
 \seealso{
 \url{https://en.ilmatieteenlaitos.fi/observation-stations}
 }

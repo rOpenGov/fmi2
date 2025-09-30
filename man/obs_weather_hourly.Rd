@@ -2,41 +2,83 @@
 % Please edit documentation in R/obs_weather_hourly.R
 \name{obs_weather_hourly}
 \alias{obs_weather_hourly}
-\title{Hourly weather observations from weather stations.}
+\title{Hourly weather observations}
 \usage{
-obs_weather_hourly(starttime, endtime, fmisid = NULL)
+obs_weather_hourly(
+  starttime = NULL,
+  endtime = NULL,
+  fmisid = NULL,
+  place = NULL,
+  parameters = NULL,
+  crs = NULL,
+  bbox = NULL,
+  timestep = NULL,
+  geoid = NULL,
+  wmo = NULL,
+  cache = TRUE,
+  cache_dir = NULL
+)
 }
 \arguments{
 \item{starttime}{character begin of the time interval in ISO-format.}
 
-\item{endtime}{character end of time interval in ISO-format.
-data.}
+\item{endtime}{character end of time interval in ISO-format.}
 
 \item{fmisid}{numeric FMI observation station identifier
-(see \link[fmi2]{fmi_stations}.}
+(see \link[fmi2]{fmi_stations}).}
+
+\item{place}{character location name for which to provide data.}
+
+\item{parameters}{character vector of parameters to return (see below).}
+
+\item{crs}{character coordinate projection to use in results.}
+
+\item{bbox}{numeric vector (for example \code{c(22, 64, 24, 68)}) bounding box of area for
+which to return data.}
+
+\item{timestep}{numeric the time step of data in minutes.}
+
+\item{geoid}{numeric geoid of the location for which to return data.}
+
+\item{wmo}{numeric WMO code of the location for which to return data.}
+
+\item{cache}{A logical whether to do caching. Default is \code{TRUE}.}
+
+\item{cache_dir}{A path to to cache directory. \code{NULL} (default) creates a "fmi2" directory in
+the temporary directory defined by base R \code{\link[=tempdir]{tempdir()}} function and uses this directory to
+cache data in.}
 }
 \value{
 sf object in a long (melted) form. Observation variables names are
 given in \code{variable} column. Following variables are returned:
 \describe{
-\item{rrday}{Precipitation amount}
-\item{snow}{Snow depth}
-\item{tday}{Average air temperature}
-\item{tmin}{Minimum air temperature}
-\item{tmax}{Maximum air temperature}
-\item{TG_PT12H_min}{Ground minimum temperature}
+\item{PA_PT1H_AVG}{Air pressure (hPa)}
+\item{PRA_PT1H_ACC}{Precipitation amount (mm)}
+\item{PRI_PT1H_MAX}{Maximum precipitation intensity (mm/h)}
+\item{RH_PT1H_AVG}{Relative humidity (\%)}
+\item{TA_PT1H_AVG}{Air temperature (degC)}
+\item{TA_PT1H_MAX}{Highest temperature (degC)}
+\item{TA_PT1H_MIN }{Lowest temperature (degC)}
+\item{WAWA_PT1H_RANK}{Present weather}
+\item{WD_PT1H_AVG }{Wind direction (deg)}
+\item{WS_PT1H_AVG }{Wind speed (m/s)}
+\item{WS_PT1H_MAX }{Maximum wind speed (m/s)}
+\item{WS_PT1H_MIN }{Minimum wind speed (m/s)}
 }
 }
 \description{
+Hourly weather observations from weather stations.
+}
+\details{
 Default set contains hourly air temperature average, maximum and minimum, air
 relative humidity average, wind speed average, minumum (10 minute average)
 and maximum (10 minute average), wind direction average, wind gust speed
 maximum (3 second average), rain accumulated, rain intensity maximum, air
 pressure average and the most significant weather code. By default, the data
-is returned from last 24 hours. At least one location parameter
+is returned from last 24 hours. The maximum time interval for observations is
+744 hours (31 days). At least one location parameter
 (geoid/place/fmisid/wmo/bbox) has to be given.
-}
-\details{
+
 The FMI WFS stored query used by this function is
 \verb{fmi::observations::weather::hourly::simple}. For more informations, see
 \href{https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services}{the FMI documentation page}.
@@ -44,6 +86,13 @@ The FMI WFS stored query used by this function is
 \note{
 For a complete description of the accepted arguments, see
 \code{list_parameters("fmi::observations::weather::hourly::simple")}.
+}
+\examples{
+  \dontrun{
+  # Get hourly weather observations from Helsinki
+  y <- obs_weather_hourly(place = "Helsinki", starttime = "2024-01-01", endtime = "2024-01-07")
+  }
+
 }
 \seealso{
 https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services,

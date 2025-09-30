@@ -1,0 +1,321 @@
+---
+title: "fmi2 R-paketin esittely"
+output: 
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Paketin esittely
+
+Tämä [fmi2](https://github.com/rOpenGov/fmi2) R-paketti mahdollistaa säähavaintojen hakemisen [FMI:n avoimesta rajapinnasta](https://www.ilmatieteenlaitos.fi/avoin-data). Paketin avulla rajapinnan dataa voi hakea suoraan R:ään. Rajapinta on Ilmatieteen laitoksen ylläpitämä palvelu. `fmi2` paketti on kehitetty osana [rOpenGov](https://ropengov.org)-kehittäjäyhteisöä.
+
+# Paketin asennus
+
+`fmi2` R-paketti ei ole vielä CRAN:ssa, minkä takia paketti pitää asentaa GitHubista. Asennetaan ja ladataan samalla kaikki tutoriaalissa käytettävät paketit.
+
+```{r installs, eval=FALSE}
+install.packages(c("DT", "ggplot2", "leaflet", "remotes", "sf", "tidyverse"))
+
+remotes::install_github("ropengov/fmi2")
+remotes::install_github("ropensci/skimr")
+```
+
+```{r load-libraries, message=FALSE, warning=FALSE}
+library(DT)
+library(fmi2)
+library(ggplot2)
+library(knitr)
+library(leaflet)
+library(sf)
+library(skimr)
+```
+
+# Alkuun pääsy
+
+`fmi2` paketti mahdollistaa sääasemien havaintotietojen hakemisen käyttäen eripituisia havaintovälejä. Havaintojen hakemista varten tarvitaan sijainti, josta tietoa halutaan. FMI:n avoin rajapinta tukee useaa eri tapaa määritellä hakualue:
+
++ **Rajoituslaatikko (bbox)** eli koordinaattien rajaama alue
++ **Paikan nimi (place)** jolta havaintoja halutaan
++ **FMISID** numeerinen tunniste FMI-havaintoasemalle
++ **GEOID** sijainnin numeerinen geoid
++ **WMO** numeerinen tunniste
+
+Aloitetaan käyttämällä **FMISID** tunnistetta. Jokaisella havaintoasemalla on oma [tunnisteensa](https://www.ilmatieteenlaitos.fi/havaintoasemat). Lista havaintoasemista löytyy möys suoraan `fmi2` paketista käyttämällä funktiota `fmi_stations()`:
+
+```{r show-stations}
+station_data <- fmi2::fmi_stations() 
+
+station_data %>% 
+  DT::datatable()
+
+```
+
+Käytetään esimerkkinä "Hanko Tulliniemi" havaintoasemaa, jonka FMISID on 100946. Yllä olevasta taulukosta nähdään, että data sisältää myös maantieteelliset koordinaatit havaintoasemalle (lat ja lon sarakkeet). Visualisoidaan Hangon alue ennen datan lataamista.
+
+```{r plot-hanko-map}
+# Data ainoastaan Tulliniemen havaintoasemalle
+tulliniemi_station <- station_data %>% 
+  dplyr::filter(fmisid == 100946)
+
+# Piirretään kartta käyttämällä leaflet pakettia
+leaflet::leaflet(station_data) %>% 
+  leaflet::setView(lng = tulliniemi_station$lon, 
+                   lat = tulliniemi_station$lat, 
+                   zoom = 11) %>% 
+  leaflet::addTiles() %>%  
+  leaflet::addMarkers(~lon, ~lat, popup = ~name, label = ~as.character(fmisid))
+```
+
+
+# Päivittäisten säähavaintotietojen hakeminen
+
+Käyttämällä havaintoaseman sijaintia voimme hakea sen keräämiä havaintoja `fmi2` sisältää useita funktioita, joiden avulla voidaan hakea erilaisia muuttujia eripituisilla havaintoväleillä.  Aloitetaan käyttämällä `obs_weather_daily()` funktiota, jonka avulla voidaan hakea päivittäisiä havaintoja valitulta asemalta. Haetaan säähavaintoja vuoden 2019 kuudelta ensimmäiseltä kuukaudelta:
+
+```{r getting-data}
+# Käytetään Hanko Tulliniemi aseman FMISID tunnistetta
+tulliniemi_data <- obs_weather_daily(starttime = "2019-01-01",
+                                     endtime = "2019-06-30",
+                                     fmisid = 100946)
+```
+
+Funktio palautti `r nrow(tulliniemi_data)` havaintoa. Tarkastellaan seuraavaksi funktion palauttamaa objektia:
+
+```{r sf-class}
+class(tulliniemi_data)
+```
+
+Yllä olevan perusteella nähdään, että funktio `obs_weather_daily()` palauttaa luokan `sf` objektin. Tämä tarkoittaa, että data sisältää havaintoaseman paikkatiedot sarakkeessa `geometry`. Tutustumme tähän tarkemmin myöhemmin. Tarkastellaan nyt datan sisältöä:
+
+```{r}
+unique(tulliniemi_data$variable)
+```
+
+Data sisältää kuusi muuttujaa ja niiden arvot. `fmi2` sisältää funktion `describe_variables()`, jonka avulla pystyy saamaan lisätietoa muuttujista:
+
+```{r describe-variables}
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+
+`obs_weather_daily()` palauttaa datan pitkittäisessä muodossa, eli kaikkien muuttujien nimet ovat sarakkeessa `variable` ja vastaavat arvot sarakkeessa `value`. Datan voi muuttaa leveään muotoon käyttämällä `tidyr` pakettia:
+
+```{r spread-data}
+wide_data <- tulliniemi_data %>% 
+  tidyr::spread(variable, value) %>% 
+  # Muutetaan sf objekti tibble objektiksi
+  sf::st_set_geometry(NULL)
+
+wide_data %>% 
+  DT::datatable()
+```
+
+Muuttujat `rrday`, `snow` ja `TG_PT12H_min` näyttävät sisältävän paljon puuttuvia havaintoja. Tarkastellaan dataa tarkemmin:
+
+```{r skim-data, results='asis'}
+(skimr::skim(wide_data))
+```
+
+Näyttää siltä, että yllä mainituilla muuttujilla ei ole lainkaan havaintoja määritellyltä havaintoväliltä. Haetaan havaintoja muutamalta muulta asemalta eri puolelta Suomea. Tällä kerralla havaintojen hakemiseen käytetään paikan nimeä FMISID sijasta.
+
+```{r multiple stations, warning=FALSE}
+oulu_data <- obs_weather_daily(starttime = "2019-01-01",
+                               endtime = "2019-06-30",
+                               place = "Oulu")
+nuorgam_data <- obs_weather_daily(starttime = "2019-01-01",
+                                  endtime = "2019-06-30",
+                                  place = "Nuorgam")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+oulu_data$location <- "Oulu"
+nuorgam_data$location <- "Nuorgam"
+tulliniemi_data$location <- "Hanko"
+
+all_data <- rbind(tulliniemi_data, oulu_data, nuorgam_data)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Nuorgam", "Oulu", "Hanko"),
+                                  ordered = TRUE))
+```
+
+Piirretään päivittäinen lämpötila eri sijainneissa:
+
+```{r plot-data}
+all_data %>% 
+  dplyr::filter(variable == "tday" | variable == "tmax" | variable == "tmin") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Temperature (C)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
+
+# Tuntikohtaisten säähavaintotietojen hakeminen
+
+Päivittäisten arvojen lisäksi voimme myös hakea havaintoja pienemmällä havaintovälillä. Tuntikohtaisia havaintoja voi hakea funktiolla `obs_weather_hourly()`. Funktion palauttama data poikkeaa hiukan päivittäisestä datasta:
+
+```{r hourly-data}
+# Tuntikohtaiset havinnot Hanko Tulliniemi sääasemalta vuoden 2019 helmikuun ensimmäisenä päivänä
+tulliniemi_data <- fmi2::obs_weather_hourly(starttime = "2019-02-01",
+                                            endtime = "2019-02-02",
+                                            fmisid = 100946)
+```
+
+Tarkastellaan taas, mitä muuttujia data sisältää:
+
+```{r descrive-variables-2}
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+
+Taulukosta näemme, että tuntikohtainen data sisältää enemmän muuttujia kuin päiväkohtainen data. Tuntikohtainen data sisältää esimerkiksi tuulen nopeutta kuvaavia muuttujia. On myös hyvä huomata, että muuttujien nimet poikkeavat päiväkohtaisen datan nimistä. Verrataan tuulen nopeutta samoilla asemilla kuin aiemminkin:
+
+```{r multiple stations 2, warning = FALSE}
+oulu_data <- obs_weather_hourly(starttime = "2019-02-01",
+                               endtime = "2019-02-02",
+                               place = "Oulu")
+nuorgam_data <- obs_weather_hourly(starttime = "2019-02-01",
+                                  endtime = "2019-02-02",
+                                  place = "Nuorgam")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+oulu_data$location <- "Oulu"
+nuorgam_data$location <- "Nuorgam"
+tulliniemi_data$location <- "Hanko"
+
+all_data <- rbind(tulliniemi_data, oulu_data, nuorgam_data)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Nuorgam", "Oulu", "Hanko"),
+                                  ordered = TRUE))
+```
+
+Piirretään tuntikohtainen tuulen nopeus eri asemilla:
+
+```{r plot-data-2}
+all_data %>% 
+  dplyr::filter(
+    variable == "WS_PT1H_AVG" | variable == "WS_PT1H_MAX" | variable == "WS_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Wind speed (m/s)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
+
+# Kuukausittaisten säähavaintotietojen hakeminen
+
+Tuntikohtaisten ja päivittäisten havaintojen lisäksi voimme hakea kuuakusittaisia havaintoja funktiolla `obs_weather_monthly()`. Funktion palauttama dataa sisältää kuitenkin paljon vähemmän muuttujia verrattuna kahteen toiseen funktioon.
+
+```{r monthly-data}
+# Kuukausittaiset havainnot vuodelta 2019 Hanko Tulliniemen asemmalla
+tulliniemi_data <- fmi2::obs_weather_monthly(starttime = "2019-01-01",
+                                            endtime = "2019-12-31",
+                                            fmisid = 100946)
+```
+
+Tarkastellaan datan sisältämiä muuttujia:
+
+```{r describe-variables-3}
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+
+Taulukosta näemme, että data sisältää vain kaksi muuttujaa. Verrataan kuukausittaista sademäärää Turussa, Vaasassa ja Helsingissä vuoden 2019 aikana.
+
+```{r multiple stations 3, warning = FALSE}
+turku_data <- obs_weather_monthly(starttime = "2019-01-01",
+                               endtime = "2019-12-31",
+                               place = "Turku")
+vaasa_data <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-12-31",
+                                  place = "Vaasa")
+helsinki_data <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-12-31",
+                                  place = "Helsinki")
+# Lisätään sijainnin nimi datoihin ja yhdistetään ne
+turku_data$location <- "Turku"
+vaasa_data$location <- "Vaasa"
+helsinki_data$location <- "Helsinki"
+
+all_data <- rbind(turku_data, vaasa_data, helsinki_data)
+# Faktorisoidaan sijainti ja järjestetään data
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Turku", "Vaasa", "Helsinki"),
+                                  ordered = TRUE))
+```
+
+Piirretään kuvaajat kuukausittaisesta sademäärästä eri sijainneissa:
+
+```{r plot-data-3}
+all_data %>% 
+  dplyr::filter(
+    variable == "rrmon") %>% 
+  ggplot(aes(x = time, y = value)) + 
+  geom_line(col = "lightblue") + facet_wrap(~ location, ncol=1) +
+  ylab("Precipitation amount (mm)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
+
+# Huomionarvoisia asioita
+
+Pakettia käyttäessä kannattaa kiinnittää huomiota muutamaan asiaan. Näistä ensimmäinen on se, että FMI:n rajapinta rajoittaa yhdellä haulla palautettavan datan kokoa. Tuntikohtaisten havaintojen maksimi on 744 tuntia (31 päivää), päivittäisille havainnoille maksimi on 8928 tuntia (372 päivää) ja kuukausittaisille havainnoille maksimi on 87600 tuntia (3650 päivää). Jos havaintoja haluaa pidemmältä aikaväliltä, täytyy hakuja suorittaa useampi. 
+
+Toinen asia, johon on hyvä kiinnittää huomiota on se, että kaikki havaintoasemat eivät tarjoa kaikkia havaintoja. Tämä käy ilmi esimerkiksi silloin, kun funktio antaa varoituksen, että data on tyhjä (no layers in datasource). Varoitus näyttää seuraavalta:
+
+```{}
+> obs_weather_daily(fmisid = 103097)
+Error: No layers in datasource.
+```
+
+Näissä tilanteissa kannattaa kokeilla toista havaintoasemaa haluttujen havaintojen saamiseksi. Data saattaa välillä myös sisältää paljon puuttuvia arvoja.
+
+Kun sijainnin määrittämiseen käytetään `place` argumenttia, on hyvä huomata, että sen avulla ei voi määrittää tiettyä havaintoasemaa. Eli jos sijainnissa on useampi asema, `place` palauttaa havaintoja vain yhdeltä niistä. Tämä voi johtaa ongelmiin varsinkin, jos `place` argumentin antama asema ei anna haluttuja havaintoja. Ongelmien välttämiseksi kannattaa käyttää `fmisid` argumenttia sijainnin määrittämiseksi. Sen avulla pystyy määrittämään haluamansa aseman tarkemmin. 
+
+# Lisensointi ja viittaminen
+
+### FMI data
+
+Viittaa FMI:in ja jaa linkki [https://www.ilmatieteenlaitos.fi](https://www.ilmatieteenlaitos.fi).
+
+* [Täysi lisenssi ja käyttöehdot](https://www.ilmatieteenlaitos.fi/avoin-data)
+
+Keskeiset kohdat tiivistettynä:
+
+* FMI:n avoin data on [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lisenssin alainen.
+* FMI omistaa datan, ellei sopimusperusteisesti toisin mainita.
+
+### fmi2 R-paketti
+
+Mikäli käytät julkaisussasi dataa, jonka olet hankkinut fmi2-pakettia käyttäen, toivomme että viittaat pakettiin seuraavalla tavalla:
+
+```{r citation, message=FALSE, warning=FALSE}
+citation("fmi2")
+```
+
+Tutkimuksessa käytettyihin ohjelmistoihin ja algoritmeihin viittaaminen ja niiden relevanssin tunnistaminen ja tunnustaminen on toisen FORCE11-julkaisun, FORCE11 Software Citation Principlesin ([Smith et al., 2016](https://doi.org/10.7717/peerj-cs.86)), mukaan tärkeää.
+
+# Paketin kehittäminen, vikojen raportointi ja parannusehdotukset
+
+Pakettia voi muokata, käyttää ja levittää vapaasti  [MIT-lisenssin](https://fi.wikipedia.org/wiki/MIT-lisenssi) ehtojen mukaisesti.
+
+Tunnistetut ja raportoidut bugit, puutteet ja muut rajoitteet on listattu projektin [GitHub-issueissa](https://github.com/rOpenGov/fmi2/issues). Sivulla voi myös ilmoittaa uusista vioista ja antaa parannusehdotuksia. Käyttäjien tekemät koodikontribuutiot ovat myös erittäin tervetulleita.
+
+# Istunnon tiedot 
+
+Tämä artikkeli luotiin seuraavalla laitteisto- ja ohjelmistokokoonpanolla:
+
+```{r sessioninfo, warning = FALSE}
+sessionInfo()
+```
+

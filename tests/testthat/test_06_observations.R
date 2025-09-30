@@ -15,7 +15,7 @@ test_that("obs_weather_daily() arguments are handled correctly", {
   # Start and end times must be in the past
 })
 
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("daily observation data for a weather station are retrieved correctly", {
     # Use Hanko Tulliniemi weather station
@@ -25,11 +25,11 @@ httptest::with_mock_api({
                                  fmisid = hanko_id)
 
     expect_is(obs_dat, "sf")
-    expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
     expect_is(obs_dat$time, "Date")
     expect_is(obs_dat$variable, "character")
     expect_is(obs_dat$value, "numeric")
-    expect_is(obs_dat$geometry, "sfc")
+    expect_is(obs_dat$Location, "sfc")
   })
 
   test_that("hourly observation data for a weather station are retrieved correctly", {
@@ -41,11 +41,155 @@ httptest::with_mock_api({
                                   fmisid = hanko_id)
 
     expect_is(obs_dat, "sf")
-    expect_identical(names(obs_dat), c("time", "variable", "value", "geometry"))
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
     expect_is(obs_dat$time, "POSIXct")
     expect_is(obs_dat$variable, "character")
     expect_is(obs_dat$value, "numeric")
-    expect_is(obs_dat$geometry, "sfc")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("monthly observation data for a weather station are retrieved correctly", {
+    # Use Hanko Tulliniemi weather station
+    hanko_id <- 100946
+
+    obs_dat <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-01-02",
+                                  fmisid = hanko_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly air quality observation data for a weather station are retrieved correctly", {
+    # Use Helsinki Kallio 2 weather station
+    kallio_id <- 100662
+
+    obs_dat <- get_airquality(starttime = "2019-01-01",
+                                   endtime = "2019-01-02",
+                                   fmisid = kallio_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly wind observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_wind(starttime = "2019-01-01",
+                              endtime = "2019-01-05",
+                              fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(interval = "hourly", starttime = "2019-01-01",
+                        endtime = "2019-01-02",
+                        fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("daily temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(interval = "daily", starttime = "2019-01-01",
+                               endtime = "2019-01-05",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("monthly temperature observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_temperature(interval = "monthly", starttime = "2019-01-01",
+                               endtime = "2019-05-01",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("hourly precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(interval = "hourly", starttime = "2019-01-01",
+                               endtime = "2019-01-02",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "POSIXct")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("daily precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(interval = "daily", starttime = "2019-01-01",
+                               endtime = "2019-01-05",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
+  })
+
+  test_that("monthly precipitation observation data for a weather station are retrieved correctly", {
+    # Use Turku Artukainen weather station
+    turku_id <- 100949
+
+    obs_dat <- get_precipitation(interval = "monthly", starttime = "2019-01-01",
+                               endtime = "2019-05-01",
+                               fmisid = turku_id)
+
+    expect_is(obs_dat, "sf")
+    expect_identical(names(obs_dat), c("time", "variable", "value", "Location"))
+    expect_is(obs_dat$time, "Date")
+    expect_is(obs_dat$variable, "character")
+    expect_is(obs_dat$value, "numeric")
+    expect_is(obs_dat$Location, "sfc")
   })
 
 })

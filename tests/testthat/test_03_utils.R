@@ -1,4 +1,4 @@
-httptest::with_mock_api({
+httptest2::with_mock_api({
 
   test_that("FMI API variable descriptions work", {
     # Use min ground temperature (TG_PT12H_min) and average precipitation
@@ -11,7 +11,7 @@ httptest::with_mock_api({
     expect_equal(ncol(desc), 6)
     # Check that all variables (other than name) have values
     dat <- desc %>%
-      dplyr::select(-variable) %>%
+      dplyr::select(-"variable") %>%
       dplyr::slice(1) %>%
       unlist(use.names = FALSE)
     expect_true(!all(is.na(dat)))

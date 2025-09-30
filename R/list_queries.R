@@ -10,8 +10,9 @@
 #' @param all logical should all stored queries available through the API be
 #'        listed(default: FALSE)?
 #'
-#' @import dplyr httpcache tibble xml2
-#' @importFrom httr http_error
+#' @importFrom dplyr bind_rows filter select pull
+#' @importFrom tibble tibble
+#' @importFrom xml2 xml_find_all xml_text xml_attr xml_name
 #' @importFrom purrr map
 #'
 #' @return tibble containing the following columns:
@@ -46,7 +47,7 @@ list_queries <- function(all = FALSE) {
   process_node <- function(node) {
     # Query ID is the technical descriptor used by the FMI
     query_id <- xml2::xml_attr(node, "id")
-    # Query descrption in plain language
+    # Query description in plain language
     query_desc <- node %>%
       xml2::xml_find_all("./Title") %>%
       xml2::xml_text()
@@ -71,7 +72,7 @@ list_queries <- function(all = FALSE) {
   find_function_name <- function(stored_query) {
     fname <- fmi2_global$function_map %>%
       dplyr::filter(.data$`Stored query` == stored_query) %>%
-      dplyr::select(.data$`fmi2 function`) %>%
+      dplyr::select("fmi2_function") %>%
       dplyr::pull()
     fname <- ifelse(length(fname) == 0, NA, fname)
     return(fname)

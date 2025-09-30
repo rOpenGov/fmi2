@@ -1,7 +1,5 @@
 ---
 title: "fmi2: introduction"
-author: "Joona Lehtomäki"
-date: "`r Sys.Date()`"
 output: 
   prettydoc::html_pretty:
     theme: leonids
@@ -13,11 +11,24 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN", unset = "TRUE")), "true")
+eval_packages <- requireNamespace(c("DT", "ggplot2", "knitr", "leaflet", "sf", "skimr"))
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  purl = NOT_CRAN,
+  eval = NOT_CRAN && eval_packages
 )
 ```
+
+```{r, eval = !eval_packages, echo = FALSE}
+message("Not all required packages installed. Code chunks will not be evaluated.")
+```
+
+
+# Introduction
+
+This [fmi2](https://github.com/rOpenGov/fmi2) R package provides access to a subset of weather observations available from [FMI API](https://en.ilmatieteenlaitos.fi/open-data). With the package you can download data straight in R environment. The API is maintained by Finnish Meteorological Institute. The `fmi2` package is part of [rOpenGov](https://ropengov.org).
 
 # Setup
 
@@ -44,7 +55,7 @@ library(skimr)
 
 # Getting started
 
-You can retrieve weather stating observation data with various temporal 
+You can retrieve weather station observation data with various temporal 
 resolution using `fmi2`. First thing you need to know is of course which 
 location exactly you want to get the data from. The FMI API provides multiple 
 different ways of defining the spatial query area:
@@ -202,10 +213,150 @@ tulliniemi_data <- fmi2::obs_weather_hourly(starttime = "2019-02-01",
 
 Again, let's first have a look at what we actually got:
 
-```{r descrive-variables-2}
+```{r describe-variables-2}
 var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
 var_descriptions %>% 
   DT::datatable()
 ```
+We can see that the hourly data includes more variables when compared to daily data. Hourly data for example also includes observations about wind speed. We also see that the variable names differ from the daily data. Let's compare wind speed at the same locations as before:
 
+```{r multiple stations 2, warning = FALSE}
+oulu_data <- obs_weather_hourly(starttime = "2019-02-01",
+                               endtime = "2019-02-02",
+                               place = "Oulu")
+nuorgam_data <- obs_weather_hourly(starttime = "2019-02-01",
+                                  endtime = "2019-02-02",
+                                  place = "Nuorgam")
+# Add location name to each data set and combine them
+oulu_data$location <- "Oulu"
+nuorgam_data$location <- "Nuorgam"
+tulliniemi_data$location <- "Hanko"
+
+all_data <- rbind(tulliniemi_data, oulu_data, nuorgam_data)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Nuorgam", "Oulu", "Hanko"),
+                                  ordered = TRUE))
+```
+
+Let's plot the hourly wind data in different locations:
+
+```{r plot-data-2}
+all_data %>% 
+  dplyr::filter(
+    variable == "WS_PT1H_AVG" | variable == "WS_PT1H_MAX" | variable == "WS_PT1H_MIN") %>% 
+  ggplot(aes(x = time, y = value, color = variable)) + 
+  geom_line() + facet_wrap(~ location, ncol=1) + ylab("Wind speed (m/s)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
+
+# Getting monthly weather observation data
+
+In addition to hourly and daily weather observations we can get monthly weather observations using function `obs_weather_monthly()`. The data obtained by the function contains a lot less variables compared to the other two functions.
+
+```{r monthly-data}
+# Get the monthly observations for year 2019 in Hanko Tulliniemi
+tulliniemi_data <- fmi2::obs_weather_monthly(starttime = "2019-01-01",
+                                            endtime = "2019-12-31",
+                                            fmisid = 100946)
+```
+
+Let's look at what we got:
+
+```{r describe-variables-3}
+var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
+var_descriptions %>% 
+  DT::datatable()
+```
+As we can see from the table the data only has two variables. Let's plot monthly precipitation in Turku, Vaasa and Helsinki during 2019.
+
+```{r multiple stations 3, warning = FALSE}
+turku_data <- obs_weather_monthly(starttime = "2019-01-01",
+                               endtime = "2019-12-31",
+                               place = "Turku")
+vaasa_data <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-12-31",
+                                  place = "Vaasa")
+helsinki_data <- obs_weather_monthly(starttime = "2019-01-01",
+                                  endtime = "2019-12-31",
+                                  place = "Helsinki")
+# Add location name to each data set and combine them
+turku_data$location <- "Turku"
+vaasa_data$location <- "Vaasa"
+helsinki_data$location <- "Helsinki"
+
+all_data <- rbind(turku_data, vaasa_data, helsinki_data)
+# Factorize location and make order explicit
+all_data <- all_data %>% 
+  dplyr::mutate(location = factor(location, 
+                                  levels = c("Turku", "Vaasa", "Helsinki"),
+                                  ordered = TRUE))
+```
+
+Let's plot the monthly precipitation data in different locations:
+
+```{r plot-data-3}
+all_data %>% 
+  dplyr::filter(
+    variable == "rrmon") %>% 
+  ggplot(aes(x = time, y = value)) + 
+  geom_line(col = "lightblue") + facet_wrap(~ location, ncol=1) +
+  ylab("Precipitation amount (mm)\n") +
+  xlab("\nDate") + theme_minimal()
+
+```
+
+# Noteworthy things
+
+There are few things you should know when using the package. One is that there is a limit for the size of data FMI API will return on a single query. For hourly observations maximum is 744 hours (31 days), for daily observations maximum is 8928 hours (372 days) and for monthly observations maximum is 87600 hours (3650 days). So if you want data from longer time span you have to do multiple function calls.
+
+Another good thing to know that not all weather stations will be able to provide all types of observations. This is usually apparent when a function returns a warning about there being no layers in the datasource. The warning looks like following:
+
+```{}
+> obs_weather_daily(fmisid = 103097)
+Error: No layers in datasource.
+```
+
+In these scenarios it is advised to try another weather station for the wanted data. Also the data can occasionally include lot of missing values.
+
+When using `place` as an argument for location, it is good to acknowledge that you can't pick a specific weather station from the location. So if there are several weather stations at the location, `place` argument can give data from only one of them. This can a problematic especially in the scenario the station given by `place` argument doesn't have data for wanted observations. Because of this, it is advised to use `fmisid` for location over `place`.
+
+# Licensing and Citations
+
+### FMI data
+
+Cite FMI and link to [https://en.ilmatieteenlaitos.fi](https://en.ilmatieteenlaitos.fi).
+
+* [Full license and terms of use](https://en.ilmatieteenlaitos.fi/open-data).
+
+Central points:
+
+* FMI open data is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+* FMI is owner of the data, unless otherwise stated contractually.
+
+### fmi2 R package
+
+If you use data obtained through fmi2 package in your publication, we wish that you cite the package as follows:
+
+```{r citation, message=FALSE, warning=FALSE}
+citation("fmi2")
+```
+
+Referring to the software and algorithms used in the research and identifying and acknowledging their relevance is important acording to second FORCE11 release, FORCE11 Software Citation Principle ([Smith et al., 2016](https://doi.org/10.7717/peerj-cs.86)).
+
+# Package development, sugestions and bug reports
+
+This package can be freely used, modified and distributed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License). 
+
+You can check the package [GitHub issues](https://github.com/rOpenGov/fmi2) for known bugs, shortcomings and other constraints. You can also use it to report bugs and to make suggestions for improving the package. User contributions are also very welcome.
+
+# Session info
+
+This vignette was created with 
+
+```{r sessioninfo, warning = FALSE}
+sessionInfo()
+```
 
