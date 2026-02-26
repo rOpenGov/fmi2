@@ -70,7 +70,7 @@ Joona Lehtomäki <joona.lehtomaki@iki.fi>
 #> 
 #> $response
 #> Response [http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=DescribeStoredQueries]
-#>   Date: 2026-02-26 08:03
+#>   Date: 2026-02-26 09:27
 #>   Status: 200
 #>   Content-Type: text/xml; charset=UTF-8
 #>   Size: 467 kB
