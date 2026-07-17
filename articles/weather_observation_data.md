@@ -7,6 +7,7 @@ GitHub. While you’re at it, make sure you also install all the packages
 below as we’ll be using them in this tutorial.
 
 ``` r
+
 install.packages(c("DT", "ggplot2", "leaflet", "remotes", "sf", "tidyverse"))
 
 remotes::install_github("ropengov/fmi2")
@@ -14,6 +15,7 @@ remotes::install_github("ropensci/skimr")
 ```
 
 ``` r
+
 library(DT)
 library(fmi2)
 library(ggplot2)
@@ -43,6 +45,7 @@ online table is also available in `fmi2` using the function
 [`fmi_stations()`](https://ropengov.github.io/fmi2/reference/fmi_stations.md):
 
 ``` r
+
 station_data <- fmi2::fmi_stations() 
 
 station_data %>% 
@@ -56,6 +59,7 @@ observation station. Before we get the actual data, let’s visualize
 Hanko region.
 
 ``` r
+
 # Get data for Tulliniemi only
 tulliniemi_station <- station_data %>% 
   dplyr::filter(fmisid == 100946)
@@ -81,6 +85,7 @@ Let’s get the daily weather observation data for the first 6 monhts of
 2019:
 
 ``` r
+
 # Use Hanko Tulliniemi weather station FMISID
 tulliniemi_data <- obs_weather_daily(starttime = "2019-01-01",
                                      endtime = "2019-06-30",
@@ -91,6 +96,7 @@ In total, the function returned 1086 observations. You can also note the
 following:
 
 ``` r
+
 class(tulliniemi_data)
 #> [1] "sf"         "data.frame"
 ```
@@ -103,6 +109,7 @@ later. Now we are interested in what *kind* of data did we actually get?
 Let’s find out:
 
 ``` r
+
 unique(tulliniemi_data$variable)
 #> [1] "rrday"        "tday"         "snow"         "tmin"         "tmax"        
 #> [6] "TG_PT12H_min"
@@ -114,6 +121,7 @@ provides a helper function
 that can be useful in finding out more about the variables:
 
 ``` r
+
 var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
 var_descriptions %>% 
   DT::datatable()
@@ -126,6 +134,7 @@ corresponding values in `value` column. You can transform the data into
 a wide format using `tidyr`:
 
 ``` r
+
 wide_data <- tulliniemi_data %>% 
   tidyr::spread(variable, value) %>% 
   # Let's convert the sf object into a regular tibble
@@ -139,6 +148,7 @@ Looks like there aren’t too much data for `rrday`, `snow` or
 `TG_PT12H_min`. Let’s have a closer look at the data:
 
 ``` r
+
 (skimr::skim(wide_data))
 ```
 
@@ -154,13 +164,13 @@ Looks like there aren’t too much data for `rrday`, `snow` or
 | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |           |
 | Group variables                                  | None      |
 
-Data summary
+Data summary {.table}
 
 **Variable type: Date**
 
-| skim_variable | n_missing | complete_rate | min        | max        | median     | n_unique |
-|:--------------|----------:|--------------:|:-----------|:-----------|:-----------|---------:|
-| time          |         0 |             1 | 2019-01-01 | 2019-06-30 | 2019-04-01 |      181 |
+| skim_variable | n_missing | complete_rate | min | max | median | n_unique |
+|:---|---:|---:|:---|:---|:---|---:|
+| time | 0 | 1 | 2019-01-01 | 2019-06-30 | 2019-04-01 | 181 |
 
 **Variable type: numeric**
 
@@ -179,6 +189,7 @@ observation stations around finland. Note that this time we’re using
 place name instead of a FMISID.
 
 ``` r
+
 oulu_data <- obs_weather_daily(starttime = "2019-01-01",
                                endtime = "2019-06-30",
                                place = "Oulu")
@@ -201,6 +212,7 @@ all_data <- all_data %>%
 Let’s plot the daily temperature data in different locations:
 
 ``` r
+
 all_data %>% 
   dplyr::filter(variable == "tday" | variable == "tmax" | variable == "tmin") %>% 
   ggplot(aes(x = time, y = value, color = variable)) + 
@@ -220,6 +232,7 @@ The data retrieved this has slightly different content as compared to
 the daily data:
 
 ``` r
+
 # Get the hourly observations for the first day of 2019 in Hanko Tulliniemi
 tulliniemi_data <- fmi2::obs_weather_hourly(starttime = "2019-02-01",
                                             endtime = "2019-02-02",
@@ -229,6 +242,7 @@ tulliniemi_data <- fmi2::obs_weather_hourly(starttime = "2019-02-01",
 Again, let’s first have a look at what we actually got:
 
 ``` r
+
 var_descriptions <- fmi2::describe_variables(tulliniemi_data$variable)
 var_descriptions %>% 
   DT::datatable()

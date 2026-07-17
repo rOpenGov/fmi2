@@ -17,6 +17,7 @@ license](https://creativecommons.org/licenses/by/4.0/).
 from [GitHub](https://github.com/rOpenGov/fmi2) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("rOpenGov/fmi2")
 ```
@@ -25,11 +26,11 @@ remotes::install_github("rOpenGov/fmi2")
 
 Currently, the following FMI stored queries are avaible in `fmi2`:
 
-| Stored query                               | Description                       | No. parameters | fmi2 function name |
-|:-------------------------------------------|:----------------------------------|---------------:|:-------------------|
-| fmi::ef::stations                          | Environmental Monitoring Stations |              4 | fmi_stations       |
-| fmi::observations::weather::daily::simple  | Daily Weather Observations        |             11 | obs_weather_daily  |
-| fmi::observations::weather::hourly::simple | Hourly Weather Observations       |             12 | obs_weather_hourly |
+| Stored query | Description | No. parameters | fmi2 function name |
+|:---|:---|---:|:---|
+| fmi::ef::stations | Environmental Monitoring Stations | 4 | fmi_stations |
+| fmi::observations::weather::daily::simple | Daily Weather Observations | 11 | obs_weather_daily |
+| fmi::observations::weather::hourly::simple | Hourly Weather Observations | 12 | obs_weather_hourly |
 
 More data sets and queries may be wrapped in the future.
 
